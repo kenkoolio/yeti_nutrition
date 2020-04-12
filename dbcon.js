@@ -1,5 +1,6 @@
 // dbcon.js
 // Created: 4/12/2020
+// Author: Huy Nguyen <nguyehu6@oregonstate.edu>
 // Description: File to set up node connection to mysql database.
 
 const dotenv = require('dotenv');
@@ -28,3 +29,6 @@ module.exports.pool = pool;
 // PASSWORD="your_password"
 // HOST=""
 // DB_NAME="yeti_nutrition"
+//
+// # other local environment stuff
+// PORT=8000
