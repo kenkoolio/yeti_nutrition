@@ -22,6 +22,13 @@ app.set('view engine', 'handlebars');
 app.set('port', 8000);
 app.use(express.static('public'));
 
+// mount routes
+app.use('/test', require('./routes/test.js'));
+
+// home page
+app.get('/', (req, res) => {
+  res.render('home');
+})
 
 // 404 error
 app.use((req, res) => {
@@ -30,7 +37,7 @@ app.use((req, res) => {
 })
 
 // 500 error
-app.use((req, res) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500);
   res.render('500');
@@ -38,5 +45,5 @@ app.use((req, res) => {
 
 // run server
 app.listen(app.get('port'), function() {
-  console.log("Server started on port: ", app.get('port'));
+  console.log("Express server started on port: ", app.get('port'));
 })
