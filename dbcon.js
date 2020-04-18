@@ -28,7 +28,7 @@ module.exports.pool = pool;
 // USERNAME="root"
 // PASSWORD="your_password"
 // HOST=""
-// DB_NAME="yeti_nutrition"
+// DB_NAME="yeti_eats"
 //
 // # other local environment stuff
 // PORT=8000
