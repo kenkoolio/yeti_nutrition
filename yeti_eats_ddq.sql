@@ -4,6 +4,7 @@
 
 -- Create Database
 DROP SCHEMA IF EXISTS `yeti_eats`;
+CREATE SCHEMA `yeti_eats`;
 USE `yeti_eats`;
 
 -- Users
