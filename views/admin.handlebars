@@ -1,0 +1,62 @@
+<style>
+  .admin_form input::not(.ingredients_list input), .admin_form textarea {
+    display: block;
+  }
+
+  .admin_form div {
+    margin-bottom: 20px;
+  }
+</style>
+
+<h1>Admin Portal</h1>
+<h3>Enter new recipies or new ingredients</h3>
+
+<!-- New recipes -->
+<section>
+  <h2>Add a new recipe</h2>
+  <form class='admin_form'>
+    <div>
+      <label for='recipe_name'>Recipe name (must not be an existing recipe in the system)
+        <input type='text' id='recipe_name' name='recipe_name'>
+      </label>
+    </div>
+
+    <!-- ingredients -->
+    <div class='ingredients_list'>
+      <label for='ing_1'>Ingredient #1
+        <select name='ing_1' id='ing_1'>
+          <option value='1'>Green onions</option>
+        </select>
+      </label>
+
+      <label for='ing_qty_1'>Quantity:
+        <input type='number' name='ing_qty_1'>
+      </label>
+
+      <label for='ing_metric_1'>Units
+        <input type='text' name='ing_metric_1'>
+      </label>
+    </div>
+    <button>Add ingredients</button>
+
+    <div>
+      <label for='recipe_instructions'>Recipe Instructions
+        <textarea id='recipe_instructions' name='recipe_instructions'></textarea>
+      </label>
+    </div>
+
+    <button>Submit</button>
+  </form>
+</section>
+
+<!-- New ingredients -->
+<section>
+  <h2>Add new ingredients</h2>
+  <form class='admin_form'>
+    <label for='ingredient_name'>Ingredient name (must not already exist in the system)
+      <input type='text' id='ingredient_name' name='ingredient_name'>
+    </label>
+
+    <button>Submit</button>
+  </form>
+</section>

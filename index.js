@@ -24,6 +24,7 @@ app.use(express.static('public'));
 
 // mount routes
 app.use('/test', require('./routes/test.js'));
+app.use('/admin', require('./routes/admin.js'));
 
 // home page
 app.get('/', (req, res) => {
@@ -45,5 +46,5 @@ app.use((err, req, res, next) => {
 
 // run server
 app.listen(app.get('port'), function() {
-  console.log("Express server started on port: ", app.get('port'));
+  console.log("Express server started on port:", app.get('port'));
 })
