@@ -109,10 +109,17 @@ function add_ing_to_form(e) {
   // create input
   unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
 
-  // add ingredient select, quantity, and units to ingredient div
+  // create remove button //
+  let remove_button = $('<button/>', {class: 'remove_ing'});
+  remove_button.append(document.createTextNode('X'));
+  // bind remove event
+  remove_button.click(remove_ing_from_from);
+
+  // add ingredient select, quantity, units, and remove button to ingredient div
   ing_div.append(ing_label);
   ing_div.append(qty_label);
   ing_div.append(unit_label);
+  ing_div.append(remove_button);
 
   // add new ingredient div to ingredients container
   ing_container.append(ing_div);
@@ -120,20 +127,15 @@ function add_ing_to_form(e) {
   e.preventDefault();
 }
 
+function remove_ing_from_from(e) {
+  e.preventDefault();
 
-// <div class="ing_div_1">
-//   <label for='ing_1'>Ingredient #1
-//     <select name='ing_1' id='ing_1'>
-//       <option value='1'>Green onions</option>
-//     </select>
-//   </label>
-//
-//   <label for='ing_qty_1'>Quantity:
-//     <input type='number' name='ing_qty_1' id='ing_qty_1'>
-//   </label>
-//
-//   <label for='ing_metric_1'>Units
-//     <input type='text' name='ing_metric_1' id='ing_metric_1'>
-//   </label>
-// </div>
+  // this ingredient div
+  let this_ing_div = $(this).parent();
+
+  // remove this div from ingredient container
+  this_ing_div.remove();
+}
+
+
 </script>
