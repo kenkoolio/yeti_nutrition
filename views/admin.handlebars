@@ -23,21 +23,25 @@
 
     <!-- ingredients -->
     <div class='ingredients_list'>
-      <label for='ing_1'>Ingredient #1
-        <select name='ing_1' id='ing_1'>
-          <option value='1'>Green onions</option>
-        </select>
-      </label>
 
-      <label for='ing_qty_1'>Quantity:
-        <input type='number' name='ing_qty_1'>
-      </label>
+      <div class="ing_div_1">
+        <label for='ing_1'>Ingredient #1
+          <select name='ing_1' id='ing_1'>
+            <option value='1'>Green onions</option>
+          </select>
+        </label>
 
-      <label for='ing_metric_1'>Units
-        <input type='text' name='ing_metric_1'>
-      </label>
+        <label for='ing_qty_1'>Quantity:
+          <input type='number' name='ing_qty_1' id='ing_qty_1'>
+        </label>
+
+        <label for='ing_metric_1'>Units:
+          <input type='text' name='ing_metric_1' id='ing_metric_1'>
+        </label>
+      </div>
+
     </div>
-    <button>Add ingredients</button>
+    <button id="add_ing_to_form_button">Add ingredients</button>
 
     <div>
       <label for='recipe_instructions'>Recipe Instructions
@@ -60,3 +64,76 @@
     <button>Submit</button>
   </form>
 </section>
+
+<script>
+// to add dynamic ingredients to recipes form
+let ingredients = [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
+
+let ing_container = $('.ingredients_list').first();
+let add_ing_button = $('#add_ing_to_form_button');
+let ing_count = 1;
+
+add_ing_button.click(add_ing_to_form);
+
+function add_ing_to_form(e) {
+  // increment ingredient count
+  ing_count++;
+
+  // create container div
+  let ing_div = $('<div/>', {class: 'ing_div_' + ing_count});
+
+  // create select ingredient //
+  // create label
+  let ing_label = $('<label/>', {for: 'ing_' + ing_count});
+  ing_label.append(document.createTextNode('Ingredient #' + ing_count));  // label text
+  // create select
+  let ing_select = $('<select/>', {name: 'ing_' + ing_count, id: 'ing_' + ing_count});
+  // create options
+  ingredients.map((ingredient) => {
+    ing_select.append($('<option/>', {value: ingredient.id}).append(document.createTextNode(ingredient.name)));
+  })
+  // add select inside label
+  ing_label.append(ing_select);
+
+  // create quantity input //
+  // create label
+  let qty_label = $('<label/>', {for: 'ing_qty_' + ing_count});
+  qty_label.append(document.createTextNode('Quantity: '));  // label text
+  // create input
+  qty_label.append($('<input/>', {type: 'number', name: 'ing_qty_' + ing_count, id: 'ing_qty_' + ing_count}));
+
+  // create units input//
+  // create label
+  let unit_label = $('<label/>', {for: 'ing_metric_' + ing_count});
+  unit_label.append(document.createTextNode('Units: '));
+  // create input
+  unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
+
+  // add ingredient select, quantity, and units to ingredient div
+  ing_div.append(ing_label);
+  ing_div.append(qty_label);
+  ing_div.append(unit_label);
+
+  // add new ingredient div to ingredients container
+  ing_container.append(ing_div);
+
+  e.preventDefault();
+}
+
+
+// <div class="ing_div_1">
+//   <label for='ing_1'>Ingredient #1
+//     <select name='ing_1' id='ing_1'>
+//       <option value='1'>Green onions</option>
+//     </select>
+//   </label>
+//
+//   <label for='ing_qty_1'>Quantity:
+//     <input type='number' name='ing_qty_1' id='ing_qty_1'>
+//   </label>
+//
+//   <label for='ing_metric_1'>Units
+//     <input type='text' name='ing_metric_1' id='ing_metric_1'>
+//   </label>
+// </div>
+</script>
