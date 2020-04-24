@@ -59,6 +59,8 @@ CREATE TABLE calories (
 CREATE TABLE recipes (
   recipe_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   recipe_name VARCHAR(255) UNIQUE NOT NULL,
+  recipe_img VARCHAR(255),
+  total_calories DECIMAL(20, 2) NOT NULL DEFAULT '0.00',
   instructions TEXT NOT NULL
 )Engine=InnoDB;
 
