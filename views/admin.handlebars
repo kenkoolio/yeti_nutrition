@@ -1,3 +1,5 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <style>
   .admin_form input::not(.ingredients_list input), .admin_form textarea {
     display: block;
@@ -6,63 +8,112 @@
   .admin_form div {
     margin-bottom: 20px;
   }
+
+  #recipes_and_ingredients {
+    display: flex;
+    justify-content: space-around;
+  }
+
+    #recipes_and_ingredients section {
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.4);
+      align-self: flex-start;
+    }
+
+  .ingredients_list {
+    padding: 10px;
+    background-color: rgba(0, 255, 191, 0.8);
+    border-radius: 5px;
+  }
+
+    .ingredients_list select, .ingredients_list input {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+  #recipe_instructions_div {
+    margin-top: 30px;
+  }
+
+    #recipe_instructions_div textarea {
+      display: block;
+    }
+
 </style>
 
-<h1>Admin Portal</h1>
-<h3>Enter new recipies or new ingredients</h3>
+<section id="admin_header">
+  <h1>Admin Portal</h1>
+  <h3>Enter new recipies or new ingredients</h3>
+</section>
 
-<!-- New recipes -->
-<section>
-  <h2>Add a new recipe</h2>
-  <form class='admin_form'>
-    <div>
-      <label for='recipe_name'>Recipe name (must not be an existing recipe in the system)
-        <input type='text' id='recipe_name' name='recipe_name'>
-      </label>
-    </div>
+<section id="recipes_and_ingredients">
 
-    <!-- ingredients -->
-    <div class='ingredients_list'>
-
-      <div class="ing_div_1">
-        <label for='ing_1'>Ingredient #1
-          <select name='ing_1' id='ing_1'>
-            <option value='1'>Green onions</option>
-          </select>
-        </label>
-
-        <label for='ing_qty_1'>Quantity:
-          <input type='number' name='ing_qty_1' id='ing_qty_1'>
-        </label>
-
-        <label for='ing_metric_1'>Units:
-          <input type='text' name='ing_metric_1' id='ing_metric_1'>
+  <!-- New recipes -->
+  <section>
+    <h2>Add a new recipe</h2>
+    <form class='admin_form'>
+      <div>
+        <label for='recipe_name'>Recipe name
+          <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
         </label>
       </div>
 
-    </div>
-    <button id="add_ing_to_form_button">Add ingredients</button>
+      <div>
+        <label for='recipe_img'>Image url
+          <input type='text' id='recipe_img' name='recipe_img'>
+        </label>
+      </div>
 
-    <div>
-      <label for='recipe_instructions'>Recipe Instructions
-        <textarea id='recipe_instructions' name='recipe_instructions'></textarea>
+      <div>
+        <label for='recipe_calories'>Total calories
+          <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
+        </label>
+      </div>
+
+      <!-- ingredients -->
+      <div class='ingredients_list'>
+
+        <div class="ing_div_1">
+          <label for='ing_1'>Ingredient #1
+            <select name='ing_1' id='ing_1'>
+              <option value='1'>Green onions</option>
+            </select>
+          </label>
+
+          <label for='ing_qty_1'>Quantity:
+            <input type='number' name='ing_qty_1' id='ing_qty_1'>
+          </label>
+
+          <label for='ing_metric_1'>Units:
+            <input type='text' name='ing_metric_1' id='ing_metric_1'>
+          </label>
+        </div>
+
+      </div>
+      <button id="add_ing_to_form_button">Add ingredients</button>
+
+      <div id="recipe_instructions_div">
+        <label for='recipe_instructions'>Recipe Instructions
+          <textarea id='recipe_instructions' name='recipe_instructions' rows='5' cols='90'></textarea>
+        </label>
+      </div>
+
+      <button>Submit</button>
+    </form>
+  </section>
+
+  <!-- New ingredients -->
+  <section>
+    <h2>Add new ingredients</h2>
+    <form class='admin_form'>
+      <label for='ingredient_name'>Ingredient name
+        <input type='text' id='ingredient_name' name='ingredient_name'>
       </label>
-    </div>
 
-    <button>Submit</button>
-  </form>
-</section>
-
-<!-- New ingredients -->
-<section>
-  <h2>Add new ingredients</h2>
-  <form class='admin_form'>
-    <label for='ingredient_name'>Ingredient name (must not already exist in the system)
-      <input type='text' id='ingredient_name' name='ingredient_name'>
-    </label>
-
-    <button>Submit</button>
-  </form>
+      <button>Submit</button>
+    </form>
+  </section>
 </section>
 
 <script>
