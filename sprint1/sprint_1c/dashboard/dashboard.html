@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset=UTF-8>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Your Dashboard </title>
+    <link type="text/css" rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/dashboardStyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Tahoma" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <section class="wrapper">
+        <nav class="navBar">
+          <div class="navBarLeft">
+            <ul>
+              <li>
+                <a href=#home><img src="img/logo.png" class="logo"></a>
+              </li>
+              <li><a href=#home> Spacer </a>
+              </li>
+              <li><a href=#about> Calorie Calculator </a>
+              </li>
+              <li><a href=#benefits> Message Board </a>
+              </li>
+              <li><a href="signUp.html"> Recipes </a>
+              </li>
+            </ul> 
+          </div>
+          <div class="navBarRight">
+            <a>Log Out</a>
+          </div> 
+          <div class="navBarRight">
+            <a href="login.html"> Hi, {{username}} </a>
+          </div> 
+        </nav>
+        <div class="landing">
+          <img src="img/spanner.jpg" class="landImg">
+        </div>
+      </section>
+    </header>
+    <main>
+<!--       <div class="greeting"> 
+        <h1> Welcome, {{username}}! </h1>
+        <h2> Check out all your features here! </h2>
+      </div> -->
+      <br>
+      <div class="console">
+        <div class="button">
+          <a href="recipe.html"> 
+            <span class="dashName"> See Recipes </span>
+            <img src="icon/recipeBook.png" class="dashImg">
+          </a>  
+        </div>         
+        <div class="button">
+          <a href="mBoard.html"> 
+            <span class="dashName"> Message Board </span>
+            <img src="icon/message.png" class="dashImg">
+          </a>  
+        </div>
+        <div class="button">
+          <a href="calTrack.html"> 
+            <span class="dashName"> Track Calories </span>
+            <img src="icon/caltrack.png" class="dashImg">
+          </a>  
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="center">
+        <div id="flogo">
+          <a href=#home><img src="img/logo.png" alt="logo"></a>
+        </div>
+        <div id="links">
+          <h2> WE ARE EXCITED YOU'RE HERE!
+          </h2>
+          <ul>
+            <li><a href=#calTrack> Calorie Tracker </a>
+            </li>
+            <li><a href=#mBoard> Message Board </a>
+            </li>
+          </ul>
+          <div class="credit">
+            <h4> Image credit: Brooke Lark via Unsplash </h4>
+            <h4> Icon credit: Maxim Kulikov, Chanut is Industries, and Nhor via the Noun Project 
+            </h4>
+            <h4> Logo credit: Sariah Bunnell with the help of Icons Producer and 
+             Guilherme Furtado via the Noun Project 
+            </h4>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
