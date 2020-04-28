@@ -4,7 +4,7 @@
 // Description: Entry point to the node express app.
 
 let express = require('express');
-// let mysql = require('./dbcon.js');
+let mysql = require('./dbcon.js');
 let bodyParser = require('body-parser');
 let app = express();
 const dotenv = require('dotenv');
@@ -21,6 +21,7 @@ app.set('view engine', 'handlebars');
 // app.set('port', process.env.PORT);
 app.set('port', 8000);
 app.use(express.static('public'));
+app.set('mysql', mysql);
 
 // mount routes
 app.use('/test', require('./routes/test.js'));

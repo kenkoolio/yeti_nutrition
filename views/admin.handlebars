@@ -112,9 +112,9 @@
   <!-- New ingredients -->
   <section>
     <h2>Add new ingredients</h2>
-    <form class='admin_form'>
+    <form class='admin_form' action='/admin/add_ingredient' method='POST'>
       <label for='ingredient_name'>Ingredient name
-        <input type='text' id='ingredient_name' name='ingredient_name'>
+        <input type='text' id='ingredient_name' name='ingredient_name' required>
       </label>
 
       <button>Submit</button>
@@ -194,5 +194,5 @@ function remove_ing_from_from(e) {
   this_ing_div.remove();
 }
 
-
+// add new ingredient
 </script>
