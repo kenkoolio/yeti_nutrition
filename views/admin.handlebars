@@ -112,12 +112,12 @@
   <!-- New ingredients -->
   <section>
     <h2>Add new ingredients</h2>
-    <form class='admin_form' action='/admin/add_ingredient' method='POST'>
+    <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
       <label for='ingredient_name'>Ingredient name
         <input type='text' id='ingredient_name' name='ingredient_name' required>
       </label>
 
-      <button>Submit</button>
+      <button id='submit_new_ingredient'>Submit</button>
     </form>
   </section>
 </section>
@@ -195,4 +195,39 @@ function remove_ing_from_from(e) {
 }
 
 // add new ingredient
+$('#submit_new_ingredient').click(create_new_ingredient);
+function create_new_ingredient(e) {
+  e.preventDefault();
+
+  let form = $('#new_ingredient_form');
+  let route = form.attr('action');
+  let ingredient_name = form.find('[name="ingredient_name"]').val();
+
+  // check for empty input
+  if (ingredient_name.length == 0) {
+    alert("Ingredient name cannot be empty");
+    return;
+  }
+
+  $.ajax({
+    method: "POST",
+    url: route,
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify({ingredient_name})
+  })
+  .done((msg) => {
+    // inform user of success
+    alert(msg);
+
+    // reload page
+    window.location.reload(true);
+  })
+  .fail((msg) => {
+    // inform user of failed attempt
+    alert(msg.responseJSON);
+  })
+}
+
+
 </script>
