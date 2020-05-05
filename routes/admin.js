@@ -46,8 +46,13 @@ module.exports = (function() {
     })
   }
 
+  function addNewRecipe(req, res, next) {
+    console.log(req.body);
+    res.json('success');
+  }
 
   router.post('/add_ingredient', addNewIngredient);
+  router.post('/add_recipe', addNewRecipe);
 
   router.get('/', function(req, res){
     res.render('admin');

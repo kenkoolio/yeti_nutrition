@@ -209,6 +209,7 @@ function create_new_ingredient(e) {
     return;
   }
 
+  // send data
   $.ajax({
     method: "POST",
     url: route,
@@ -248,15 +249,24 @@ function create_new_recipe(e) {
     return;
   }
 
+  // fill out recipes data
+  let recipes_submission = {};
+  recipes_submission.recipe_name = recipe_name;
+  recipes_submission.img_url = img_url;
+  recipes_submission.calories = calories;
+  recipes_submission.instruction = instructions;
+
   // parse ingredients
   let ingredients_list_div = form.find('.ingredients_list').first();
   let ingredients_list = ingredients_list_div.children();
+  let ingredients_valid = true;  // flag to denote if ingredient form filled out properly
+
+  // variables for data submission
   let ingredients_submission = [];
-  // let item;
+  let ing_row = {};
   let ing_item;
   let ing_qty;
   let ing_metric;
-  let ingredients_valid = true;  // flag to denote if ingredient form filled out properly
 
   ingredients_list.each((i, ingredient_item) => {
     ingredient_item = $(ingredient_item);
@@ -272,13 +282,43 @@ function create_new_recipe(e) {
       ingredients_valid = false;
       return;
     }
+
+    // otherwise, ingredient forms are properly filled out, create dictionary to submit
+    ing_row = {};
+    ing_row.ingredient_id = ing_item;
+    ing_row.quantity = ing_qty;
+    ing_row.metric = ing_metric;
+    ingredients_submission.push(ing_row);
   });
 
   // if ingredients are invalid, exit function
   if (!ingredients_valid) {
     return;
   }
-  console.log("here");
+
+  // attach ingredients to recipes submission
+  recipes_submission.ingredients = ingredients_submission;
+
+  // send data
+  $.ajax({
+    method: "POST",
+    url: route,
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify(recipes_submission)
+  })
+  .done((msg) => {
+    // inform user of success
+    alert(msg);
+
+    // reload page
+    window.location.reload(true);
+  })
+  .fail((msg) => {
+    // inform user of failed attempt
+    alert(msg.responseJSON);
+  })
+
 }
 
 </script>
