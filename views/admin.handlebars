@@ -254,7 +254,7 @@ function create_new_recipe(e) {
   recipes_submission.recipe_name = recipe_name;
   recipes_submission.img_url = img_url;
   recipes_submission.calories = calories;
-  recipes_submission.instruction = instructions;
+  recipes_submission.instructions = instructions;
 
   // parse ingredients
   let ingredients_list_div = form.find('.ingredients_list').first();
@@ -316,7 +316,13 @@ function create_new_recipe(e) {
   })
   .fail((msg) => {
     // inform user of failed attempt
-    alert(msg.responseJSON);
+    if (msg.status >= 500) {
+      // 500 error
+      alert('Error 500: Oops! Something went wrong.');
+    } else {
+      // 400 error
+      alert(msg.responseJSON);
+    }
   })
 
 }
