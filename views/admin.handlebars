@@ -83,7 +83,9 @@
         <div class="ing_div_1">
           <label for='ing_1'>Ingredient #1
             <select name='ing_1' id='ing_1'>
-              <option value='1'>Green onions</option>
+              {{#each ingredients}}
+              <option value='{{this.ingredient_id}}'>{{this.ingredient_name}}</option>
+              {{/each}}
             </select>
           </label>
 
@@ -124,7 +126,15 @@
 
 <script>
 // to add dynamic ingredients to recipes form
-let ingredients = [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
+// let ingredients = [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
+let ingredients = [];
+let one_ingredient = {};
+{{#each ingredients}}
+  one_ingredient = {};
+  one_ingredient.id = "{{this.ingredient_id}}";
+  one_ingredient.name = "{{this.ingredient_name}}";
+  ingredients.push(one_ingredient);
+{{/each}}
 
 let ing_container = $('.ingredients_list').first();
 let add_ing_button = $('#add_ing_to_form_button');
@@ -278,7 +288,6 @@ function create_new_recipe(e) {
 
     // missing ingredient information
     if (!ing_item || !ing_qty || !ing_metric) {
-      alert("Missing information in ingredients");
       ingredients_valid = false;
       return;
     }
@@ -293,6 +302,7 @@ function create_new_recipe(e) {
 
   // if ingredients are invalid, exit function
   if (!ingredients_valid) {
+    alert("Missing information in ingredients");
     return;
   }
 

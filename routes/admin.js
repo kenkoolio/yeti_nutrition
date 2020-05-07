@@ -6,6 +6,21 @@ module.exports = (function() {
   var express = require('express');
   var router = express.Router();
 
+  function getAdminIndex(req, res, next) {
+    // gets all ingredients for the admin page to add new recipes
+    let mysql = req.app.get('mysql');
+    let ing_query = `SELECT * FROM ingredients`;
+    let context = {title: 'Admin'};
+
+    mysql.pool.query(ing_query, (err, results, fields) => {
+      if (err) return next(err);
+
+      // success - render page
+      context.ingredients = results;
+      res.render('admin', context);
+    })
+  }
+
   function addNewIngredient(req, res, next) {
     let ingredient_name = req.body.ingredient_name.toLowerCase();
     let mysql = req.app.get('mysql');
@@ -141,10 +156,7 @@ module.exports = (function() {
 
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
-
-  router.get('/', function(req, res){
-    res.render('admin');
-  })
+  router.get('/', getAdminIndex);
 
   return router;
 })();
