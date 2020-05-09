@@ -75,7 +75,7 @@ CREATE TABLE recipe_details (
   recipe_detail_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   recipe_id INT NOT NULL,
   ingredient_id INT NOT NULL,
-  quantity INT NOT NULL,
+  quantity DECIMAL(20, 2) NOT NULL DEFAULT '0.00',
   metric VARCHAR(255) NOT NULL,
   FOREIGN KEY (recipe_id) REFERENCES recipes (recipe_id)
     ON DELETE CASCADE
