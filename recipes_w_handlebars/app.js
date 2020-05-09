@@ -51,10 +51,6 @@ app.get('/recipes', function(req, res, next){
   });  
 });
 
-//app.get('/recipes',function(req, res){
-  //res.render('mainRecipes');
-//});
-
 app.get('/recipes/:recipe_id', function(req, res, next){
   let query = `SELECT * FROM recipes INNER JOIN recipe_details ON recipes.recipe_id = recipe_details.recipe_id 
   INNER JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id
