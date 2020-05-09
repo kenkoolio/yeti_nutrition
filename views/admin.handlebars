@@ -90,7 +90,7 @@
           </label>
 
           <label for='ing_qty_1'>Quantity:
-            <input type='number' name='ing_qty_1' id='ing_qty_1'>
+            <input type='number' name='ing_qty_1' id='ing_qty_1' step='0.01' value='0.00' placeholder='0.00'>
           </label>
 
           <label for='ing_metric_1'>Units:
@@ -167,7 +167,13 @@ function add_ing_to_form(e) {
   let qty_label = $('<label/>', {for: 'ing_qty_' + ing_count});
   qty_label.append(document.createTextNode('Quantity: '));  // label text
   // create input
-  qty_label.append($('<input/>', {type: 'number', name: 'ing_qty_' + ing_count, id: 'ing_qty_' + ing_count}));
+  qty_label.append($('<input/>',
+    {type: 'number',
+    name: 'ing_qty_' + ing_count,
+    id: 'ing_qty_' + ing_count,
+    step: '0.01',
+    value: '0.00',
+    placeholder: '0.00'}));
 
   // create units input//
   // create label
@@ -287,7 +293,7 @@ function create_new_recipe(e) {
     ing_metric = ingredient_item.find(':input[type="text"]').val();
 
     // missing ingredient information
-    if (!ing_item || !ing_qty || !ing_metric) {
+    if (!ing_item || !ing_qty || !ing_metric || !(ing_qty > 0) ) {
       ingredients_valid = false;
       return;
     }
