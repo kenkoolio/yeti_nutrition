@@ -29,6 +29,7 @@ app.use('/admin', require('./routes/admin.js'));
 app.use('/recipes', require('./routes/recipes.js'));
 app.use('/posts', require('./routes/posts.js'));
 app.use('/comments', require('./routes/comments.js'));
+app.use('/calories', require('./routes/calories.js'));
 
 // home page
 app.get('/', (req, res) => {

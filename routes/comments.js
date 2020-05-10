@@ -2,7 +2,7 @@ module.exports = function () {
 
     var express = require('express');
     var router = express.Router();
-    
+
 
     // Retrieve all comments
     function getComments(res, mysql, context, complete) {
@@ -61,7 +61,7 @@ module.exports = function () {
         }
     });
 
-    
+
 
     router.post('/create_comment', function (req, res) {
         var mysql = req.app.get('mysql');
