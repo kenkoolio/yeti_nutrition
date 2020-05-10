@@ -106,11 +106,14 @@ app.post('/data', function(req, res){
                     daily_calories = daily_calories + rows[j].calorie_in;
                     storage[numEntries - 1].daily_calories = daily_calories;  
                   }
-                  var calorie_in_percent = (daily_calories / 2000) * 100;
-                  if(calorie_in_percent > 100)
-                    calorie_in_percent = 100;
-                  console.log(calorie_in_percent);
-                  storage[numEntries - 1].calorie_in_percent = calorie_in_percent;  
+                  
+                  // TODO: kevin fix this
+//                   var calorie_in_percent = (daily_calories / 2000) * 100;
+//                   if(calorie_in_percent > 100)
+//                     calorie_in_percent = 100;
+//                   console.log(calorie_in_percent);
+//                   storage[numEntries - 1].calorie_in_percent = calorie_in_percent;  
+                  
                   context.results = storage;
                   res.render('caloriepage', context); 
                   
