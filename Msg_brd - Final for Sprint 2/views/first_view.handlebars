@@ -1,0 +1,32 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="alert alert-success">
+            <p><strong>Post submitted successfully!</strong></p>
+        </div>
+        <div class="col-md-8">
+            <h1 class="my-4">Message Board</h1>
+            <hr />
+            <div>
+                <p>
+                    Have an awesome new recipe or a twist on a classic? Do want to connect with other students?
+                </p>
+                <p>
+                    <a href="/posts/create_post_form">CLICK HERE </a>
+                    to start a new discussion, or join any existing discussion by clicking the Read More button.
+                </p>
+            </div>
+            <br />
+            {{#each posts}}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">{{this.title}}</h2>
+                        <a href="/posts/{{this.post_id}}" class="btn btn-primary">Read More &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted {{this.post_date}} by {{this.user_name}}
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
