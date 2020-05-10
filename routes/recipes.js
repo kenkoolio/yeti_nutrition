@@ -50,7 +50,8 @@ module.exports = (function() {
           img: "images/" + rows[0].recipe_img,
           recipeInstructions: rows[0].instructions,
           ingredient: rows,
-          recipeSource: "Rocco Dispirito, Katie Caldesi, Giada de Laurentiis, Emeril Lagasse, Jamie Oliver and Alan Rosen & Beth Allen"
+          recipeSource: "Rocco Dispirito, Katie Caldesi, Giada de Laurentiis, Emeril Lagasse, Jamie Oliver and Alan Rosen & Beth Allen",
+          calories: rows[0].total_calories
         });
     });
   });
