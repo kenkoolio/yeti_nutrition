@@ -26,6 +26,10 @@ app.set('mysql', mysql);
 // mount routes
 app.use('/test', require('./routes/test.js'));
 app.use('/admin', require('./routes/admin.js'));
+app.use('/recipes', require('./routes/recipes.js'));
+app.use('/posts', require('./routes/posts.js'));
+app.use('/comments', require('./routes/comments.js'));
+app.use('/calories', require('./routes/calories.js'));
 
 // home page
 app.get('/', (req, res) => {

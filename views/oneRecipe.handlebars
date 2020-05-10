@@ -1,0 +1,25 @@
+<!-- TODO - do not delete: custom recipe banners -->
+        <!-- <div class="landing">
+          <img src="{{img}}" class="landImg">
+        </div> -->
+<main>
+  <div class="recipe-name">
+    <h1> {{recipeName}} </h1>
+  </div>
+  <div class="ingredientList">
+    <ul>
+      {{#each ingredient}}
+      <li class="ing">
+        {{this.quantity}} {{this.metric}} {{this.ingredient_name}}
+      </li>
+      {{/each}}
+    <ul>
+  </div>
+  <div class="recipe-instructions">
+    <p> {{recipeInstructions}}
+    </p>
+
+    <br>
+    <p> {{calories}} </p>
+  </div>
+</main>

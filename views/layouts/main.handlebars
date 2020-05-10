@@ -2,20 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{title}}</title>
 
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
+
+  <!-- Recipes -->
+  <link rel="stylesheet" type="text/css" href="/css/recipeStyle.css">
+  <!-- <link>{{cssStyle}}</link> -->
+  <link rel="stylesheet" type="text/css" href="/css/allRecipesStyle.css"> <!-- for recipes page -->
+
+  <!-- Message board stylesheet-->
+  <link rel="stylesheet" type="text/css" href="/css/blog-post.css" >
+  <link rel="stylesheet" type="text/css" href="/css/blog-home.css" >
+
+  <!-- Calorie Tracker -->
+  <link rel="stylesheet" type="text/css" href="/css/calorie.css">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Tahoma" rel="stylesheet">
+
+  <!-- Latest compiled and minified CSS -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.0.js"
   integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
   crossorigin="anonymous"></script>
 
+  <!-- Latest compiled JavaScript -->
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
+  <header>
+    <section class="wrapper">
+      <nav class="navBar">
+        <div class="navBarLeft">
+          <ul>
+            <li>
+              <a href="/"><img src="/images/logo.png" class="logo"></a>
+            </li>
+            <li><a href="/"> Spacer </a>
+            </li>
+            <li><a href="/calories/1"> Calorie Calculator </a>
+            </li>
+            <li><a href="/posts"> Message Board </a>
+            </li>
+            <li><a href="/recipes"> Recipes </a>
+            </li>
+          </ul>
+        </div>
+        <div class="navBarRight">
+          <a href="/"> Hi, {{username}} </a>
+        </div>
+      </nav>
+      <div class="landing">
+        <!-- TODO : custom banner for recipes -->
+        <img src="/images/spanner.jpg" class="landImg">
+      </div>
+    </section>
+  </header>
 
   {{{ body }}}
+
+  <footer>
+    <div class="center">
+      <div id="flogo">
+        <a href="/"><img src="/images/logo.png" alt="logo"></a>
+      </div>
+      <div id="links">
+        <h2> CHECK OUT THESE GREAT FEATURES!
+        </h2>
+        <ul>
+          <li><a href=#calTrack> Calorie Tracker </a>
+          </li>
+          <li><a href=#mBoard> Message Board </a>
+          </li>
+        </ul>
+        <div class="credit">
+          <h4> Image credit: Brooke Lark via Unsplash </h4>
+          <h4> Logo credit: Sariah Bunnell with the help of Icons Producer and
+           Guilherme Furtado via the Noun Project
+          </h4>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
