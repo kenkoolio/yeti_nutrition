@@ -7,16 +7,19 @@ module.exports = (function() {
   var router = express.Router();
 
   router.post('/data', function(req, res, next){
+    var user_id = 1;
     var date = req.body.date;
     var calories = req.body.calories;
     var mysql = req.app.get('mysql');
 
-    mysql.pool.query("INSERT INTO `calories` (user_id, calorie_date, calorie_in) VALUES (?, ?, ?)", [1, date.toString(), calories.toString()], function(err, result){
+    mysql.pool.query("INSERT INTO `calories` (user_id, calorie_date, calorie_in) VALUES (?, ?, ?)", [user_id, date.toString(), calories.toString()], function(err, result){
       if(err) return next(err);
 
       console.log("1 record inserted");
       // return;
-      return res.send('Success');
+      // return res.send('Success');
+      res.redirect('/calories/' + user_id)
+      // res.end();
     });
 
   });
