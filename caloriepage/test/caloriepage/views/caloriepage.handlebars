@@ -1,0 +1,219 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Calorie page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:3000/calorie.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <style>
+
+    </style>
+  <script>
+    $(document).ready(function(){
+        // Activate carousel
+        $("#recipeCarousel").carousel();
+        
+        // Enable carousel control
+        $(".carousel-control-prev").click(function(){
+            $("#recipeCarousel").carousel('prev');
+        });
+        $(".carousel-control-next").click(function(){
+            $("#recipeCarousel").carousel('next');
+        });
+        
+        // Enable carousel indicators
+        $(".slide-one").click(function(){
+            $("#recipeCarousel").carousel(0);
+        });
+        $(".slide-two").click(function(){
+            $("#recipeCarousel").carousel(1);
+        });
+        $(".slide-three").click(function(){
+            $("#recipeCarousel").carousel(2);
+        });
+    });
+    </script>
+</head>
+
+<body>
+
+
+  <div class="calorie-body">
+    <div class="calorie-username">
+      <p>
+        
+        <h1>{{#each results}}{{#if @last}}{{this.user_id}}'s Calorie Tracker{{/if}}{{/each}}</h1>
+        
+        
+      </p>
+    </div>
+    <h2>Today's Progress</h2>
+    <div class="calorie-progress">
+      Calorie's remaining: 1300
+      <div class="calorie-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 50%;" id="calorie-bar">
+        Calorie's In {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
+      </div>
+    </div>
+    <div> 
+      <div class="calorie-status">
+        <p>Status: {{this.calorie_status}}</p> 
+      </div>
+
+      <div class="calorie-status">
+        <p></p>Calories left: {{this.calorie_left}}</p>  
+      </div>
+    </div>
+  
+    <div class="calorie-rec">
+      <p>
+        <div style="width: 20%; float: left; margin: 0 0 0 0">
+          <h3>Recipe Recommendations: </h3>
+        </div>
+        <div class="bs-example" style=" margin: 0 -100px 0 0; width: 80%; float: right; ">
+          <div id="recipeCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
+              <!-- Carousel indicators -->
+              <ol class="carousel-indicators">
+                  <li class="slide-one active"></li>
+                  <li class="slide-two"></li>
+                  <li class="slide-three"></li>
+              </ol>
+              <!-- Wrapper for carousel items -->
+              <div class="carousel-inner">
+                  <div class="carousel-item active">
+                      <div>
+                      </div>
+                      <div class="carousel-caption d-none d-md-block">
+                          <h5>First slide label</h5>
+                      </div>
+                      <div><!-- {{recipe2_img}} --><img src="http://localhost:3000/recipe1.jpeg" width="700px" height="500px"></div>
+
+                  </div>
+                  <div class="carousel-item">
+                      <div class="carousel-caption d-none d-md-block">
+                          <h5>Second slide label</h5>
+                      </div>
+                      <div><!-- {{recipe_img}} --><img src="http://localhost:3000/recipe2.jpeg" width="700px" height="500px"></div>
+
+                  </div>
+                  <div class="carousel-item">
+                    <div><!-- {{recipe3_img}} --><img src="http://localhost:3000/recipe3.jpeg" width="700px" height="500px"></div>
+                      <div class="carousel-caption d-none d-md-block">
+                          <h5>First slide label</h5>
+                      </div>
+                  </div>
+              </div>
+              <!-- Carousel controls -->
+              <a class="carousel-control-prev">
+                  <span class="carousel-control-prev-icon"></span>
+              </a>
+              <a class="carousel-control-next">
+                  <span class="carousel-control-next-icon"></span>
+              </a>
+          </div>
+        
+      </p>
+    </div>
+    <p>
+    <div class="calories-info" >
+      <div  style="width: 50%; float: left; margin: 0 0 0 0">
+        <table class="calories-table" id="calorie-table" border="1" width="90%" padding="10px" text>
+          <tr>
+            <th style="text-align:center" colspan="6">Your calories</th>
+          </tr>
+          <tr>
+            <td>Date</td>
+            <td>Goal</td>
+            <td>Consumed</td>
+            <td>Deficit</td>
+            <td>Surplus</td>
+          </tr>
+          
+            {{#each results}}
+            <tr>
+            <td>{{this.calorie_date}}</td>
+            <td>2000</td>
+            <td>{{this.calorie_in}}</td>
+            <td>{{this.calorie_left}}</td>
+            <td>{{this.calorie_surplus}}</td>
+            </tr>
+            {{/each}}
+          
+        </table>
+      </div>
+      <div class="calories-add" style="width: 50%; float: right; margin: 0 0 0 0">
+        <table border="1" width="90%">
+          <tr>
+            <th style="text-align:center">Add calories</th>
+          </tr>
+          <tr>
+            <td style="text-align:left"><form action="/data" method="post">
+              <div class="block">
+                <label>Date:</label>
+                <input size="16" type="date" name="date" id="date">
+              </div>
+              <div class="block">
+                <label>Calories:</label>
+                <input size="16" type="text" name="calories" id="calories"><br>
+              </div>
+              <input type="submit" value="Submit" onclick="myFunction()" >
+              </form> 
+          
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    </p>
+  </div>
+  <script>
+
+var total_calories = 0;
+var counter = 0;
+
+
+console.log(today);
+console.log("{{#each results}}{{#if @last}}{{this.calorie_date}}{{/if}}{{/each}}");
+
+
+function myFunction() {
+  var calorietable = document.getElementById("calorie-table");
+  var caloriebar = document.getElementById("calorie-bar");
+  console.log(calorietable);
+  var z = document.createElement("tr");
+  
+  var date = document.getElementById("date").value;
+  var calories = document.getElementById("calories").value;
+  if(counter == 0){
+    total_calories = Number({{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}) + Number(calories, 10);
+  } else {
+    total_calories = total_calories + Number(calories, 10);
+  }
+  
+  if(calories <= 2000){
+    z.innerHTML = "<td>" + date + "</td><td>2000</td><td>" + calories + "</td><td>" + (2000 - calories) + "</td><td>0</td>";
+  }else{
+    z.innerHTML = "<td>" + date + "</td><td>2000</td><td>" + calories + "</td><td>0</td><td>" + (calories - 2000) + "</td>";
+  }
+  {{#each results}}
+    if(date == {{this.calorie_date}}){
+      calorie_deficit = {{this.calorie_left}};
+    }
+  {{/each}} 
+  
+  calorietable.appendChild(z);
+
+  if(date == "{{#each results}}{{#if @last}}{{this.calorie_date}}{{/if}}{{/each}}")
+    caloriebar.innerHTML = "Calories in: " + total_calories;
+  counter++;
+  console.log(counter);
+}
+</script>
+</body>
+</html>
