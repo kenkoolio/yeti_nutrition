@@ -21,9 +21,13 @@ body {
   }
   
   .calorie-body {
+    position: relative;
+    left: 25%;
+    margin: auto;
     text-align: center;
     width: 50%;
     display: inline-block;
+    padding: 20px;
   }
 
   .calorie-progress {

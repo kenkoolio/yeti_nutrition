@@ -1,0 +1,1 @@
+INSERT INTO users (first_name, last_name, email, user_name, password) VALUES ("Customer", "One", "custy@oregonstate.edu", "cust1", "cust1");

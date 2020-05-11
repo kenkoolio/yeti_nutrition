@@ -159,7 +159,7 @@
   var counter = 0;
 
   console.log("{{#each results}}{{#if @last}}{{this.calorie_date}}{{/if}}{{/each}}");
-
+  console.log(date);
   $('[name="submitCalories"]').click(myFunction);
 
   function myFunction() {
@@ -175,19 +175,6 @@
     } else {
       total_calories = total_calories + Number(calories, 10);
     }
-
-    if(total_calories > 2000){
-      z.innerHTML = "<td>" + date + "</td><td>2000</td><td>" + calories + "</td><td>" + 0 + "</td><td>" + (total_calories - 2000) + "</td>";
-    }else{
-      z.innerHTML = "<td>" + date + "</td><td>2000</td><td>" + calories + "</td><td>" + ((total_calories - 2000) * -1) + "</td>0</td>";
-    }
-    {{#each results}}
-      if(date == "{{this.calorie_date}}"){
-        calorie_deficit = {{this.calorie_left}};
-      }
-    {{/each}}
-
-    calorietable.appendChild(z);
 
     if(date == "{{#each results}}{{#if @last}}{{this.calorie_date}}{{/if}}{{/each}}")
       caloriebar.innerHTML = "Calories in: " + total_calories;
