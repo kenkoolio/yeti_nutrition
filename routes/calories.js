@@ -69,11 +69,6 @@ module.exports = (function() {
               date_deficit = smallest_date_deficit;
             }
               calorie_left_tracker = date_deficit - rows[i].calorie_in;
-              if (calorie_left_tracker < 0){
-                calorie_surplus = 0;
-              } else if (calorie_left_tracker == 0){
-                calorie_surplus = 0;
-              }
               
           }
           day_storage = [];
