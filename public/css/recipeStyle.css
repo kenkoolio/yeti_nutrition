@@ -26,7 +26,6 @@ body {font-family: 'Tahoma', regular;
   color: #000000;
   text-decoration: none;
   margin: 5px;
-  display: inline-block;
 }
 .navBar a:hover { 
   color: rgb(64, 167, 205); 
