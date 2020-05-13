@@ -7,18 +7,45 @@ module.exports = (function() {
   var router = express.Router();
 
   function getAdminIndex(req, res, next) {
-    // gets all ingredients for the admin page to add new recipes
-    let mysql = req.app.get('mysql');
-    let ing_query = `SELECT * FROM ingredients`;
     let context = {title: 'Admin'};
+    let mysql = req.app.get('mysql');
+    // gets all ingredients for the admin page to add new recipes,
+    // and allow navigation to edit/delete of ingredients
+    let ing_query = `SELECT * FROM ingredients`;
+    // gets all recipes for the admin page to allow naviagtion to edit/delete of recipe
+    let recipe_query = `SELECT recipe_id, recipe_name, recipe_img, total_calories FROM recipes`;
 
-    mysql.pool.query(ing_query, (err, results, fields) => {
-      if (err) return next(err);
+    new Promise((resolve, reject) => {
+      // get ingredients
+      mysql.pool.query(ing_query, (err, results, fields) => {
+        if (err) return reject(err);
 
-      // success - render page
-      context.ingredients = results;
+        // success
+        context.ingredients = results;
+        resolve();
+      })
+    })
+    .then(() => {
+      // get recipes
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(recipe_query, (err, results, fields) => {
+          if (err) return reject(err);
+
+          // success
+          context.recipes = results;
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      // success, load page
       res.render('admin', context);
     })
+    .catch((reason) => {
+      // catch error
+      return next(reason);
+    })
+
   }
 
   function addNewIngredient(req, res, next) {

@@ -12,15 +12,16 @@
   }
 
   #recipes_and_ingredients {
-    display: flex;
-    justify-content: space-around;
+    /* display: flex; */
+    /* justify-content: space-around; */
+    max-width: 1400px;
   }
 
     #recipes_and_ingredients section {
       padding: 20px;
       border-radius: 5px;
       box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.4);
-      align-self: flex-start;
+      /* align-self: flex-start; */
     }
 
       #recipes_and_ingredients section h2 {
@@ -44,6 +45,7 @@
 
     #recipe_instructions_div textarea {
       display: block;
+      width: 100%;
     }
 
 </style>
@@ -53,76 +55,90 @@
   <h3>Enter new recipies or new ingredients</h3>
 </section>
 
-<section id="recipes_and_ingredients">
+<section id="recipes_and_ingredients" class="container">
 
-  <!-- New recipes -->
-  <section>
-    <h2>Add a new recipe</h2>
-    <form id='new_recipe_form' class='admin_form' action='/admin/add_recipe' method='POST'>
-      <div>
-        <label for='recipe_name'>Recipe name
-          <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
+  <!-- All Ingredients and New Ingredients -->
+  <section class="row">
+
+    <!-- New ingredients -->
+    <section class="col-sm-12 col-md-4">
+      <h2>Add new ingredients</h2>
+      <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
+        <label for='ingredient_name'>Ingredient name
+          <input type='text' id='ingredient_name' name='ingredient_name' required>
         </label>
-      </div>
 
-      <div>
-        <label for='recipe_img'>Image url (optional)
-          <input type='text' id='recipe_img' name='recipe_img'>
-        </label>
-      </div>
+        <button id='submit_new_ingredient'>Submit</button>
+      </form>
+    </section>
 
-      <div>
-        <label for='recipe_calories'>Total calories
-          <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
-        </label>
-      </div>
+    <!-- All ingredients -->
+    <section class="col-sm-12 col-md-6 offset-md-2"></section>
+  </section>
 
-      <!-- ingredients -->
-      <div class='ingredients_list'>
-
-        <div class="ing_div_1">
-          <label for='ing_1'>Ingredient #1
-            <select name='ing_1' id='ing_1'>
-              {{#each ingredients}}
-              <option value='{{this.ingredient_id}}'>{{this.ingredient_name}}</option>
-              {{/each}}
-            </select>
-          </label>
-
-          <label for='ing_qty_1'>Quantity:
-            <input type='number' name='ing_qty_1' id='ing_qty_1' step='0.01' value='0.00' placeholder='0.00'>
-          </label>
-
-          <label for='ing_metric_1'>Units:
-            <input type='text' name='ing_metric_1' id='ing_metric_1'>
+  <!-- All Recipes and New Recipes -->
+  <section class="row">
+    <!-- New recipes -->
+    <section class="col-sm-12 col-md-6">
+      <h2>Add a new recipe</h2>
+      <form id='new_recipe_form' class='admin_form' action='/admin/add_recipe' method='POST'>
+        <div>
+          <label for='recipe_name'>Recipe name
+            <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
           </label>
         </div>
 
-      </div>
-      <button id="add_ing_to_form_button">Add ingredients</button>
+        <div>
+          <label for='recipe_img'>Image url (optional)
+            <input type='text' id='recipe_img' name='recipe_img'>
+          </label>
+        </div>
 
-      <div id="recipe_instructions_div">
-        <label for='recipe_instructions'>Recipe Instructions
-          <textarea id='recipe_instructions' name='recipe_instructions' rows='5' cols='90'></textarea>
-        </label>
-      </div>
+        <div>
+          <label for='recipe_calories'>Total calories
+            <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
+          </label>
+        </div>
 
-      <button id='submit_new_recipe'>Submit</button>
-    </form>
+        <!-- ingredients -->
+        <div class='ingredients_list'>
+
+          <div class="ing_div_1">
+            <label for='ing_1'>Ingredient #1
+              <select name='ing_1' id='ing_1'>
+                {{#each ingredients}}
+                <option value='{{this.ingredient_id}}'>{{this.ingredient_name}}</option>
+                {{/each}}
+              </select>
+            </label>
+
+            <label for='ing_qty_1'>Quantity:
+              <input type='number' name='ing_qty_1' id='ing_qty_1' step='0.01' value='0.00' placeholder='0.00'>
+            </label>
+
+            <label for='ing_metric_1'>Units:
+              <input type='text' name='ing_metric_1' id='ing_metric_1'>
+            </label>
+          </div>
+
+        </div>
+        <button id="add_ing_to_form_button">Add ingredients</button>
+
+        <div id="recipe_instructions_div">
+          <label for='recipe_instructions'>Recipe Instructions</label>
+          <textarea id='recipe_instructions' name='recipe_instructions' rows='5'></textarea>
+        </div>
+
+        <button id='submit_new_recipe'>Submit</button>
+      </form>
+    </section>
+
+    <!-- All recipes -->
+    <section class="col-sm-12 col-md-6"></section>
   </section>
 
-  <!-- New ingredients -->
-  <section>
-    <h2>Add new ingredients</h2>
-    <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
-      <label for='ingredient_name'>Ingredient name
-        <input type='text' id='ingredient_name' name='ingredient_name' required>
-      </label>
 
-      <button id='submit_new_ingredient'>Submit</button>
-    </form>
-  </section>
-</section>
+</section> <!-- recipes_and_ingredients -->
 
 <script>
 // to add dynamic ingredients to recipes form
