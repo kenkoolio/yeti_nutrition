@@ -2,6 +2,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <style>
 
+  #admin_container {
+    background-color: rgba(206, 204, 205, 0.4);
+  }
+
   #admin_header {
     text-align: center;
     margin-bottom: 50px;
@@ -29,6 +33,7 @@
       }
 
   .ingredients_list {
+    font-size: 9px;
     padding: 10px;
     background-color: rgba(0, 255, 191, 0.8);
     border-radius: 5px;
@@ -48,97 +53,178 @@
       width: 100%;
     }
 
+  .table-scroll {
+    overflow: scroll;
+  }
+
+  #ingredients_section {
+    max-height: 300px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+    #ingredients_section section {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+  #recipes_section {
+    max-height: 750px;
+    overflow: hidden;
+  }
+
+    #recipes_section section {
+      max-height: 700px;
+      overflow-y: auto;
+    }
+
+  .recipe_table_image {
+    width: 100px;
+    height: 100px;
+  }
+
 </style>
 
-<section id="admin_header">
-  <h1>Admin Portal</h1>
-  <h3>Enter new recipies or new ingredients</h3>
-</section>
+<section id="admin_container">
 
-<section id="recipes_and_ingredients" class="container">
-
-  <!-- All Ingredients and New Ingredients -->
-  <section class="row">
-
-    <!-- New ingredients -->
-    <section class="col-sm-12 col-md-4">
-      <h2>Add new ingredients</h2>
-      <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
-        <label for='ingredient_name'>Ingredient name
-          <input type='text' id='ingredient_name' name='ingredient_name' required>
-        </label>
-
-        <button id='submit_new_ingredient'>Submit</button>
-      </form>
-    </section>
-
-    <!-- All ingredients -->
-    <section class="col-sm-12 col-md-6 offset-md-2"></section>
+  <section id="admin_header">
+    <h1>Admin Portal</h1>
+    <h3>Enter new recipies or new ingredients</h3>
   </section>
 
-  <!-- All Recipes and New Recipes -->
-  <section class="row">
-    <!-- New recipes -->
-    <section class="col-sm-12 col-md-6">
-      <h2>Add a new recipe</h2>
-      <form id='new_recipe_form' class='admin_form' action='/admin/add_recipe' method='POST'>
-        <div>
-          <label for='recipe_name'>Recipe name
-            <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
+  <section id="recipes_and_ingredients" class="container">
+
+    <!-- All Ingredients and New Ingredients -->
+    <section class="row" id="ingredients_section" >
+
+      <!-- New ingredients -->
+      <section class="col-sm-12 col-md-4">
+        <h2>Add new ingredients</h2>
+        <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
+          <label for='ingredient_name'>Ingredient name
+            <input type='text' id='ingredient_name' name='ingredient_name' required>
           </label>
-        </div>
 
-        <div>
-          <label for='recipe_img'>Image url (optional)
-            <input type='text' id='recipe_img' name='recipe_img'>
-          </label>
-        </div>
+          <button id='submit_new_ingredient'>Submit</button>
+        </form>
+      </section>
 
-        <div>
-          <label for='recipe_calories'>Total calories
-            <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
-          </label>
-        </div>
+      <!-- All ingredients -->
+      <section class="col-sm-12 col-md-6 offset-md-2">
+        <table class="table table-hover table-striped table-scroll">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-        <!-- ingredients -->
-        <div class='ingredients_list'>
+          <tbody>
+            {{#each ingredients}}
+            <tr>
+              <td>{{this.ingredient_name}}</td>
+              <td>
+                <button><a href="/ingredients/actions/{{this.ingredient_id}}">More</a></button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </section>
+    </section>
 
-          <div class="ing_div_1">
-            <label for='ing_1'>Ingredient #1
-              <select name='ing_1' id='ing_1'>
-                {{#each ingredients}}
-                <option value='{{this.ingredient_id}}'>{{this.ingredient_name}}</option>
-                {{/each}}
-              </select>
-            </label>
+    <!-- All Recipes and New Recipes -->
+    <section class="row" id="recipes_section" >
 
-            <label for='ing_qty_1'>Quantity:
-              <input type='number' name='ing_qty_1' id='ing_qty_1' step='0.01' value='0.00' placeholder='0.00'>
-            </label>
-
-            <label for='ing_metric_1'>Units:
-              <input type='text' name='ing_metric_1' id='ing_metric_1'>
+      <!-- New recipes -->
+      <section class="col-sm-12 col-md-5">
+        <h2>Add a new recipe</h2>
+        <form id='new_recipe_form' class='admin_form' action='/admin/add_recipe' method='POST'>
+          <div>
+            <label for='recipe_name'>Recipe name
+              <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
             </label>
           </div>
 
-        </div>
-        <button id="add_ing_to_form_button">Add ingredients</button>
+          <div>
+            <label for='recipe_img'>Image url (optional)
+              <input type='text' id='recipe_img' name='recipe_img'>
+            </label>
+          </div>
 
-        <div id="recipe_instructions_div">
-          <label for='recipe_instructions'>Recipe Instructions</label>
-          <textarea id='recipe_instructions' name='recipe_instructions' rows='5'></textarea>
-        </div>
+          <div>
+            <label for='recipe_calories'>Total calories
+              <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
+            </label>
+          </div>
 
-        <button id='submit_new_recipe'>Submit</button>
-      </form>
+          <!-- ingredients -->
+          <div class='ingredients_list'>
+
+            <div class="ing_div_1">
+              <label for='ing_1'>Ingredient #1
+                <select name='ing_1' id='ing_1'>
+                  {{#each ingredients}}
+                  <option value='{{this.ingredient_id}}'>{{this.ingredient_name}}</option>
+                  {{/each}}
+                </select>
+              </label>
+
+              <label for='ing_qty_1'>Quantity:
+                <input type='number' name='ing_qty_1' id='ing_qty_1' step='0.01' value='0.00' placeholder='0.00'>
+              </label>
+
+              <label for='ing_metric_1'>Units:
+                <input type='text' name='ing_metric_1' id='ing_metric_1'>
+              </label>
+            </div>
+
+          </div>
+          <button id="add_ing_to_form_button">Add ingredients</button>
+
+          <div id="recipe_instructions_div">
+            <label for='recipe_instructions'>Recipe Instructions</label>
+            <textarea id='recipe_instructions' name='recipe_instructions' rows='5'></textarea>
+          </div>
+
+          <button id='submit_new_recipe'>Submit</button>
+        </form>
+      </section>
+
+      <!-- All recipes -->
+      <section class="col-sm-12 col-md-6 offset-md-1">
+        <table class="table table-hover table-striped table-scroll">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Calories</th>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {{#each recipes}}
+            <tr>
+              <td><img src="{{this.recipe_img}}" alt="{{this.recipe_name}}" class="recipe_table_image"></td>
+              <td>{{this.recipe_name}}</td>
+              <td>{{this.total_calories}}</td>
+              <td>
+                <button>
+                  <a href="/recipes/actions/{{this.recipe_id}}">More</a>
+                </button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </section>
     </section>
 
-    <!-- All recipes -->
-    <section class="col-sm-12 col-md-6"></section>
-  </section>
 
+  </section> <!-- recipes_and_ingredients -->
 
-</section> <!-- recipes_and_ingredients -->
+</section> <!-- admin_container -->
 
 <script>
 // to add dynamic ingredients to recipes form
