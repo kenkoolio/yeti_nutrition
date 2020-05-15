@@ -7,7 +7,7 @@ module.exports = (function() {
   var router = express.Router();
 
   function getAdminIndex(req, res, next) {
-    let context = {title: 'Admin'};
+    let context = {title: 'Admin Home'};
     let mysql = req.app.get('mysql');
     // gets all ingredients for the admin page to add new recipes,
     // and allow navigation to edit/delete of ingredients
@@ -181,9 +181,45 @@ module.exports = (function() {
     })
   }
 
+  function viewOneIngredient(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let context = {}
+    context.title = "Admin Edit Ingredient";
+
+    let query = `SELECT * FROM ingredients WHERE ingredient_id = ?`;
+
+    mysql.pool.query(query, req.params.id, (err, results, fields) => {
+      if (err) return next(err);
+
+      context.ingredient = results[0];
+      res.render('admin_ingredient', context);
+    })
+  };
+
+  function viewOneRecipe(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let context = {};
+    context.title = "Admin Edit Recipe";
+
+    let recipe_query = `SELECT * FROM recipes WHERE recipe_id = ?`;
+    let ingredients_query = `SELECT * FROM recipe_details JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id WHERE recipe_details.recipe_id = ?`;
+
+    mysql.pool.query(recipe_query, req.params.id, (err, results, fields) => {
+      if (err) return next(err);
+
+      context.recipe = results[0];
+      res.render('admin_recipe', context);
+    })
+
+  };
+
+  router.get('/', getAdminIndex);
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
-  router.get('/', getAdminIndex);
+  router.get('/ingredients/actions/:id', viewOneIngredient);
+  router.get('/recipes/actions/:id', viewOneRecipe);
+
+
 
   return router;
 })();
