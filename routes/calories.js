@@ -76,11 +76,7 @@ module.exports = (function() {
         }
 
         var calorie_status;
-        if (calorie_left_tracker > 0) {
-          calorie_status = "deficit";
-        } else if (calorie_left_tracker <= 0) {
-          calorie_status_tracker = "surplus";
-        }
+
 
         console.log("calorie tracker" + calorie_left_tracker);
         
@@ -92,7 +88,12 @@ module.exports = (function() {
         }
         console.log("calorie_left " + calorie_left);
         console.log("calorie tracker " + calorie_left_tracker);
-
+        
+        if (calorie_left > 0) {
+          calorie_status = "deficit";
+        } else if (calorie_left <= 0) {
+          calorie_status = "surplus";
+        }
 
 
         storage.push({"calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
