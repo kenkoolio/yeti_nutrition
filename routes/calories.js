@@ -55,9 +55,10 @@ module.exports = (function() {
 
         if((i != 0)){
           for(var k = i - 1; k>=0; k--){
-            var date_deficit = calorie_left_tracker;
+            
             if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
-                 day_storage.push(storage[k].calorie_left_tracker);
+              var date_deficit = storage[k].calorie_left_tracker;   
+              day_storage.push(storage[k].calorie_left_tracker);
                  
             }
             console.log(day_storage);
@@ -75,10 +76,10 @@ module.exports = (function() {
         }
 
         var calorie_status;
-        if (calorie_left > 0) {
+        if (calorie_left_tracker > 0) {
           calorie_status = "deficit";
-        } else if (calorie_left <= 0) {
-          calorie_status = "surplus";
+        } else if (calorie_left_tracker <= 0) {
+          calorie_status_tracker = "surplus";
         }
 
         console.log("calorie tracker" + calorie_left_tracker);
@@ -120,9 +121,7 @@ module.exports = (function() {
             calorie_in_percent = 100;
           console.log(calorie_in_percent);
           storage[numEntries - 1].calorie_in_percent = calorie_in_percent;
-
-
-        }
+        } 
         context.results = storage;
         res.render('caloriepage', context);
         });
