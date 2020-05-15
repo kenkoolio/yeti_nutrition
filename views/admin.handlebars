@@ -226,24 +226,8 @@ function create_new_ingredient(e) {
   }
 
   // send data
-  $.ajax({
-    method: "POST",
-    url: route,
-    contentType: "application/json",
-    dataType: "json",
-    data: JSON.stringify({ingredient_name})
-  })
-  .done((msg) => {
-    // inform user of success
-    alert(msg);
+  sendPostData(route, {ingredient_name});
 
-    // reload page
-    window.location.reload(true);
-  })
-  .fail((msg) => {
-    // inform user of failed attempt
-    alert(msg.responseJSON);
-  })
 }
 
 // add new recipe
@@ -316,12 +300,17 @@ function create_new_recipe(e) {
   recipes_submission.ingredients = ingredients_submission;
 
   // send data
+  sendPostData(route, recipes_submission);
+
+}
+
+function sendPostData(route, data) {
   $.ajax({
     method: "POST",
     url: route,
     contentType: "application/json",
     dataType: "json",
-    data: JSON.stringify(recipes_submission)
+    data: JSON.stringify(data)
   })
   .done((msg) => {
     // inform user of success
@@ -340,7 +329,6 @@ function create_new_recipe(e) {
       alert(msg.responseJSON);
     }
   })
-
 }
 
 </script>
