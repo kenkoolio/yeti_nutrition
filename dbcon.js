@@ -22,7 +22,7 @@ module.exports.pool = pool;
 
 // Create a file called “.env” in the project root directory
 // Insert these fields with the credentials of your local mysql username and password,
-//   host should be blank, and db name should be “com_unity”:
+//   host should be blank, and db name should be "yeti_eats":
 
 // # Database credentials
 // USERNAME="root"
