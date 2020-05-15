@@ -47,87 +47,92 @@ module.exports = (function() {
       var storage = [];
       var daily_calories = 0;
       var numEntries = rows.length;
-      var day_storage = [];
 
-      for (var i = 0; i < numEntries; i++) {
-        var calorie_left_tracker = 2000 - rows[i].calorie_in;
-        var calorie_surplus = 0;
+      buildUserCalorieTracker(rows, storage, numEntries);
 
-        if((i != 0)){
-          for(var k = i - 1; k>=0; k--){
-            var date_deficit = calorie_left_tracker;
-            if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
-                 day_storage.push(storage[k].calorie_left_tracker);
-                 
-            }
-            console.log(day_storage);
-          }
+      mysql.pool.query(query2, req.params.user_id, (err, rows, results)=> {
+        if (err) return next(err);
 
-          for(var l = 0; l < day_storage.length; l++){
-            if(day_storage[l] <= date_deficit){
-              smallest_date_deficit = day_storage[l];
-              date_deficit = smallest_date_deficit;
-            }
-              calorie_left_tracker = date_deficit - rows[i].calorie_in;
-              
-          }
-          day_storage = [];
+        for(var j = 0; j < rows.length; j++)
+        {
+          daily_calories = daily_calories + rows[j].calorie_in;
+          storage[numEntries - 1].daily_calories = daily_calories;
         }
 
-        var calorie_status;
-        if (calorie_left > 0) {
-          calorie_status = "deficit";
-        } else if (calorie_left <= 0) {
-          calorie_status = "surplus";
-        }
+       // TODO: kevin fix this
 
-        console.log("calorie tracker" + calorie_left_tracker);
-        
-        var calorie_left = 0;
-        calorie_left = calorie_left_tracker;
-        if(calorie_left_tracker < 0){
-          calorie_left = 0;
-          calorie_surplus = calorie_left_tracker * -1;
-        }
-        console.log("calorie_left " + calorie_left);
-        console.log("calorie tracker " + calorie_left_tracker);
+       if(rows.length > 0){
+        var calorie_in_percent = (daily_calories / 2000) * 100;
+        if(calorie_in_percent > 100)
+          calorie_in_percent = 100;
+        console.log(calorie_in_percent);
+        storage[numEntries - 1].calorie_in_percent = calorie_in_percent;
 
 
-
-        storage.push({"calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
-                      "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
-                      "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
-        console.log(storage.calorie_left);              
-
-        }
-
-        console.log(storage[numEntries - 1]);
-
-        mysql.pool.query(query2, req.params.user_id, (err, rows, results)=> {
-          if (err) return next(err);
-
-          for(var j = 0; j < rows.length; j++)
-          {
-            daily_calories = daily_calories + rows[j].calorie_in;
-            storage[numEntries - 1].daily_calories = daily_calories;
-          }
-
-         // TODO: kevin fix this
-
-         if(rows.length > 0){
-          var calorie_in_percent = (daily_calories / 2000) * 100;
-          if(calorie_in_percent > 100)
-            calorie_in_percent = 100;
-          console.log(calorie_in_percent);
-          storage[numEntries - 1].calorie_in_percent = calorie_in_percent;
-
-
-        }
-        context.results = storage;
-        res.render('caloriepage', context);
-        });
+      }
+      context.results = storage;
+      res.render('caloriepage', context);
+      });
     });
   });
+
+  function buildUserCalorieTracker(rows, storage, numEntries) {
+    var day_storage = [];
+
+    for (var i = 0; i < numEntries; i++) {
+      var calorie_left_tracker = 2000 - rows[i].calorie_in;
+      var calorie_surplus = 0;
+
+      if((i != 0)){
+        for(var k = i - 1; k>=0; k--){
+          var date_deficit = calorie_left_tracker;
+          if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
+               day_storage.push(storage[k].calorie_left_tracker);
+
+          }
+          console.log(day_storage);
+        }
+
+        for(var l = 0; l < day_storage.length; l++){
+          if(day_storage[l] <= date_deficit){
+            smallest_date_deficit = day_storage[l];
+            date_deficit = smallest_date_deficit;
+          }
+            calorie_left_tracker = date_deficit - rows[i].calorie_in;
+
+        }
+        day_storage = [];
+      }
+
+      var calorie_status;
+      if (calorie_left > 0) {
+        calorie_status = "deficit";
+      } else if (calorie_left <= 0) {
+        calorie_status = "surplus";
+      }
+
+      console.log("calorie tracker" + calorie_left_tracker);
+
+      var calorie_left = 0;
+      calorie_left = calorie_left_tracker;
+      if(calorie_left_tracker < 0){
+        calorie_left = 0;
+        calorie_surplus = calorie_left_tracker * -1;
+      }
+      console.log("calorie_left " + calorie_left);
+      console.log("calorie tracker " + calorie_left_tracker);
+
+
+
+      storage.push({"calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
+                    "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
+                    "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
+      console.log(storage.calorie_left);
+
+      }
+
+      console.log(storage[numEntries - 1]);
+  }
 
 
   return router;
