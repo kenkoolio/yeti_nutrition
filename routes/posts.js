@@ -1,3 +1,5 @@
+let complete = require('../helpers/route_helpers.js').complete;
+
 module.exports = function () {
 
     var express = require('express');
@@ -52,31 +54,39 @@ module.exports = function () {
     // Display all message board posts
     router.get('/', function (req, res) {
         console.log('Accessing the main page');
+        var mysql = req.app.get('mysql');
         var callbackCount = 0;
         var context = {};
-        var mysql = req.app.get('mysql');
-        getPosts(res, mysql, context, complete);
-        function complete() {
-            callbackCount++;
-            if (callbackCount >= 1) {
-                res.render('posts', context);
-            }
+        let threads = 1;
+        let view = 'posts';
+        let payload = {
+          callbackCount,
+          threads,
+          view,
+          res,
+          context
         }
+
+        getPosts(res, mysql, context, complete.bind(null, payload));
     });
 
     // Display homepage with flash message
     router.get('/post_submitted', function (req, res) {
         console.log('Accessing the main page');
+        var mysql = req.app.get('mysql');
         var callbackCount = 0;
         var context = {};
-        var mysql = req.app.get('mysql');
-        getPosts(res, mysql, context, complete);
-        function complete() {
-            callbackCount++;
-            if (callbackCount >= 1) {
-                res.render('first_view', context);
-            }
+        let threads = 1;
+        let view = 'first_view';
+        let payload = {
+          callbackCount,
+          threads,
+          view,
+          res,
+          context
         }
+
+        getPosts(res, mysql, context, complete.bind(null, payload));
     });
 
     // Display form to create a new post
@@ -88,17 +98,21 @@ module.exports = function () {
     // Display a single message board post
     router.get('/:id', function (req, res) {
         console.log('Accessing a single post page');
+        var mysql = req.app.get('mysql');
         var callbackCount = 0;
         var context = {};
-        var mysql = req.app.get('mysql');
-        getSinglePost(res, mysql, context, req.params.id, complete);
-        getCommentsByPost(res, mysql, context, req.params.id, complete);
-        function complete() {
-            callbackCount++;
-            if (callbackCount >= 2) {
-                res.render('post', context);
-            }
+        let threads = 2;
+        let view = 'post';
+        let payload = {
+          callbackCount,
+          threads,
+          view,
+          res,
+          context
         }
+
+        getSinglePost(res, mysql, context, req.params.id, complete.bind(null, payload));
+        getCommentsByPost(res, mysql, context, req.params.id, complete.bind(null, payload));
     });
 
     // Create a new message board post

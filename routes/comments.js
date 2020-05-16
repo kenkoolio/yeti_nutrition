@@ -1,3 +1,5 @@
+let complete = require('../helpers/route_helpers.js').complete;
+
 module.exports = function () {
 
     var express = require('express');
@@ -35,30 +37,38 @@ module.exports = function () {
 
     // Display all comments for all posts
     router.get('/', function (req, res) {
+        var mysql = req.app.get('mysql');
         var callbackCount = 0;
         var context = {};
-        var mysql = req.app.get('mysql');
-        getComments(res, mysql, context, complete);
-        function complete() {
-            callbackCount++;
-            if (callbackCount >= 1) {
-                res.render('comments', context);
-            }
+        let threads = 1;
+        let view = 'comments';
+        let payload = {
+          callbackCount,
+          threads,
+          view,
+          res,
+          context
         }
+
+        getComments(res, mysql, context, complete.bind(null, payload));
     });
 
     // Display all comments for a single parent post
     router.get('/comments/:postID', function (req, res) {
+        var mysql = req.app.get('mysql');
         var callbackCount = 0;
         var context = {};
-        var mysql = req.app.get('mysql');
-        getCommentsByPost(req, res, mysql, context, complete);
-        function complete() {
-            callbackCount++;
-            if (callbackCount >= 1) {
-                res.render('comments', context);
-            }
+        let threads = 1;
+        let view = 'comments';
+        let payload = {
+          callbackCount,
+          threads,
+          view,
+          res,
+          context
         }
+
+        getCommentsByPost(req, res, mysql, context, complete.bind(null, payload));
     });
 
 
