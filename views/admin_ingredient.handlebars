@@ -50,5 +50,37 @@
 </section> <!-- admin_container -->
 
 <script>
-// 
+
+// to be combined with other js files, do not change
+function sendJSONData(route, method, data) {
+  $.ajax({
+    method: method,
+    url: route,
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify(data)
+  })
+  .done((msg) => {
+    // inform user of success
+    alert(msg);
+
+    // reload page
+    window.location.reload(true);
+  })
+  .fail((msg) => {
+    // inform user of failed attempt
+    if (msg.status >= 500) {
+      // 500 error
+      alert('Error 500: Oops! Something went wrong.');
+    } else {
+      // 400 error
+      alert(msg.responseJSON);
+    }
+  })
+}
+
+// update ingredient
+
+// delete ingredient
+
 </script>

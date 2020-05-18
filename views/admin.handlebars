@@ -330,7 +330,7 @@ function create_new_ingredient(e) {
   }
 
   // send data
-  sendPostData(route, {ingredient_name});
+  sendJSONData(route, "POST", {ingredient_name});
 
 }
 
@@ -374,7 +374,7 @@ function create_new_recipe(e) {
   recipes_submission.ingredients = ingredients_submission;
 
   // send data
-  sendPostData(route, recipes_submission);
+  sendJSONData(route, "POST", recipes_submission);
 
 }
 
@@ -416,9 +416,9 @@ function extract_ingredient_data(form) {
   return [ingredients_valid, ingredients_submission];
 }
 
-function sendPostData(route, data) {
+function sendJSONData(route, method, data) {
   $.ajax({
-    method: "POST",
+    method: method,
     url: route,
     contentType: "application/json",
     dataType: "json",
