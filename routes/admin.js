@@ -213,11 +213,53 @@ module.exports = (function() {
 
   };
 
+  function editOneIngredient(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let ingredient_id = req.body.ingredient_id;
+    let ingredient_name = req.body.ingredient_name;
+    let check_query = `SELECT * FROM ingredients WHERE ingredient_name = ? AND ingredient_id NOT ?`;
+    let update_query = `UPDATE ingredients SET ingredient_name = ? WHERE ingredient_id = ?`;
+
+    new Promise((resolve, reject) => {
+      // check if ingredient already in database
+      mysql.pool.query(check_query, [ingredient_name, ingredient_id] , (err, results, fields) => {
+        if (err) return next(err);
+
+        if (results.length) {
+          // already in database
+          reject("That item is already in the database");
+        } else {
+          // not in database yet
+          resolve();
+        }
+      })
+    })
+    .then(() => {
+      // edit ingredient name
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(update_query, [ingredient_name, ingredient_id], (err, results, fields) => {
+          if (err) return next(err);
+
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      // return success
+      return res.json('Success');
+    })
+    .catch((reason) => {
+      // return error message
+      return res.status(400).json(reason);
+    })
+  }
+
   router.get('/', getAdminIndex);
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
   router.get('/ingredients/actions/:id', viewOneIngredient);
   router.get('/recipes/actions/:id', viewOneRecipe);
+  router.patch('/ingredients', editOneIngredient);
 
 
 
