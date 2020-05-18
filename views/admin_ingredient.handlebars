@@ -5,6 +5,8 @@
 
   #admin_container {
     background-color: rgba(206, 204, 205, 0.4);
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
   #admin_header {
@@ -23,18 +25,26 @@
   </section>
 
   <section>
+    <div id="ingredient-edit-form-div" class="container">
+      <div class="row">
+        <form class="col-sm-12 col-md-4 offset-md-2">
+          <div class="form-group">
+            <label>ID: </label>
+            <input class="form-control" type="number" value="{{ingredient.ingredient_id}}" disabled></input>
+          </div>
 
-    <form>
-      <label>ID: </label>
-      <input type="number" value="{{ingredient.ingredient_id}}" disabled></input>
+          <div class="form-group">
+            <label for="ing_name">Name: </label>
+            <input class="form-control" id="ing_name" value="{{ingredient.ingredient_name}}"></input>
+          </div>
 
-      <label for="ing_name">Name: </label>
-      <input id="ing_name" value="{{ingredient.ingredient_name}}"></input>
-
-      <button class="btn btn-outline-success">Save Changes</button>
-      <button class="btn btn-outline-danger">Delete</button>
-    </form>
-
+          <div class="form-group">
+            <button class="btn btn-outline-success">Save Changes</button>
+            <button class="btn btn-outline-danger">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div> <!-- ingredient-edit-form-div -->
   </section>
 
 </section> <!-- admin_container -->
