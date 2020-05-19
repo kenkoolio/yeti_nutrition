@@ -74,7 +74,7 @@ module.exports = function () {
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO comments (post_id, user_id, content, comment_date) VALUES (?,?,?,?)";
         var date = new Date();
-        var inserts = [req.session.user_id, req.body.user_id, req.body.content, date];
+        var inserts = [req.body.post_id, req.session.user_id, req.body.content, date];
         sql = mysql.pool.query(sql, inserts, function (error, results, field) {
             if (error) {
                 console.log(JSON.stringify(error));
