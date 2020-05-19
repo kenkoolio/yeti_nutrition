@@ -108,8 +108,7 @@ module.exports = function () {
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO posts (user_id, title, content, post_date) VALUES (?,?,?,?)";
         var date = new Date();
-//         var inserts = [req.body.user_id, req.body.title, req.body.content, date];
-        var inserts = [1, req.body.title, req.body.content, date]; //for release test purposes
+        var inserts = [req.session.user_id, req.body.title, req.body.content, date];
         sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
             if (error) {
                 console.log(JSON.stringify(error));

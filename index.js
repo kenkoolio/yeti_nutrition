@@ -7,11 +7,15 @@ let express = require('express');
 let mysql = require('./dbcon.js');
 let bodyParser = require('body-parser');
 let app = express();
+let session = require('express-session');
 const dotenv = require('dotenv');
 dotenv.config();
 
 // Handlebars
 let handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+
+//mount session
+app.use(session({secret: 'secret', resave: true, saveUninitialized: true})); //store secret in .env
 
 // mount stuff here
 app.use(bodyParser.urlencoded({extended: true}));
@@ -30,6 +34,8 @@ app.use('/recipes', require('./routes/recipes.js'));
 app.use('/posts', require('./routes/posts.js'));
 app.use('/comments', require('./routes/comments.js'));
 app.use('/calories', require('./routes/calories.js'));
+app.use('/signin', require('./routes/signin.js'));
+app.use('/signup', require('./routes/signup.js'));
 
 // home page
 app.get('/', (req, res) => {

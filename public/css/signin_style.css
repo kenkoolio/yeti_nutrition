@@ -1,0 +1,38 @@
+body {
+    background-image: url("../images/signin_background.jpg");
+    background-size: 100%;
+    background-color: #D8BFD8;
+    background-blend-mode: multiply;
+    opacity: 95%;
+}
+
+.sign_in_form {
+    background-color:white;
+    padding:35px;
+    border-radius:10px;
+    position: absolute;
+    border:1px solid #fff;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 320px;
+    height: 300px;
+}
+
+.sign_in_message {
+    color: #7d3c8d;
+}
+
+.align-right {
+    text-align:right;
+}
+
+#sign_in_button {
+    opacity: 80%;
+}
+
+label, a, span {
+    font-size: 12px;
+}
