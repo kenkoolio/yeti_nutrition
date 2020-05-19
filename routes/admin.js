@@ -6,6 +6,14 @@ module.exports = (function() {
   var express = require('express');
   var router = express.Router();
 
+  function require_signin (req, res, next) {
+    if (!req.session.signedin) {
+      res.redirect('/signin');
+    } else {
+      next();
+    }
+  };
+
   function getAdminIndex(req, res, next) {
     // gets all ingredients for the admin page to add new recipes
     let mysql = req.app.get('mysql');
@@ -156,7 +164,7 @@ module.exports = (function() {
 
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
-  router.get('/', getAdminIndex);
+  router.get('/', require_signin, getAdminIndex);
 
   return router;
 })();

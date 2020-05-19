@@ -3,6 +3,13 @@ module.exports = function () {
     var express = require('express');
     var router = express.Router();
 
+    function require_signin (req, res, next) {
+      if (!req.session.signedin) {
+        res.redirect('/signin');
+      } else {
+        next();
+      }
+    };
 
     // Retrieve all comments
     function getComments(res, mysql, context, complete) {
@@ -34,7 +41,7 @@ module.exports = function () {
     }
 
     // Display all comments for all posts
-    router.get('/', function (req, res) {
+    router.get('/', require_signin, function (req, res) {
         var callbackCount = 0;
         var context = {};
         var mysql = req.app.get('mysql');
@@ -48,7 +55,7 @@ module.exports = function () {
     });
 
     // Display all comments for a single parent post
-    router.get('/comments/:postID', function (req, res) {
+    router.get('/comments/:postID', require_signin, function (req, res) {
         var callbackCount = 0;
         var context = {};
         var mysql = req.app.get('mysql');
@@ -63,11 +70,11 @@ module.exports = function () {
 
 
 
-    router.post('/create_comment', function (req, res) {
+    router.post('/create_comment', require_signin, function (req, res) {
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO comments (post_id, user_id, content, comment_date) VALUES (?,?,?,?)";
         var date = new Date();
-        var inserts = [req.body.post_id, req.body.user_id, req.body.content, date];
+        var inserts = [req.session.user_id, req.body.user_id, req.body.content, date];
         sql = mysql.pool.query(sql, inserts, function (error, results, field) {
             if (error) {
                 console.log(JSON.stringify(error));
