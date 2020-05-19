@@ -13,10 +13,6 @@ var pool = mysql.createPool({
   user            : process.env.USERNAME,
   password        : process.env.PASSWORD,
   database        : process.env.DB_NAME
-  // host            : "localhost",
-  // user            : "root",
-  // password        : "123456",
-  // database        : "yeti_eats"
 });
 
 module.exports.pool = pool;
