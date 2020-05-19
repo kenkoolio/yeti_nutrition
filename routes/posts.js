@@ -3,6 +3,14 @@ module.exports = function () {
     var express = require('express');
     var router = express.Router();
 
+    function require_signin (req, res, next) {
+      if (!req.session.signedin) {
+        res.redirect('/signin');
+      } else {
+        next();
+      }
+    };
+
     // Retrieve all posts
     function getPosts(res, mysql, context, complete) {
         console.log('Retrieving all posts');
@@ -50,7 +58,7 @@ module.exports = function () {
     }
 
     // Display all message board posts
-    router.get('/', function (req, res) {
+    router.get('/', require_signin, function (req, res) {
         console.log('Accessing the main page');
         var callbackCount = 0;
         var context = {};
@@ -65,7 +73,7 @@ module.exports = function () {
     });
 
     // Display homepage with flash message
-    router.get('/post_submitted', function (req, res) {
+    router.get('/post_submitted', require_signin, function (req, res) {
         console.log('Accessing the main page');
         var callbackCount = 0;
         var context = {};
@@ -80,13 +88,13 @@ module.exports = function () {
     });
 
     // Display form to create a new post
-    router.get('/create_post_form', function (req, res) {
+    router.get('/create_post_form', require_signin, function (req, res) {
         console.log('This should be loading the form');
         res.render('create_post_form');
     });
 
     // Display a single message board post
-    router.get('/:id', function (req, res) {
+    router.get('/:id', require_signin, function (req, res) {
         console.log('Accessing a single post page');
         var callbackCount = 0;
         var context = {};

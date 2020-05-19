@@ -15,7 +15,8 @@ dotenv.config();
 let handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 
 //mount session
-app.use(session({secret: 'secret', resave: true, saveUninitialized: true})); //store secret in .env
+app.use(session({secret: 'secret', resave: true, saveUninitialized: true, signedin: false})); //store secret in .env
+app.set('authentication', {'valid':false});
 
 // mount stuff here
 app.use(bodyParser.urlencoded({extended: true}));
@@ -27,6 +28,7 @@ app.set('port', 8000);
 app.use(express.static('public'));
 app.set('mysql', mysql);
 
+
 // mount routes
 app.use('/test', require('./routes/test.js'));
 app.use('/admin', require('./routes/admin.js'));
@@ -36,6 +38,8 @@ app.use('/comments', require('./routes/comments.js'));
 app.use('/calories', require('./routes/calories.js'));
 app.use('/signin', require('./routes/signin.js'));
 app.use('/signup', require('./routes/signup.js'));
+app.use('/signout', require('./routes/signout.js'));
+
 
 // home page
 app.get('/', (req, res) => {

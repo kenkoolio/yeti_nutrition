@@ -15,6 +15,7 @@ module.exports = (function() {
 	mysql.pool.query(auth_query, auth_param, function(err, results, fields) {
 		if (err) return next(err);  
 		if (results.length) {
+			req.session.signedin = true;
 			req.session.active = true;
 			req.session.username= req.body.username;
 			req.session.user_id = results[0].user_id;

@@ -9,14 +9,14 @@ var mysql = require('mysql');
 dotenv.config();
 var pool = mysql.createPool({
   connectionLimit : 10,
-  host            : process.env.DBHOST,
-  user            : process.env.USERNAME,
-  password        : process.env.PASSWORD,
-  database        : process.env.DB_NAME
-  // host            : "localhost",
-  // user            : "root",
-  // password        : "123456",
-  // database        : "yeti_eats"
+  // host            : process.env.DBHOST,
+  // user            : process.env.USERNAME,
+  // password        : process.env.PASSWORD,
+  // database        : process.env.DB_NAME
+  host            : "localhost",
+  user            : "root",
+  password        : "123456",
+  database        : "yeti_eats"
 });
 
 module.exports.pool = pool;

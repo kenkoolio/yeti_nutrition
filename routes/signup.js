@@ -41,8 +41,9 @@ module.exports = (function() {
       return new Promise((resolve, reject) => {
         mysql.pool.query(new_id_query, new_id_param, (err, results, fields) => {
           if (err) return next(err);
+          req.session.signedin = true;
           req.session.active = true;
-  		  req.session.username= req.body.username;
+  		    req.session.username= req.body.username;
           req.session.user_id = results[0].user_id;          
           resolve();
         })
