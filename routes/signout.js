@@ -4,7 +4,7 @@ module.exports = (function() {
 
 //Signout
   router.get('/', function(req, res){
-    req.session.signedin = false;
+    req.session.destroy();
     res.render('signout');
   })
 
