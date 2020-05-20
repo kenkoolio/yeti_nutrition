@@ -32,6 +32,18 @@
       object-fit: contain;
     }
 
+  .ingredients_list {
+    font-size: 9px;
+    padding: 10px;
+    background-color: rgba(0, 255, 191, 0.8);
+    border-radius: 5px;
+  }
+
+    .ingredients_list select, .ingredients_list input {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
 
 </style>
 
@@ -52,7 +64,7 @@
 
     <div id="recipe-edit-form-div" class="container">
       <div class="row">
-        <form class="col-sm-12 order-sm-2 order-md-1 col-md-4 offset-md-2">
+        <form class="col-sm-12 order-sm-2 order-md-1 col-md-6 offset-md-0">
           <div class="form-group">
             <label>ID: </label>
             <input class="form-control" type="number" name="rep_id" value="{{recipe.recipe_id}}" disabled></input>
@@ -77,6 +89,11 @@
           </div>
 
           <!-- ingredients list !!!! this will be the complex one -->
+          <div class="form-group">
+            <div class="ingredients_list">
+            </div>
+            <button id="add_ing_to_form_button" class="btn btn-sm btn-outline-primary">Add ingredients</button>
+          </div>
 
           <!-- instructions -->
           <div class="form-group">
@@ -135,5 +152,120 @@ function sendJSONData(route, method, data, on_success) {
   })
 }
 
+// setup
+let ing_count = 0;
+let ing_container = $('.ingredients_list').first();
+let add_ing_button = $('#add_ing_to_form_button');
+add_ing_button.click(add_ing_to_form);
+
+// create list of all ingredients to add dynamic ingredients to recipes form
+// example: [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
+let ingredients = [];
+let one_ingredient = {};
+{{#each all_ingredients}}
+  one_ingredient = {};
+  one_ingredient.id = "{{this.ingredient_id}}";
+  one_ingredient.name = "{{this.ingredient_name}}";
+  ingredients.push(one_ingredient);
+{{/each}}
+
+// populate recipe ingredient form with current list of its ingredients
+{{#each recipe_ingredients}}
+  existing_ingredient = {};
+  existing_ingredient.id = "{{this.ingredient_id}}";
+  existing_ingredient.name = "{{this.ingredient_name}}";
+  existing_ingredient.quantity = "{{this.quantity}}";
+  existing_ingredient.metric = "{{this.metric}}";
+  add_ing_to_form(null, existing_ingredient);
+{{/each}}
+
+// add ingredient to form function, copied from admin.handlebars.
+// intention is to merge/abstract them.
+// two different ways to use:
+//  1) to load all existing ingredients of a recipe
+//  2) to add a new ingredient via button click
+function add_ing_to_form(e, existing_ingredient) {
+  // increment ingredient count
+  ing_count++;
+
+  // create container div
+  let ing_div = $('<div/>', {class: 'ing_div_' + ing_count});
+
+  // create select ingredient //
+  // create label
+  let ing_label = $('<label/>', {for: 'ing_' + ing_count});
+  ing_label.append(document.createTextNode('Ingredient #' + ing_count));  // label text
+  // create select
+  let ing_select = $('<select/>', {name: 'ing_' + ing_count, id: 'ing_' + ing_count});
+  // create options
+  ingredients.map((ingredient) => {
+    ing_select.append($('<option/>', {value: ingredient.id}).append(document.createTextNode(ingredient.name)));
+  })
+  // add select inside label
+  ing_label.append(ing_select);
+
+  // create quantity input //
+  // create label
+  let qty_label = $('<label/>', {for: 'ing_qty_' + ing_count});
+  qty_label.append(document.createTextNode('Quantity: '));  // label text
+  // create input
+  qty_label.append($('<input/>',
+    {type: 'number',
+    name: 'ing_qty_' + ing_count,
+    id: 'ing_qty_' + ing_count,
+    step: '0.01',
+    value: '0.00',
+    placeholder: '0.00'}));
+
+  // create units input//
+  // create label
+  let unit_label = $('<label/>', {for: 'ing_metric_' + ing_count});
+  unit_label.append(document.createTextNode('Units: '));
+  // create input
+  unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
+
+  // create remove button //
+  let remove_button = $('<button/>', {class: 'remove_ing'});
+  remove_button.append(document.createTextNode('X'));
+  // bind remove event
+  remove_button.click(remove_ing_from_from);
+
+  // if populating the recipe edit form,
+  // insert existing ingredient information
+  if (existing_ingredient && !$.isEmptyObject(existing_ingredient)) {
+    // select the ingredient
+    ing_select.find("[value="+ existing_ingredient.id +"]").prop("selected", true);
+    // set the quantity
+    qty_label.find("input").val(existing_ingredient.quantity);
+    // set the metrics/units
+    unit_label.find("input").val(existing_ingredient.metric);
+  }
+
+  // add ingredient select, quantity, units, and remove button to ingredient div
+  ing_div.append(ing_label);
+  ing_div.append(qty_label);
+  ing_div.append(unit_label);
+  ing_div.append(remove_button);
+
+  // add new ingredient div to ingredients container
+  ing_container.append(ing_div);
+
+  if (e) {
+    e.preventDefault();
+  }
+}
+
+// remove ingredient from form function, copied from admin.handlebars.
+// intention is to merge/abstract them.
+// should not need to be changed.
+function remove_ing_from_from(e) {
+  e.preventDefault();
+
+  // this ingredient div
+  let this_ing_div = $(this).parent();
+
+  // remove this div from ingredient container
+  this_ing_div.remove();
+}
 
 </script>

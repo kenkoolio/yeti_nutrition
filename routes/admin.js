@@ -202,15 +202,46 @@ module.exports = (function() {
     context.title = "Admin Edit Recipe";
 
     let recipe_query = `SELECT * FROM recipes WHERE recipe_id = ?`;
-    let ingredients_query = `SELECT * FROM recipe_details JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id WHERE recipe_details.recipe_id = ?`;
+    let recipe_ingredients_query = `SELECT * FROM recipe_details JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id WHERE recipe_details.recipe_id = ?`;
+    let all_ingredients_query = `SELECT * FROM ingredients`;
 
-    mysql.pool.query(recipe_query, req.params.id, (err, results, fields) => {
-      if (err) return next(err);
+    new Promise((resolve, reject) => {
+      // get recipe info
+      mysql.pool.query(recipe_query, req.params.id, (err, results, fields) => {
+        if (err) return next(err);
 
-      context.recipe = results[0];
+        context.recipe = results[0];
+        resolve();
+      })
+    })
+    .then(() => {
+      // get recipe's ingredient details
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(recipe_ingredients_query, req.params.id, (err, results, fields) => {
+          if (err) return next(err);
+
+          context.recipe_ingredients = results;
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      // get all ingredients for user to choose from to make changes
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(all_ingredients_query, (err, results, fields) => {
+          if (err) return next(err);
+
+          context.all_ingredients = results;
+          resolve();
+        })
+      })
+    })
+    .then(() => {
       res.render('admin_recipe', context);
     })
-
+    .catch((error) => {
+      return next(error);
+    })
   };
 
   function editOneIngredient(req, res, next) {
