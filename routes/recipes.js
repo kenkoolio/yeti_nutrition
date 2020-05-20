@@ -6,7 +6,15 @@ module.exports = (function() {
   var express = require('express');
   var router = express.Router();
 
-  router.get('/', function(req, res, next){
+  function require_signin (req, res, next) {
+    if (!req.session.signedin) {
+      res.redirect('/signin');
+    } else {
+      next();
+    }
+  };
+
+  router.get('/', require_signin, function(req, res, next){
     let mysql = req.app.get('mysql');
     mysql.pool.query(`SELECT * FROM recipes`, (err, rows, result) => {
       if(err){
@@ -33,7 +41,7 @@ module.exports = (function() {
     //res.render('mainRecipes');
   //});
 
-  router.get('/:recipe_id', function(req, res, next){
+  router.get('/:recipe_id', require_signin, function(req, res, next){
     let mysql = req.app.get('mysql');
     let query = `SELECT * FROM recipes INNER JOIN recipe_details ON recipes.recipe_id = recipe_details.recipe_id
     INNER JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id
