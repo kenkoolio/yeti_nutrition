@@ -217,7 +217,7 @@ module.exports = (function() {
     let mysql = req.app.get('mysql');
     let ingredient_id = req.body.ingredient_id;
     let ingredient_name = req.body.ingredient_name;
-    let check_query = `SELECT * FROM ingredients WHERE ingredient_name = ? AND ingredient_id NOT ?`;
+    let check_query = `SELECT * FROM ingredients WHERE ingredient_name = ?`;
     let update_query = `UPDATE ingredients SET ingredient_name = ? WHERE ingredient_id = ?`;
 
     new Promise((resolve, reject) => {
@@ -254,14 +254,35 @@ module.exports = (function() {
     })
   }
 
+  function deleteOneIngredient( req, res, next) {
+    let mysql = req.app.get('mysql');
+    let ingredient_id = req.body.ingredient_id;
+    let delete_query = `DELETE FROM ingredients WHERE ingredient_id = ?`;
+
+    new Promise((resolve, reject) => {
+      mysql.pool.query(delete_query, ingredient_id, (err, results, fields) => {
+        if (err) return next(err);
+
+        resolve();
+      })
+    })
+    .then(() => {
+      // return success
+      return res.json('Success');
+    })
+    .catch((reason) => {
+      // return error message
+      return res.status(400).json(reason);
+    })
+  }
+
   router.get('/', getAdminIndex);
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
   router.get('/ingredients/actions/:id', viewOneIngredient);
   router.get('/recipes/actions/:id', viewOneRecipe);
   router.patch('/ingredients', editOneIngredient);
-
-
+  router.delete('/ingredients', deleteOneIngredient);
 
   return router;
 })();

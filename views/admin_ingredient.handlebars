@@ -7,7 +7,15 @@
     background-color: rgba(206, 204, 205, 0.4);
     padding-top: 20px;
     padding-bottom: 20px;
+    max-width: 100%;
   }
+
+    #admin_container a {
+      text-decoration: none;
+    }
+    #admin_container a:visited {
+      color: inherit;
+    }
 
   #admin_header {
     text-align: center;
@@ -17,17 +25,23 @@
 </style>
 
 
-<section id="admin_container">
+<section id="admin_container" class="container">
 
-  <section id="admin_header">
-    <h1>Admin Portal</h1>
-    <h3>Edit Ingredient - {{ingredient.ingredient_name}}</h3>
+  <section id="admin_header" class="row">
+    <div class="col-sm-12 col-md-2 offset-md-1 pull-left">
+      <button class="btn btn-outline-warning"><a href='/admin'>< Back to admin page</a></button>
+    </div>
+
+    <div class="col-sm-12 col-md-4 offset-md-1">
+      <h1>Admin Portal</h1>
+      <h3>Edit Ingredient - {{ingredient.ingredient_name}}</h3>
+    </div>
   </section>
 
   <section>
     <div id="ingredient-edit-form-div" class="container">
       <div class="row">
-        <form class="col-sm-12 col-md-4 offset-md-2">
+        <form id="edit_ingredient_form" class="col-sm-12 col-md-4 offset-md-2" action="/admin/ingredients">
           <div class="form-group">
             <label>ID: </label>
             <input class="form-control" type="number" name="ingredient_id" value="{{ingredient.ingredient_id}}" disabled></input>
@@ -35,12 +49,12 @@
 
           <div class="form-group">
             <label for="ing_name">Name: </label>
-            <input class="form-control" id="ing_name" name="ingredient_name" value="{{ingredient.ingredient_name}}"></input>
+            <input class="form-control" id="ing_name" name="ingredient_name" value="{{ingredient.ingredient_name}}" required></input>
           </div>
 
           <div class="form-group">
-            <button class="btn btn-outline-success">Save Changes</button>
-            <button class="btn btn-outline-danger">Delete</button>
+            <button class="btn btn-outline-success" id="submit_edit_ingredient">Save Changes</button>
+            <button class="btn btn-outline-danger" id="submit_delete_ingredient">Delete</button>
           </div>
         </form>
       </div>
@@ -52,7 +66,7 @@
 <script>
 
 // to be combined with other js files, do not change
-function sendJSONData(route, method, data) {
+function sendJSONData(route, method, data, on_success) {
   $.ajax({
     method: method,
     url: route,
@@ -64,8 +78,14 @@ function sendJSONData(route, method, data) {
     // inform user of success
     alert(msg);
 
-    // reload page
-    window.location.reload(true);
+    // success callback
+    if (on_success && typeof on_success === "function") {
+      on_success();
+    } else {
+      // default behavior: reload page
+      window.location.reload(true);
+    }
+
   })
   .fail((msg) => {
     // inform user of failed attempt
@@ -80,7 +100,40 @@ function sendJSONData(route, method, data) {
 }
 
 // update ingredient
+$('#submit_edit_ingredient').click(submit_edit_ingredient);
+function submit_edit_ingredient(e) {
+  e.preventDefault();
+
+  let route = $('#edit_ingredient_form').attr('action');
+  let ingredient_id = $('[name="ingredient_id"]').val();
+  let ingredient_name = $('[name="ingredient_name"]').val();
+
+  // check if empty
+  if (!ingredient_name) {
+    window.alert("Required form fields cannot be empty.");
+    return;
+  }
+
+  sendJSONData(route, "PATCH", {ingredient_id, ingredient_name});
+}
 
 // delete ingredient
+$('#submit_delete_ingredient').click(submit_delete_ingredient);
+function submit_delete_ingredient(e) {
+  e.preventDefault();
+
+  if (!window.confirm("Do you really want to delete this ingredient?")) {
+    return;
+  }
+
+  let route = $('#edit_ingredient_form').attr('action');
+  let ingredient_id = $('[name="ingredient_id"]').val();
+
+  sendJSONData(route, "DELETE", {ingredient_id}, back_to_admin_page);
+}
+
+function back_to_admin_page() {
+  window.location.href = ("/admin");
+}
 
 </script>
