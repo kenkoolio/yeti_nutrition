@@ -61,7 +61,7 @@
 
   #ingredients_section {
     max-height: 300px;
-    overflow: hidden;
+    overflow-y: auto;
     margin-bottom: 20px;
   }
 
@@ -72,7 +72,7 @@
 
   #recipes_section {
     max-height: 750px;
-    overflow: hidden;
+    overflow-y: auto;
   }
 
     #recipes_section section {
@@ -83,6 +83,13 @@
   .recipe_table_image {
     width: 100px;
     height: 100px;
+  }
+
+  .admin-header-emphasis {
+    font-size: 1.3em;
+    font-style: italic;
+    color: orange;
+    border-bottom: 2px dashed #7d3c8d;
   }
 
 </style>
@@ -100,19 +107,20 @@
     <section class="row" id="ingredients_section" >
 
       <!-- New ingredients -->
-      <section class="col-sm-12 col-md-4">
-        <h2>Add new ingredients</h2>
+      <section class="col-sm-12 col-md-5">
+        <h2>Add new <span class="admin-header-emphasis">Ingredients</span></h2>
         <form id='new_ingredient_form' class='admin_form' action='/admin/add_ingredient' method='POST'>
-          <label for='ingredient_name'>Ingredient name
-            <input type='text' id='ingredient_name' name='ingredient_name' required>
-          </label>
+          <div class="form-group">
+            <label for='ingredient_name'>Ingredient name</label>
+            <input id='ingredient_name' class="form-control" type='text' name='ingredient_name' required>
+          </div>
 
-          <button id='submit_new_ingredient'>Submit</button>
+          <button id='submit_new_ingredient' class="btn btn-outline-success">Submit</button>
         </form>
       </section>
 
       <!-- All ingredients -->
-      <section class="col-sm-12 col-md-6 offset-md-2">
+      <section class="col-sm-12 col-md-6 offset-md-1">
         <table class="table table-hover table-striped table-scroll">
           <thead>
             <tr>
@@ -126,7 +134,7 @@
             <tr>
               <td>{{this.ingredient_name}}</td>
               <td>
-                <button><a href="/admin/ingredients/actions/{{this.ingredient_id}}">More</a></button>
+                <button class="btn btn-sm btn-outline-primary"><a href="/admin/ingredients/actions/{{this.ingredient_id}}">More</a></button>
               </td>
             </tr>
             {{/each}}
@@ -140,28 +148,25 @@
 
       <!-- New recipes -->
       <section class="col-sm-12 col-md-5">
-        <h2>Add a new recipe</h2>
+        <h2>Add new <span class="admin-header-emphasis">Recipes</span></h2>
         <form id='new_recipe_form' class='admin_form' action='/admin/add_recipe' method='POST'>
-          <div>
-            <label for='recipe_name'>Recipe name
-              <input type='text' id='recipe_name' name='recipe_name' class="pull-right">
-            </label>
+          <div class="form-group">
+            <label for='recipe_name'>Recipe name</label>
+            <input id='recipe_name' class="form-control" type='text' name='recipe_name' class="pull-right">
           </div>
 
-          <div>
-            <label for='recipe_img'>Image url (optional)
-              <input type='text' id='recipe_img' name='recipe_img'>
-            </label>
+          <div class="form-group">
+            <label for='recipe_img'>Image url (optional)</label>
+            <input id='recipe_img' class="form-control" type='text' name='recipe_img'>
           </div>
 
-          <div>
-            <label for='recipe_calories'>Total calories
-              <input type='number' id='recipe_calories' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
-            </label>
+          <div class="form-group">
+            <label for='recipe_calories'>Total calories</label>
+            <input id='recipe_calories' class="form-control" type='number' name='recipe_calories' step='0.01' value='0.00' placeholder='0.00'>
           </div>
 
           <!-- ingredients -->
-          <div class='ingredients_list'>
+          <div class='ingredients_list form-group'>
 
             <div class="ing_div_1">
               <label for='ing_1'>Ingredient #1
@@ -182,14 +187,14 @@
             </div>
 
           </div>
-          <button id="add_ing_to_form_button">Add ingredients</button>
+          <button id="add_ing_to_form_button" class="btn btn-sm btn-outline-primary">Add ingredients</button>
 
-          <div id="recipe_instructions_div">
+          <div id="recipe_instructions_div" class="form-group">
             <label for='recipe_instructions'>Recipe Instructions</label>
-            <textarea id='recipe_instructions' name='recipe_instructions' rows='5'></textarea>
+            <textarea id='recipe_instructions' class="form-control" name='recipe_instructions' rows='3'></textarea>
           </div>
 
-          <button id='submit_new_recipe'>Submit</button>
+          <button id='submit_new_recipe' class="btn btn-outline-success">Submit</button>
         </form>
       </section>
 
@@ -212,7 +217,7 @@
               <td>{{this.recipe_name}}</td>
               <td>{{this.total_calories}}</td>
               <td>
-                <button>
+                <button class="btn btn-sm btn-outline-primary">
                   <a href="/admin/recipes/actions/{{this.recipe_id}}">More</a>
                 </button>
               </td>

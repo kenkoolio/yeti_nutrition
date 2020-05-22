@@ -428,10 +428,10 @@ module.exports = (function() {
 
   router.get('/', getAdminIndex);
   router.post('/add_ingredient', addNewIngredient);
-  router.post('/add_recipe', addNewRecipe);
   router.get('/ingredients/actions/:id', viewOneIngredient);
   router.patch('/ingredients', editOneIngredient);
   router.delete('/ingredients', deleteOneIngredient);
+  router.post('/add_recipe', addNewRecipe);
   router.get('/recipes/actions/:id', viewOneRecipe);
   router.patch('/recipes', editOneRecipe);
   router.delete('/recipes', deleteOneRecipe);
