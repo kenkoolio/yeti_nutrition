@@ -321,15 +321,16 @@ module.exports = (function() {
         `UPDATE recipes SET
         recipe_name = ?,
         total_calories = ?,
-        instruction = ?,
+        instructions = ?,
         recipe_img = ?
         WHERE recipe_id = ?`;
     if (!image_url) {
-      edit_recipe_id =
+      edit_recipe_query =
         `UPDATE recipes SET
         recipe_name = ?,
         total_calories = ?,
-        instruction = ?
+        instructions = ?,
+        recipe_img = NULL
         WHERE recipe_id = ?`;
     }
     let new_recipe_details_query = `INSERT INTO recipe_details (recipe_id, ingredient_id, quantity, metric) VALUES ?`;
@@ -347,11 +348,55 @@ module.exports = (function() {
         }
       })
     })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        // check if optional "recipe_img" was included
+        let recipe_data = [recipe_name, calories, instructions, image_url, recipe_id];
+        if (!image_url) {
+          recipe_data = [recipe_name, calories, instructions, recipe_id];
+        }
 
-    // update recipe information
-    // delete existing recipe_details
-    // put in new recipe_details
+        // update recipe information
+        mysql.pool.query(edit_recipe_query, recipe_data, (err, results, fields) => {
+          if (err) return next(err);
 
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      // delete existing recipe_details
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(delete_recipe_details_query, recipe_id, (err, results, fields) => {
+          if (err) return next(err);
+
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        // put in new recipe_details
+
+        // array for all ingredients
+        let recipe_details = [];
+        ingredients.forEach((ingredient) => {
+          // put this ingredient's info into an array
+          let ingredient_row = [recipe_id];
+          ingredient_row.push(ingredient.ingredient_id);
+          ingredient_row.push(ingredient.quantity);
+          ingredient_row.push(ingredient.metric);
+          // insert this ingredient info array into the array of all ingredients
+          recipe_details.push(ingredient_row);
+        })
+
+        mysql.pool.query(new_recipe_details_query, [recipe_details], (err, results, fields) => {
+          if (err) return next(err);
+
+          resolve();
+        })
+      })
+    })
     .then(() => {
       return res.json('Success');
     })
