@@ -1,7 +1,7 @@
 {
   "name": "yeti_nutrition",
   "version": "1.0.0",
-  "description": "",
+  "description": "ALPHA Ver 1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,5 +25,6 @@
     "forever": "^2.0.0",
     "mysql": "^2.18.1",
     "save": "^2.4.0"
-  }
+  },
+  "devDependencies": {}
 }

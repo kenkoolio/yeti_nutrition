@@ -6,6 +6,14 @@ module.exports = (function() {
   var express = require('express');
   var router = express.Router();
 
+  function require_signin (req, res, next) {
+    if (!req.session.signedin) {
+      res.redirect('/signin');
+    } else {
+      next();
+    }
+  };
+
   function getAdminIndex(req, res, next) {
     let context = {title: 'Admin Home'};
     let mysql = req.app.get('mysql');
@@ -426,15 +434,15 @@ module.exports = (function() {
 
   }
 
-  router.get('/', getAdminIndex);
-  router.post('/add_ingredient', addNewIngredient);
-  router.get('/ingredients/actions/:id', viewOneIngredient);
-  router.patch('/ingredients', editOneIngredient);
-  router.delete('/ingredients', deleteOneIngredient);
-  router.post('/add_recipe', addNewRecipe);
-  router.get('/recipes/actions/:id', viewOneRecipe);
-  router.patch('/recipes', editOneRecipe);
-  router.delete('/recipes', deleteOneRecipe);
+  router.get('/', require_signin, getAdminIndex);
+  router.post('/add_ingredient', require_signin, addNewIngredient);
+  router.get('/ingredients/actions/:id', require_signin, viewOneIngredient);
+  router.patch('/ingredients', require_signin, editOneIngredient);
+  router.delete('/ingredients', require_signin, deleteOneIngredient);
+  router.post('/add_recipe', require_signin, addNewRecipe);
+  router.get('/recipes/actions/:id', require_signin, viewOneRecipe);
+  router.patch('/recipes', require_signin, editOneRecipe);
+  router.delete('/recipes', require_signin, deleteOneRecipe);
 
   return router;
 })();

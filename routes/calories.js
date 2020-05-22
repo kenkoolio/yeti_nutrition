@@ -6,8 +6,16 @@ module.exports = (function() {
   var express = require('express');
   var router = express.Router();
 
+  function require_signin (req, res, next) {
+    if (!req.session.signedin) {
+      res.redirect('/signin');
+    } else {
+      next();
+    }
+  };
+
   router.post('/data', function(req, res, next){
-    var user_id = 1;
+    var user_id = req.session.user_id;
     var date = req.body.date;
     var calories = req.body.calories;
     var mysql = req.app.get('mysql');
@@ -30,11 +38,11 @@ module.exports = (function() {
     return stuffToDisplay;
   }
 
-  router.get('/time',function(req,res){
+  router.get('/time', require_signin, function(req,res){
     res.render('caloriepage', genContext());
   });
 
-  router.get("/:user_id", (req, res, next) => {
+  router.get("/:user_id", require_signin, (req, res, next) => {
     var context = {};
     context.title = 'Calorie page';
     let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC `;
