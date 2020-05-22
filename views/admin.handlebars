@@ -348,7 +348,7 @@ function create_new_recipe(e) {
   let instructions = form.find('[name="recipe_instructions"]').val();
 
   // check for empty recipe inputs
-  if (recipe_name.length == 0 || calories == 0 || instructions.length == 0) {
+  if (!recipe_name || !instructions || !calories || calories <= 0) {
     alert("New recipe form missing required fields");
     return;
   }
@@ -375,7 +375,6 @@ function create_new_recipe(e) {
 
   // send data
   sendJSONData(route, "POST", recipes_submission);
-
 }
 
 function extract_ingredient_data(form) {
@@ -400,7 +399,7 @@ function extract_ingredient_data(form) {
     ing_metric = ingredient_item.find(':input[type="text"]').val();
 
     // missing ingredient information
-    if (!ing_item || !ing_qty || !ing_metric || !(ing_qty > 0) ) {
+    if (!ing_item || !ing_qty || !ing_metric || ing_qty <= 0) {
       ingredients_valid = false;
       return;
     }

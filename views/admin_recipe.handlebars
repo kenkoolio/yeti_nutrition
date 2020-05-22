@@ -64,7 +64,7 @@
 
     <div id="recipe-edit-form-div" class="container">
       <div class="row">
-        <form class="col-sm-12 order-sm-2 order-md-1 col-md-6 offset-md-0">
+        <form id="edit_recipe_form" class="col-sm-12 order-sm-2 order-md-1 col-md-6 offset-md-0" action="/admin/recipes">
           <div class="form-group">
             <label>ID: </label>
             <input class="form-control" type="number" name="rep_id" value="{{recipe.recipe_id}}" disabled></input>
@@ -118,6 +118,100 @@
 </section> <!-- admin_container -->
 
 <script>
+
+
+// setup
+let ing_count = 0;
+let ing_container = $('.ingredients_list').first();
+let add_ing_button = $('#add_ing_to_form_button');
+add_ing_button.click(add_ing_to_form);
+
+// create list of all ingredients to add dynamic ingredients to recipes form
+// example: [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
+let ingredients = [];
+let one_ingredient = {};
+{{#each all_ingredients}}
+  one_ingredient = {};
+  one_ingredient.id = "{{this.ingredient_id}}";
+  one_ingredient.name = "{{this.ingredient_name}}";
+  ingredients.push(one_ingredient);
+{{/each}}
+
+// populate recipe ingredient form with current list of its ingredients
+{{#each recipe_ingredients}}
+  existing_ingredient = {};
+  existing_ingredient.id = "{{this.ingredient_id}}";
+  existing_ingredient.name = "{{this.ingredient_name}}";
+  existing_ingredient.quantity = "{{this.quantity}}";
+  existing_ingredient.metric = "{{this.metric}}";
+  add_ing_to_form(null, existing_ingredient);
+{{/each}}
+
+// edit recipe
+$('#submit_edit_recipe').click(submit_edit_recipe);
+function submit_edit_recipe(e) {
+  e.preventDefault();
+
+  let form = $('#edit_recipe_form');
+  let route = form.attr('action');
+
+  let recipe_id = $('[name="rep_id"]').val();
+  let recipe_name = $('[name="rep_name"]').val();
+  let recipe_image = $('[name="rep_img"]').val();
+  let recipe_calories = $('[name="rep_total_calories"]').val();
+  let recipe_instructions = $('[name="rep_instructions"]').val();
+
+  // check if any required recipes fields empty
+  if (!recipe_name || !recipe_instructions || !recipe_calories || recipe_calories <= 0 ) {
+    window.alert("Recipe form missing required fields");
+    return;
+  }
+
+  // make payload
+  let recipes_submission = {
+    recipe_id,
+    recipe_name,
+    recipe_image,
+    recipe_calories,
+    recipe_instructions
+  };
+
+  // get ingredients data
+  let [ingredients_valid, ingredients_submissions] = extract_ingredient_data(form);
+
+  // if ingredients are invalid, exit function
+  if (!ingredients_valid) {
+    alert("Missing information in ingredients");
+    return;
+  }
+
+  // attach ingredients to recipes submission
+  recipes_submission.ingredients = ingredients_submissions;
+
+  // send data
+  sendJSONData(route, "PATCH", recipes_submission);
+}
+
+// delete recipe
+$('#submit_delete_recipe').click(submit_delete_recipe);
+function submit_delete_recipe(e) {
+  e.preventDefault();
+
+  if (!window.confirm("Do you really want to delete this recipe?")) {
+    return;
+  }
+
+  let route = $('#edit_recipe_form').attr('action');
+  let recipe_id = $('[name="rep_id"]').val();
+
+  sendJSONData(route, "DELETE", {recipe_id}, back_to_admin_page);
+}
+
+// callback to redirect to admin page on successful deletion, should not need changing
+function back_to_admin_page() {
+  window.location.href = ("/admin");
+}
+
 // to be combined with other js files, do not change
 function sendJSONData(route, method, data, on_success) {
   $.ajax({
@@ -151,33 +245,6 @@ function sendJSONData(route, method, data, on_success) {
     }
   })
 }
-
-// setup
-let ing_count = 0;
-let ing_container = $('.ingredients_list').first();
-let add_ing_button = $('#add_ing_to_form_button');
-add_ing_button.click(add_ing_to_form);
-
-// create list of all ingredients to add dynamic ingredients to recipes form
-// example: [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
-let ingredients = [];
-let one_ingredient = {};
-{{#each all_ingredients}}
-  one_ingredient = {};
-  one_ingredient.id = "{{this.ingredient_id}}";
-  one_ingredient.name = "{{this.ingredient_name}}";
-  ingredients.push(one_ingredient);
-{{/each}}
-
-// populate recipe ingredient form with current list of its ingredients
-{{#each recipe_ingredients}}
-  existing_ingredient = {};
-  existing_ingredient.id = "{{this.ingredient_id}}";
-  existing_ingredient.name = "{{this.ingredient_name}}";
-  existing_ingredient.quantity = "{{this.quantity}}";
-  existing_ingredient.metric = "{{this.metric}}";
-  add_ing_to_form(null, existing_ingredient);
-{{/each}}
 
 // add ingredient to form function, copied from admin.handlebars.
 // intention is to merge/abstract them.
@@ -268,4 +335,47 @@ function remove_ing_from_from(e) {
   this_ing_div.remove();
 }
 
+// extracts recipe ingredients list data, CHANGED -- use this version
+function extract_ingredient_data(form) {
+  // parse ingredients
+  let ingredients_list_div = form.find('.ingredients_list').first();
+  let ingredients_list = ingredients_list_div.children();
+
+  // variables for data submission
+  let ingredients_valid = true;  // flag to denote if ingredient form filled out properly
+  let ingredients_submission = [];
+  let ing_row = {};
+  let ing_item;
+  let ing_qty;
+  let ing_metric;
+
+  ingredients_list.each((i, ingredient_item) => {
+    ingredient_item = $(ingredient_item);
+
+    // get ingredient choice, quantity, and metric from user input
+    ing_item = ingredient_item.find('select').val();
+    ing_qty = ingredient_item.find(':input[type="number"]').val();
+    ing_metric = ingredient_item.find(':input[type="text"]').val();
+
+    // missing ingredient information
+    if (!ing_item || !ing_qty || !ing_metric || ing_qty <= 0) {
+      ingredients_valid = false;
+      return;
+    }
+
+    // otherwise, ingredient forms are properly filled out, create dictionary to submit
+    ing_row = {};
+    ing_row.ingredient_id = ing_item;
+    ing_row.quantity = ing_qty;
+    ing_row.metric = ing_metric;
+    ingredients_submission.push(ing_row);
+  });
+
+  // check for empty ingredients list
+  if (!ingredients_submission.length) {
+    ingredients_valid = false;
+  }
+
+  return [ingredients_valid, ingredients_submission];
+}
 </script>

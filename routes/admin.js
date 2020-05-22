@@ -51,7 +51,7 @@ module.exports = (function() {
   function addNewIngredient(req, res, next) {
     let ingredient_name = req.body.ingredient_name.toLowerCase();
     let mysql = req.app.get('mysql');
-    let check_query = `SELECT * FROM ingredients WHERE ingredient_name = ?`;
+    let check_query = `SELECT ingredient_id FROM ingredients WHERE ingredient_name = ?`;
     let insert_query = `INSERT INTO ingredients (ingredient_name) VALUES (?)`;
 
     new Promise((resolve, reject) => {
@@ -96,12 +96,12 @@ module.exports = (function() {
     let ingredients = req.body.ingredients;
 
     let mysql = req.app.get('mysql');
-    let check_query = `SELECT * FROM recipes WHERE recipe_name = ?`;
+    let check_query = `SELECT recipe_id FROM recipes WHERE recipe_name = ?`;
     let new_recipe_query = `INSERT INTO recipes (recipe_name, recipe_img, total_calories, instructions) VALUES (?, ?, ?, ?)`;
     if (!image_url) {
       new_recipe_query = `INSERT INTO recipes (recipe_name, total_calories, instructions) VALUES (?, ?, ?)`;
     }
-    let new_recipe_details_query = `INSERT INTO recipe_details (recipe_id, ingredient_id, quantity, metric) VALUES ?`; // will have multiple entries
+    let new_recipe_details_query = `INSERT INTO recipe_details (recipe_id, ingredient_id, quantity, metric) VALUES ?`; // will have multiple entries, therefore only 1 question mark (?)
     let delete_recipe_query = `DELETE FROM recipes WHERE recipe_id = ?`;
     let delete_recipe_details_query = `DELETE FROM recipe_details WHERE recipe_id = ?`;
 
@@ -196,59 +196,11 @@ module.exports = (function() {
     })
   };
 
-  function viewOneRecipe(req, res, next) {
-    let mysql = req.app.get('mysql');
-    let context = {};
-    context.title = "Admin Edit Recipe";
-
-    let recipe_query = `SELECT * FROM recipes WHERE recipe_id = ?`;
-    let recipe_ingredients_query = `SELECT * FROM recipe_details JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id WHERE recipe_details.recipe_id = ?`;
-    let all_ingredients_query = `SELECT * FROM ingredients`;
-
-    new Promise((resolve, reject) => {
-      // get recipe info
-      mysql.pool.query(recipe_query, req.params.id, (err, results, fields) => {
-        if (err) return next(err);
-
-        context.recipe = results[0];
-        resolve();
-      })
-    })
-    .then(() => {
-      // get recipe's ingredient details
-      return new Promise((resolve, reject) => {
-        mysql.pool.query(recipe_ingredients_query, req.params.id, (err, results, fields) => {
-          if (err) return next(err);
-
-          context.recipe_ingredients = results;
-          resolve();
-        })
-      })
-    })
-    .then(() => {
-      // get all ingredients for user to choose from to make changes
-      return new Promise((resolve, reject) => {
-        mysql.pool.query(all_ingredients_query, (err, results, fields) => {
-          if (err) return next(err);
-
-          context.all_ingredients = results;
-          resolve();
-        })
-      })
-    })
-    .then(() => {
-      res.render('admin_recipe', context);
-    })
-    .catch((error) => {
-      return next(error);
-    })
-  };
-
   function editOneIngredient(req, res, next) {
     let mysql = req.app.get('mysql');
     let ingredient_id = req.body.ingredient_id;
     let ingredient_name = req.body.ingredient_name;
-    let check_query = `SELECT * FROM ingredients WHERE ingredient_name = ?`;
+    let check_query = `SELECT ingredient_id FROM ingredients WHERE ingredient_name = ?`;
     let update_query = `UPDATE ingredients SET ingredient_name = ? WHERE ingredient_id = ?`;
 
     new Promise((resolve, reject) => {
@@ -307,13 +259,137 @@ module.exports = (function() {
     })
   }
 
+  function viewOneRecipe(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let context = {};
+    context.title = "Admin Edit Recipe";
+
+    let recipe_query = `SELECT * FROM recipes WHERE recipe_id = ?`;
+    let recipe_ingredients_query = `SELECT * FROM recipe_details JOIN ingredients ON ingredients.ingredient_id = recipe_details.ingredient_id WHERE recipe_details.recipe_id = ?`;
+    let all_ingredients_query = `SELECT * FROM ingredients`;
+
+    new Promise((resolve, reject) => {
+      // get recipe info
+      mysql.pool.query(recipe_query, req.params.id, (err, results, fields) => {
+        if (err) return next(err);
+
+        context.recipe = results[0];
+        resolve();
+      })
+    })
+    .then(() => {
+      // get recipe's ingredient details
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(recipe_ingredients_query, req.params.id, (err, results, fields) => {
+          if (err) return next(err);
+
+          context.recipe_ingredients = results;
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      // get all ingredients for user to choose from to make changes
+      return new Promise((resolve, reject) => {
+        mysql.pool.query(all_ingredients_query, (err, results, fields) => {
+          if (err) return next(err);
+
+          context.all_ingredients = results;
+          resolve();
+        })
+      })
+    })
+    .then(() => {
+      res.render('admin_recipe', context);
+    })
+    .catch((error) => {
+      return next(error);
+    })
+  }
+
+  function editOneRecipe(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let recipe_id = req.body.recipe_id;
+    let recipe_name = req.body.recipe_name;
+    let image_url = req.body.recipe_image;
+    let calories = req.body.recipe_calories;
+    let instructions = req.body.recipe_instructions;
+    let ingredients = req.body.ingredients;
+
+    let check_query = `SELECT recipe_id FROM recipes WHERE recipe_name = ? AND recipe_id != ?`;
+    let edit_recipe_query =
+        `UPDATE recipes SET
+        recipe_name = ?,
+        total_calories = ?,
+        instruction = ?,
+        recipe_img = ?
+        WHERE recipe_id = ?`;
+    if (!image_url) {
+      edit_recipe_id =
+        `UPDATE recipes SET
+        recipe_name = ?,
+        total_calories = ?,
+        instruction = ?
+        WHERE recipe_id = ?`;
+    }
+    let new_recipe_details_query = `INSERT INTO recipe_details (recipe_id, ingredient_id, quantity, metric) VALUES ?`;
+    let delete_recipe_details_query = `DELETE FROM recipe_details WHERE recipe_id = ?`;
+
+    new Promise((resolve, reject) => {
+      // check if recipe already in database
+      mysql.pool.query(check_query, [recipe_name, recipe_id], (err, results, fields) => {
+        if (err) return next(err);
+
+        if (results.length) {
+          reject("That recipe is already in the database");
+        } else {
+          resolve();
+        }
+      })
+    })
+
+    // update recipe information
+    // delete existing recipe_details
+    // put in new recipe_details
+
+    .then(() => {
+      return res.json('Success');
+    })
+    .catch((reason) => {
+      return res.status(400).json(reason);
+    })
+  }
+
+  function deleteOneRecipe(req, res, next) {
+    let mysql = req.app.get('mysql');
+    let recipe_id = req.body.recipe_id;
+    let delete_query = `DELETE FROM recipes WHERE recipe_id = ?`;
+
+    new Promise((resolve, reject) => {
+      mysql.pool.query(delete_query, recipe_id, (err, results, fields) => {
+        if (err) return next(err);
+
+        resolve();
+      })
+    })
+    .then(() => {
+      return res.json('Success');
+    })
+    .catch((reason) => {
+      return res.status(400).json(reason);
+    })
+
+  }
+
   router.get('/', getAdminIndex);
   router.post('/add_ingredient', addNewIngredient);
   router.post('/add_recipe', addNewRecipe);
   router.get('/ingredients/actions/:id', viewOneIngredient);
-  router.get('/recipes/actions/:id', viewOneRecipe);
   router.patch('/ingredients', editOneIngredient);
   router.delete('/ingredients', deleteOneIngredient);
+  router.get('/recipes/actions/:id', viewOneRecipe);
+  router.patch('/recipes', editOneRecipe);
+  router.delete('/recipes', deleteOneRecipe);
 
   return router;
 })();
