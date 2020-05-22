@@ -1,0 +1,139 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<style>
+
+  #admin_container {
+    background-color: rgba(206, 204, 205, 0.4);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 100%;
+  }
+
+    #admin_container a {
+      text-decoration: none;
+    }
+    #admin_container a:visited {
+      color: inherit;
+    }
+
+  #admin_header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+</style>
+
+
+<section id="admin_container" class="container">
+
+  <section id="admin_header" class="row">
+    <div class="col-sm-12 col-md-2 offset-md-1 pull-left">
+      <button class="btn btn-outline-warning"><a href='/admin'>< Back to admin page</a></button>
+    </div>
+
+    <div class="col-sm-12 col-md-4 offset-md-1">
+      <h1>Admin Portal</h1>
+      <h3>Edit Ingredient - {{ingredient.ingredient_name}}</h3>
+    </div>
+  </section>
+
+  <section>
+    <div id="ingredient-edit-form-div" class="container">
+      <div class="row">
+        <form id="edit_ingredient_form" class="col-sm-12 col-md-4 offset-md-2" action="/admin/ingredients">
+          <div class="form-group">
+            <label>ID: </label>
+            <input class="form-control" type="number" name="ingredient_id" value="{{ingredient.ingredient_id}}" disabled></input>
+          </div>
+
+          <div class="form-group">
+            <label for="ing_name">Name: </label>
+            <input class="form-control" id="ing_name" type="text" name="ingredient_name" value="{{ingredient.ingredient_name}}" required></input>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-outline-success" id="submit_edit_ingredient">Save Changes</button>
+            <button class="btn btn-outline-danger" id="submit_delete_ingredient">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div> <!-- ingredient-edit-form-div -->
+  </section>
+
+</section> <!-- admin_container -->
+
+<script>
+
+// to be combined with other js files, do not change
+function sendJSONData(route, method, data, on_success) {
+  $.ajax({
+    method: method,
+    url: route,
+    contentType: "application/json",
+    dataType: "json",
+    data: JSON.stringify(data)
+  })
+  .done((msg) => {
+    // inform user of success
+    alert(msg);
+
+    // success callback
+    if (on_success && typeof on_success === "function") {
+      on_success();
+    } else {
+      // default behavior: reload page
+      window.location.reload(true);
+    }
+
+  })
+  .fail((msg) => {
+    // inform user of failed attempt
+    if (msg.status >= 500) {
+      // 500 error
+      alert('Error 500: Oops! Something went wrong.');
+    } else {
+      // 400 error
+      alert(msg.responseJSON);
+    }
+  })
+}
+
+// update ingredient
+$('#submit_edit_ingredient').click(submit_edit_ingredient);
+function submit_edit_ingredient(e) {
+  e.preventDefault();
+
+  let route = $('#edit_ingredient_form').attr('action');
+  let ingredient_id = $('[name="ingredient_id"]').val();
+  let ingredient_name = $('[name="ingredient_name"]').val();
+
+  // check if empty
+  if (!ingredient_name) {
+    window.alert("Required form fields cannot be empty.");
+    return;
+  }
+
+  sendJSONData(route, "PATCH", {ingredient_id, ingredient_name});
+}
+
+// delete ingredient
+$('#submit_delete_ingredient').click(submit_delete_ingredient);
+function submit_delete_ingredient(e) {
+  e.preventDefault();
+
+  if (!window.confirm("Do you really want to delete this ingredient?")) {
+    return;
+  }
+
+  let route = $('#edit_ingredient_form').attr('action');
+  let ingredient_id = $('[name="ingredient_id"]').val();
+
+  sendJSONData(route, "DELETE", {ingredient_id}, back_to_admin_page);
+}
+
+function back_to_admin_page() {
+  window.location.href = ("/admin");
+}
+
+</script>
