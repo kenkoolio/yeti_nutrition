@@ -31,7 +31,7 @@ module.exports = (function() {
       });
       res.render('recipes', {
         title: 'All Our Easy-to-Prepare Recipes',
-        username: req.sessions.username,
+        username: req.session.username,
         getRecipe: storage
       });
     });
@@ -49,12 +49,11 @@ module.exports = (function() {
         }
         res.render('oneRecipe', {
           title: "Delicious Recipe",
-          username: req.sessions.username,
+          username: req.session.username,
           recipeName: rows[0].recipe_name,
           img: "images/recipeHeaders/" + rows[0].recipe_img,
           recipeInstructions: rows[0].instructions,
           ingredient: rows,
-          recipeSource: "Rocco Dispirito, Katie Caldesi, Giada de Laurentiis, Emeril Lagasse, Jamie Oliver and Alan Rosen & Beth Allen",
           calories: rows[0].total_calories
         });
     });
