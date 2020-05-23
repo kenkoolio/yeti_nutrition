@@ -1,14 +1,18 @@
+// posts.js
+// author: Gerrit Van Ruiswyk <vanruisg@oregonstate.edu>
+// Provides routes for posts and comments
+
 module.exports = function () {
 
     var express = require('express');
     var router = express.Router();
 
-    function require_signin (req, res, next) {
-      if (!req.session.signedin) {
-        res.redirect('/signin');
-      } else {
-        next();
-      }
+    function require_signin(req, res, next) {
+        if (!req.session.signedin) {
+            res.redirect('/signin');
+        } else {
+            next();
+        }
     };
 
     // Retrieve all posts
@@ -56,6 +60,8 @@ module.exports = function () {
             complete();
         });
     }
+
+    /*POSTS*/
 
     // Display all message board posts
     router.get('/', require_signin, function (req, res) {
@@ -110,7 +116,7 @@ module.exports = function () {
     });
 
     // Create a new message board post
-    router.post('/create_post', function (req, res) {
+    router.post('/create_post', require_signin, function (req, res) {
         console.log('Inserting into the posts table');
         console.log(req.body);
         var mysql = req.app.get('mysql');
@@ -122,8 +128,108 @@ module.exports = function () {
                 console.log(JSON.stringify(error));
                 res.write(JSON.stringify(error));
                 res.end();
+                return;
             } else {
                 res.redirect('/posts/post_submitted');
+            }
+        });
+    });
+
+    // Update a post
+    router.put('/:id', require_signin, function (req, res) {
+        var mysql = req.app.get('mysql');
+        console.log(req.body);
+        console.log(req.params.id);
+        console.log("Updating post:" + req.params.id);
+        var sql = "UPDATE posts SET content=? WHERE post_id=?";
+        var inserts = [req.body.content, req.params.id];
+        sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                res.write(JSON.stringify(error));
+                res.end();
+                return;
+            } else {
+                res.status(200);
+                res.end();
+                return;
+            }
+        });
+    });
+
+    // Delete a post
+    router.delete('/delete/:id', require_signin, function (req, res) {
+        console.log('Deleting post #' + req.params.id);
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM posts WHERE post_id=?";
+        var inserts = [req.params.id];
+        sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                req.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+                return;
+            } else {
+                res.redirect(303, '/posts');
+            }
+        });
+    });
+
+    /*COMMENTS*/
+
+    // Add a new comment
+    router.post('/create_comment', require_signin, function (req, res) {
+        console.log('Adding a new comment');
+        var mysql = req.app.get('mysql');
+        var sql = "INSERT INTO comments (post_id, user_id, content, comment_date) VALUES (?,?,?,?)";
+        var date = new Date();
+        var inserts = [req.body.post_id, req.session.user_id, req.body.content, date];
+        sql = mysql.pool.query(sql, inserts, function (error, results, field) {
+            if (error) {
+                console.log(JSON.stringify(error));
+                res.write(JSON.stringify(error));
+                res.end();
+            } else {
+                res.redirect('/posts/' + req.body.post_id);
+            }
+        });
+    });
+
+    // Update an existing comment
+    router.post('/update_comment/:id', require_signin, function (req, res) {
+        var mysql = req.app.get('mysql');
+        console.log(req.body);
+        console.log("Updating comment:" + req.params.id);
+        var sql = "UPDATE comments SET content=?, post_id=? WHERE comment_id=?";
+        var inserts = [req.body.content, req.body.post_id, req.params.id];
+        sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                res.write(JSON.stringify(error));
+                res.end();
+                return;
+            } else {
+                res.redirect('/posts/' + req.body.post_id);
+            }
+        });
+    });
+
+    // Delete a comment
+    router.post('/delete_comment/:id', require_signin, function (req, res) {
+        console.log('Deleting comment #' + req.params.id);
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM comments WHERE comment_id=?";
+        var inserts = [req.params.id];
+        sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                req.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+                return;
+            } else {
+                res.redirect(303, '/posts/');
             }
         });
     });
