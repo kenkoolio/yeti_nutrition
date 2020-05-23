@@ -14,6 +14,11 @@
             <hr>
             <!-- Post Content -->
             <p>{{post.content}}</p>
+            <br />
+            <div>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updatePostModal">Update</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmPostDelete">Delete</button>
+            </div>
             <hr />
             <hr />
             <!-- Comments Form -->
@@ -22,7 +27,6 @@
                 <div class="card-body">
                     <form action="/comments/create_comment" method="post">
                         <input type="hidden" name="post_id" value="{{post.post_id}}" />
-                        <input type="hidden" name="user_id" value="1" />
                         <div class="form-group">
                             <textarea class="form-control" name="content" rows="3"></textarea>
                         </div>
@@ -30,23 +34,162 @@
                     </form>
                 </div>
             </div>
+            <hr />
+            <div class="container">
+                <h3>COMMENTS</h3>
+            </div>
+            <hr />
             <!-- Single Comment -->
             {{#each comments}}
-                <div class="card mb-4">
-
-                    <div class="card-body">
-                        <h5 class="mt-0">{{this.user_name}}</h5>
-                        <p>
-                            {{this.content}}
-                        </p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Posted on {{this.comment_date}}
-                    </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="mt-0">{{this.user_name}}</h5>
+                    <p>
+                        {{this.content}}
+                    </p>
                 </div>
-            {{/each}}           
+                <div class="card-footer text-muted">
+                    <p>Posted on {{this.comment_date}}</p>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateComment{{this.comment_id}}">Update</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmComment{{this.comment_id}}Delete">Delete</button>
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
     <!-- /.row -->
 </div>
+<br />
+<br />
 <!-- /.container -->
+<!--Modal to Update Post-->
+<div id="updatePostModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Your Post
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="update-post" action="/posts/{{post.post_id}}" method="post">
+                    <!--Current Data-->
+                    <div class="form-group">
+                        <p><strong>Current Content:</strong></p>
+                        <p>{{post.content}}</p>
+                    </div>
+                    <!--Data to be updated-->
+                    <div class="form-group">
+                        <p>Edit your post:</p>
+                        <textarea class="form-control" name="content" rows="10">{{post.content}}</textarea>
+                    </div>
+                    <button onclick="updatePost({{post.post_id}})" class="btn btn-success">Submit</button>
+                    <button type="reset" class="btn">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal to Confirm Post Delete-->
+<div id="confirmPostDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete your post?</h4>
+                <button type="button" class="btn btn-info" data-dismiss="modal">No, don't delete</button>
+                <button onclick="deletePost({{post.post_id}})" class="btn btn-danger">Yes, delete my post</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modals to Update Comments-->
+<!--Modals to Confirm Comment Delete-->
+{{#each comments}}
+<div id="updateComment{{this.comment_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Your Comment
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form action="/posts/update_comment/{{this.comment_id}}" method="post">
+                    <!--Current Data-->
+                    <div class="form-group">
+                        <p><strong>Current Content:</strong></p>
+                        <p>{{this.content}}</p>
+                    </div>
+                    <!--Data to be updated-->
+                    <input type="hidden" name="post_id" value="{{../post.post_id}}" />
+                    <div class="form-group">
+                        <p>Edit your post:</p>
+                        <textarea class="form-control" name="content" rows="10">{{this.content}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="reset" class="btn">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmComment{{this.comment_id}}Delete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete your comment?</h4>
+                <button type="button" class="btn btn-info" data-dismiss="modal">No, don't delete</button>
+                <button onclick="deleteComment({{this.comment_id}})" class="btn btn-danger">Yes, delete my comment</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<br />
+<br />
+
+<script>
+    function deletePost(id) {
+        $.ajax({
+            url: '/posts/delete/' + id,
+            type: 'DELETE',
+            success: function (result) {
+                window.location.replace("./");
+            }
+        })
+    };
+
+    function updatePost(id) {
+        $.ajax({
+            url: '/posts/' + id,
+            type: 'PUT',
+            data: $('#update-post').serialize(),
+            success: function (result) {
+                window.location.replace("./posts/" + id);
+                window.location.reload();
+            }
+        })
+    };
+
+    function deleteComment(id) {
+        $.ajax({
+            url: '/posts/delete_comment/' + id,
+            type: 'POST',
+            success: function (result) {
+                window.location.reload();
+            }
+        })
+    };
+</script>
+

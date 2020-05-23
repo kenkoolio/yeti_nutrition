@@ -1,8 +1,10 @@
 ﻿<div class="container">
+    <div class="alert alert-success">
+        <p><strong>Post submitted successfully!</strong></p>
+    </div>
+</div>
+<div class="container">
     <div class="row">
-        <div class="alert alert-success">
-            <p><strong>Post submitted successfully!</strong></p>
-        </div>
         <div class="col-md-8">
             <h1 class="my-4">Message Board</h1>
             <hr />
@@ -17,15 +19,15 @@
             </div>
             <br />
             {{#each posts}}
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title">{{this.title}}</h2>
-                        <a href="/posts/{{this.post_id}}" class="btn btn-primary">Read More &rarr;</a>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Posted {{this.post_date}} by {{this.user_name}}
-                    </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{this.title}}</h2>
+                    <a href="/posts/{{this.post_id}}" class="btn btn-primary">Read More &rarr;</a>
                 </div>
+                <div class="card-footer text-muted">
+                    Posted {{this.post_date}} by {{this.user_name}}
+                </div>
+            </div>
             {{/each}}
         </div>
     </div>
