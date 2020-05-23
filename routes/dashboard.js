@@ -1,3 +1,7 @@
+// dashboard.js
+// author: Sariah Bunnell
+// Provides routes for dashboard feature.
+
 module.exports = (function() {
   var express = require('express');
   var router = express.Router();
@@ -12,6 +16,6 @@ module.exports = (function() {
 
 router.get('/dashboard', require_signin, function(req, res, next){
   res.render('dashboard', {
-    username: req.sessions.username,
+    username: req.session.username,
   });
 });
