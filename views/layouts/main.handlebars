@@ -6,7 +6,13 @@
   <title>{{title}}</title>
 
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
-
+  
+  <!-- Homepage -->
+  <link rel="stylesheet" href="/css/homeStyle.css">
+  
+  <!-- Dashboard -->
+  <link rel="stylesheet" href="/css/dashboardStyle.css">
+  
   <!-- Recipes -->
   <link rel="stylesheet" type="text/css" href="/css/recipeStyle.css">
   <!-- <link>{{cssStyle}}</link> -->
@@ -39,59 +45,55 @@
 
 <body>
   <header>
-    <section class="wrapper">
-      <nav class="navBar">
-        <div class="navBarLeft">
-          <ul>
-            <li>
-              <a href="/"><img src="/images/logo.png" class="logo"></a>
-            </li>
-            <li><a href="/"> Spacer </a>
-            </li>
-            <li><a href="/calories/1"> Calorie Calculator </a>
-            </li>
-            <li><a href="/posts"> Message Board </a>
-            </li>
-            <li><a href="/recipes"> Recipes </a>
-            </li>
-          </ul>
+      <section class="wrapper">
+        <nav class="navBar">
+          <div class="navBarLeft">
+            <ul>
+              <li>
+                <a href="/dashboard"><img src="/images/logo.png" class="logo"></a>
+              </li>
+              <li id="spacer"><a href="/calories/1"> Calorie Calculator </a>
+              </li>
+              <li><a href="/posts"> Message Board </a>
+              </li>
+              <li><a href="/recipes"> Recipes </a>
+              </li>
+            </ul> 
+          </div>
+          <div class="navBarRight">
+            <a href="/signout"> SIGN OUT </a>
+          </div> 
+        </nav>
+        <div class="landing">
+        <!-- To do: recipe headers will be different -->
+          <img src="/images/spanner.jpg" class="landImg">
         </div>
-        <div class="navBarRight">
-          <a href="/"> Hi, {{username}} </a>
-        </div>
-      </nav>
-      <div class="landing">
-        <!-- TODO : custom banner for recipes -->
-        <img src="/images/spanner.jpg" class="landImg">
-      </div>
-    </section>
-  </header>
-
+      </section>
+    </header>
+   <!-- To do: homepage (possibly individual recipe) header will be different -->
   {{{ body }}}
 
   <footer>
-    <div class="center">
-      <div id="flogo">
-        <a href="/"><img src="/images/logo.png" alt="logo"></a>
+      <div class="center">
+        <span>
+          <a href="/dashboard"><img src="/images/logo.png" id="flogo"></a>
+          <small id="cta"> CHECK OUT THESE GREAT FEATURES!
+          </small>
+          <small id="links">
+            <ul>
+              <li><a href="/calories/1"> Calorie Tracker </a>
+              </li>
+              <li><a href="/posts"> Message Board </a>
+              </li>
+            </ul>
+          </small>
+          <small id="credit"> Image credit: Brooke Lark via Unsplash 
+            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
+             Guilherme Furtado via the Noun Project 
+          </small>
+        </span>
       </div>
-      <div id="links">
-        <h2> CHECK OUT THESE GREAT FEATURES!
-        </h2>
-        <ul>
-          <li><a href=#calTrack> Calorie Tracker </a>
-          </li>
-          <li><a href=#mBoard> Message Board </a>
-          </li>
-        </ul>
-        <div class="credit">
-          <h4> Image credit: Brooke Lark via Unsplash </h4>
-          <h4> Logo credit: Sariah Bunnell with the help of Icons Producer and
-           Guilherme Furtado via the Noun Project
-          </h4>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
 </body>
 </html>

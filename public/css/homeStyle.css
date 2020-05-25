@@ -4,6 +4,9 @@ body {font-family: 'Tahoma', regular;
   color: #000000;
   background-color: #ffffff;
 }
+#home, #about, #benefits {
+  text-decoration: none;
+}
 
 /*****Header*****/
 .wrapper {
@@ -15,7 +18,7 @@ body {font-family: 'Tahoma', regular;
   height: 120px; 
 }
 .navBar a { 
-  display:inline-block;
+  float: left;
   text-align: right;
   padding: 40px;
   font-family: 'Roboto Condensed', serif;
@@ -23,6 +26,7 @@ body {font-family: 'Tahoma', regular;
   color: #000000;
   text-decoration: none;
   margin: 5px;
+  display: inline-block;
 }
 .navBar a:hover { 
   color: rgb(64, 167, 205); 
@@ -54,61 +58,83 @@ body {font-family: 'Tahoma', regular;
 .landImg {
   width: 100%;
   height: auto;
-  /**the following are to be used in place of 'height:auto'
-   and only if you want the image to not shrink with the page**/
-  //height: 400px;
-  //object-fit: cover;
-  //overflow: hidden;
-  margin: 0;
-  z-index: 2;
   margin: 0;
   z-index: 2;
   top: 0;
   left: 0;
 }
-
+.landing .slogan {
+  position: absolute;
+  z-index: 999;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  //margin-left: 50%;
+  top: 40%; /* Adjust this value to move the positioned div up and down */
+  text-align: right;
+  width: 80%; /* Set the width of the positioned div */
+}
+.slogan h1 {
+  font-family: 'Tahoma', regular;
+  font-size: 5em;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px black, 0 0 25px #40a7cd, 0 0 5px #40a7cd;
+}
+.slogan h2 {
+  font-family: 'Tahoma', regular;
+  font-size: 3em;
+  color: #ffffff; //#7d3c8d;
+  text-shadow: 1px 1px 2px black, 0 0 25px #40a7cd, 0 0 5px #40a7cd;
+}
 /******Main******/
 main { 
   background-size: cover;
   width: 100%;
 }
-.greeting {
-  text-align: center;
+#about { 
+  display: block;
   margin-left: auto;
   margin-right: auto;
+  width: 60%;
+  height: auto;
+}
+#about h2 {
+  font-family: 'Tahoma', regular;
+  font-size: 2.66em;
+  color: #7d3c8d;
+}
+#about p { 
   font-family: 'Tahoma', regular;
   font-size: 1.6em;
-  color: #000000;
+  color: grey;
 }
-.recipe-list {
+
+#benefits {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-.recipe-list li {
-  display: inline-block;
+  padding: 0;
+  margin: 0;
   list-style: none;
+}
+#benefits li {
+  list-style: none;
+  display: inline-block;
+  vertical-align: top;
+  display: inline-block;
   text-align: center;
-  padding: 30px;
+  width: 240px;
 }
-.recipe-list li a {
-  text-decoration: none;
+#benefits img {
+  width: 220px;
+  height: auto;
 }
-
-.foodImg {
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
-}
-.foodName {
+#benefits .text {
   display: block;
-  padding: 5px;
-  font-family: 'Roboto Condensed', regular;
+  padding: 10px;
+  font-family: 'Tahoma', regular;
   font-size: 1.33em;
-  color: grey;
-  text-transform: uppercase;
+  color: #7d3c8d;
 }
 
 /******Footer******/
@@ -146,6 +172,12 @@ span small {
   color: #ffffff;
   text-align: left;
 }
+#tag {
+  font-family: 'Tahoma', regular;
+  font-size: 1em;
+  color: #ffffff;
+  text-align: left;
+}
 #links a {
   font-family: 'Roboto Condensed', regular;
   font-size: 2.2em;
@@ -165,4 +197,5 @@ span small {
   color: #ffffff;
   text-align: left;
 }
+
 
