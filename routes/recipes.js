@@ -25,21 +25,17 @@ module.exports = (function() {
       rows.forEach(element => {
         storage.push({
           recipeLink: '/recipes/' + element.recipe_id,
-          img: "images/" + element.thumbnail_img,
+          img: "images/" + element.recipe_img,
           recipeName: element.recipe_name
         });
       });
       res.render('recipes', {
         title: 'All Our Easy-to-Prepare Recipes',
-        username: "Jackie Chan",
+        username: req.session.username,
         getRecipe: storage
       });
     });
   });
-
-  //app.get('/recipes',function(req, res){
-    //res.render('mainRecipes');
-  //});
 
   router.get('/:recipe_id', require_signin, function(req, res, next){
     let mysql = req.app.get('mysql');
@@ -53,12 +49,11 @@ module.exports = (function() {
         }
         res.render('oneRecipe', {
           title: "Delicious Recipe",
-          username: "Jackie Chan",
+          username: req.session.username,
           recipeName: rows[0].recipe_name,
-          img: "images/" + rows[0].recipe_img,
+          img: "images/recipeHeaders/" + rows[0].recipe_img,
           recipeInstructions: rows[0].instructions,
           ingredient: rows,
-          recipeSource: "Rocco Dispirito, Katie Caldesi, Giada de Laurentiis, Emeril Lagasse, Jamie Oliver and Alan Rosen & Beth Allen",
           calories: rows[0].total_calories
         });
     });

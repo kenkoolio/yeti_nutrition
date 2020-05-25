@@ -5,6 +5,7 @@ body {font-family: 'Tahoma', regular;
   background-color: #ffffff;
 }
 
+
 /*****Header*****/
 .wrapper {
   width: 100%;
@@ -15,7 +16,7 @@ body {font-family: 'Tahoma', regular;
   height: 120px; 
 }
 .navBar a { 
-  display:inline-block;
+  display: inline-block;
   text-align: right;
   padding: 40px;
   font-family: 'Roboto Condensed', serif;
@@ -46,7 +47,6 @@ body {font-family: 'Tahoma', regular;
 .navBarRight {
   float: right;
 }
-
 .landing {
   width: 100 %;
   display: inline-block;
@@ -54,13 +54,6 @@ body {font-family: 'Tahoma', regular;
 .landImg {
   width: 100%;
   height: auto;
-  /**the following are to be used in place of 'height:auto'
-   and only if you want the image to not shrink with the page**/
-  //height: 400px;
-  //object-fit: cover;
-  //overflow: hidden;
-  margin: 0;
-  z-index: 2;
   margin: 0;
   z-index: 2;
   top: 0;
@@ -73,49 +66,52 @@ main {
   width: 100%;
 }
 .greeting {
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+  text-align: left;
   font-family: 'Tahoma', regular;
   font-size: 1.6em;
   color: #000000;
+  margin-left: 12%;
 }
-.recipe-list {
+.console {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 5%;
+  margin-right: 5%;
 }
-.recipe-list li {
+.button {
+  width: 30%;
+  height: auto;
   display: inline-block;
-  list-style: none;
-  text-align: center;
-  padding: 30px;
+  margin-bottom: 60px;
 }
-.recipe-list li a {
+.button a {
   text-decoration: none;
+  font-family: 'Roboto Condensed', regular;
+  font-size: 1.6em;
+  color: #40a7cd;
+}
+.button a:hover {
+  color: #7d3c8d; 
+  text-decoration:none; 
+  cursor:pointer;
 }
 
-.foodImg {
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
+.dashImg {
+  width: 500px;
+  height: auto;
+  position: relative;
 }
-.foodName {
-  display: block;
-  padding: 5px;
-  font-family: 'Roboto Condensed', regular;
-  font-size: 1.33em;
-  color: grey;
-  text-transform: uppercase;
+.dashName {
+  padding: 10px;
+  position: absolute;
+  float: top-left;
 }
 
 /******Footer******/
 footer { 
   background: #7d3c8d;
   background-size: cover;
-  text-align: left;
   width: 100%;
   height: auto;
 }
@@ -165,4 +161,3 @@ span small {
   color: #ffffff;
   text-align: left;
 }
-
