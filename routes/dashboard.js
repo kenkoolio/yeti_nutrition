@@ -14,8 +14,11 @@ module.exports = (function() {
     }
   };
 
-router.get('/dashboard', require_signin, function(req, res, next){
-  res.render('dashboard', {
-    username: req.session.username,
+  router.get('/', require_signin, function(req, res, next){
+    res.render('dashboard', {
+      username: req.session.username,
+    });
   });
-});
+
+  return router;
+})();
