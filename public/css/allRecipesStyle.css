@@ -91,7 +91,7 @@ main {
   display: inline-block;
   list-style: none;
   text-align: center;
-  padding: 30px;
+  padding: 60px;
 }
 .recipe-list li a {
   text-decoration: none;
