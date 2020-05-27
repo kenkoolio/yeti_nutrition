@@ -3,18 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{{{title}}}</title>
+  <title>{{title}}</title>
 
-  <link type="text/css" rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/recipeStyle.css">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  
+  <!-- Homepage -->
+  <link rel="stylesheet" href="/css/homeStyle.css">
+  
   <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Tahoma" rel="stylesheet">
 
 </head>
 
-<body>
+  <body>
+    <header>
+      <section class="wrapper">
+        <nav class="navBar">
+          <div class="navBarLeft">
+            <ul>
+              <li>
+                <a href="/dashboard"><img src="/images/logo.png" class="logo"></a>
+              </li>
+              <li id="spacer"><a href="/calories/1"> Calorie Calculator </a>
+              </li>
+              <li><a href="/posts"> Message Board </a>
+              </li>
+              <li><a href="/recipes"> Recipes </a>
+              </li>
+            </ul> 
+          </div>
+          <div class="navBarRight">
+            <a href="/signout"> SIGN OUT </a>
+          </div> 
+        </nav>
+        <div class="landing">
+          <img src="{{img}}" class="landImg">
+        </div>
+      </section>
+    </header>
 
-  {{{ body }}}
+    {{{ body }}}
+    
+    <footer>
+      <div class="center">
+        <span>
+          <a href="/dashboard"><img src="/images/logo.png" id="flogo"></a>
+          <small id="cta"> CHECK OUT THESE GREAT FEATURES!
+          </small>
+          <small id="links">
+            <ul>
+              <li><a href="/calories/1"> Calorie Tracker </a>
+              </li>
+              <li><a href="/posts"> Message Board </a>
+              </li>
+            </ul>
+          </small>
+          <small id="credit"> Recipe credit: Rocco Dispirito 'Healthy + Delicious' 
+             & Maya Krampf at wholesomeyum.com 
+            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
+             Guilherme Furtado via the Noun Project 
+            <br> Image Attributions: Markus Spiske, Anthony Leong, Retha Ferguson, 
+             Phuc ( Xù ) Pham, Jill Wellington, Votsis Panagiotis, Pixabay, alleksana, 
+             Caio, cottonbro via Pexels & Jonathan Borba, Brooke Lark, Bernard Tuck, 
+             Reka Biro-Horvath, Micheile Henderson via Unsplash
+          </small>
+        </span>
+      </div>
+    </footer>
 
-</body>
+  </body>
 </html>
