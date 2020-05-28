@@ -30,6 +30,7 @@ app.set('mysql', mysql);
 
 
 // mount routes
+app.use('/', require('./routes/homepage.js'));
 app.use('/test', require('./routes/test.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/dashboard', require('./routes/dashboard.js'));
@@ -41,11 +42,6 @@ app.use('/signin', require('./routes/signin.js'));
 app.use('/signup', require('./routes/signup.js'));
 app.use('/signout', require('./routes/signout.js'));
 
-
-// home page
-app.get('/', (req, res) => {
-  res.render('home');
-})
 
 // 404 error
 app.use((req, res) => {
