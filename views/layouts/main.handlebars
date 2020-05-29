@@ -65,12 +65,15 @@
           </div> 
         </nav>
         <div class="landing">
-        <!-- To do: recipe headers will be different -->
-          <img src="/images/spanner.jpg" class="landImg">
+        {{#if cond1}}
+         <img src="{{img}}" class="landImg">
+         {{else}}
+         <img src="/images/spanner.jpg" class="landImg">
+         {{/if}}
         </div>
       </section>
     </header>
-   <!-- To do: homepage (possibly individual recipe) header will be different -->
+    
   {{{ body }}}
 
   <footer>
