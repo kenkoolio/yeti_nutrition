@@ -48,6 +48,7 @@ module.exports = (function() {
           return;
         }
         res.render('oneRecipe', {
+          recipePage: true,
           title: "Delicious Recipe",
           username: req.session.username,
           recipeName: rows[0].recipe_name,
