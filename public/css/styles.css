@@ -61,3 +61,57 @@ body {font-family: 'Tahoma', regular;
   top: 0;
   left: 0;
 }
+
+/******Footer******/
+footer { 
+  background: #7d3c8d;
+  background-size: cover;
+  width: 100%;
+  height: auto;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+#flogo {
+  width: 30%;
+  height: auto;
+  float: left;
+  padding-right: 20px;
+}
+span small {
+  display: block;
+  white-space: wrap;
+  overflow: visible;
+}
+#links li {
+  display: inline-block;
+  margin: 0 auto;
+}
+#cta {
+  font-family: 'Tahoma', regular;
+  font-size: 2.66em;
+  color: #ffffff;
+  text-align: left;
+}
+#links a {
+  font-family: 'Roboto Condensed', regular;
+  font-size: 2.2em;
+  color: #ffffff;
+  text-align: left;
+  text-decoration: none;
+  margin: 5px;
+}
+#links a:hover { 
+  color: #40a7cd; 
+  text-decoration:none; 
+  cursor:pointer;
+} 
+#credit {
+  font-family: 'Tahoma', regular;
+  font-size: 1em;
+  color: #ffffff;
+  text-align: left;
+}
