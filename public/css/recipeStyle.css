@@ -69,6 +69,7 @@ main {
   margin-right: auto;
   width: 80%;
   height: auto;
+  padding: 4%;
 }
 .recipe-name h1 {
   font-family: 'Tahoma', regular;
