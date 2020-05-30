@@ -69,7 +69,7 @@ body {
     height: 100px;
     width: 100px;
     outline: black;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.5) !important;
     background-size: 100%, 100%;
     border-radius: 50%;
     border: 1px solid black;
@@ -92,10 +92,6 @@ body {
 
   .calories-info {
     width: 100%;
-  }
-
-  .calories-add {
-    
   }
 
   .calories-history {
