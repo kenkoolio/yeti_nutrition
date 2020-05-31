@@ -1,4 +1,4 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <style>
@@ -22,7 +22,7 @@
     margin-bottom: 50px;
   }
 
-</style>
+</style> -->
 
 
 <section id="admin_container" class="container">
@@ -63,77 +63,79 @@
 
 </section> <!-- admin_container -->
 
+
+<script src="/js/admin.js"></script>
 <script>
 
 // to be combined with other js files, do not change
-function sendJSONData(route, method, data, on_success) {
-  $.ajax({
-    method: method,
-    url: route,
-    contentType: "application/json",
-    dataType: "json",
-    data: JSON.stringify(data)
-  })
-  .done((msg) => {
-    // inform user of success
-    alert(msg);
+// function sendJSONData(route, method, data, on_success) {
+//   $.ajax({
+//     method: method,
+//     url: route,
+//     contentType: "application/json",
+//     dataType: "json",
+//     data: JSON.stringify(data)
+//   })
+//   .done((msg) => {
+//     // inform user of success
+//     alert(msg);
+//
+//     // success callback
+//     if (on_success && typeof on_success === "function") {
+//       on_success();
+//     } else {
+//       // default behavior: reload page
+//       window.location.reload(true);
+//     }
+//
+//   })
+//   .fail((msg) => {
+//     // inform user of failed attempt
+//     if (msg.status >= 500) {
+//       // 500 error
+//       alert('Error 500: Oops! Something went wrong.');
+//     } else {
+//       // 400 error
+//       alert(msg.responseJSON);
+//     }
+//   })
+// }
 
-    // success callback
-    if (on_success && typeof on_success === "function") {
-      on_success();
-    } else {
-      // default behavior: reload page
-      window.location.reload(true);
-    }
+// // update ingredient
+// $('#submit_edit_ingredient').click(submit_edit_ingredient);
+// function submit_edit_ingredient(e) {
+//   e.preventDefault();
+//
+//   let route = $('#edit_ingredient_form').attr('action');
+//   let ingredient_id = $('[name="ingredient_id"]').val();
+//   let ingredient_name = $('[name="ingredient_name"]').val();
+//
+//   // check if empty
+//   if (!ingredient_name) {
+//     window.alert("Required form fields cannot be empty.");
+//     return;
+//   }
+//
+//   sendJSONData(route, "PATCH", {ingredient_id, ingredient_name});
+// }
+//
+// // delete ingredient
+// $('#submit_delete_ingredient').click(submit_delete_ingredient);
+// function submit_delete_ingredient(e) {
+//   e.preventDefault();
+//
+//   if (!window.confirm("Do you really want to delete this ingredient?")) {
+//     return;
+//   }
+//
+//   let route = $('#edit_ingredient_form').attr('action');
+//   let ingredient_id = $('[name="ingredient_id"]').val();
+//
+//   sendJSONData(route, "DELETE", {ingredient_id}, back_to_admin_page);
+// }
 
-  })
-  .fail((msg) => {
-    // inform user of failed attempt
-    if (msg.status >= 500) {
-      // 500 error
-      alert('Error 500: Oops! Something went wrong.');
-    } else {
-      // 400 error
-      alert(msg.responseJSON);
-    }
-  })
-}
-
-// update ingredient
-$('#submit_edit_ingredient').click(submit_edit_ingredient);
-function submit_edit_ingredient(e) {
-  e.preventDefault();
-
-  let route = $('#edit_ingredient_form').attr('action');
-  let ingredient_id = $('[name="ingredient_id"]').val();
-  let ingredient_name = $('[name="ingredient_name"]').val();
-
-  // check if empty
-  if (!ingredient_name) {
-    window.alert("Required form fields cannot be empty.");
-    return;
-  }
-
-  sendJSONData(route, "PATCH", {ingredient_id, ingredient_name});
-}
-
-// delete ingredient
-$('#submit_delete_ingredient').click(submit_delete_ingredient);
-function submit_delete_ingredient(e) {
-  e.preventDefault();
-
-  if (!window.confirm("Do you really want to delete this ingredient?")) {
-    return;
-  }
-
-  let route = $('#edit_ingredient_form').attr('action');
-  let ingredient_id = $('[name="ingredient_id"]').val();
-
-  sendJSONData(route, "DELETE", {ingredient_id}, back_to_admin_page);
-}
-
-function back_to_admin_page() {
-  window.location.href = ("/admin");
-}
+// function back_to_admin_page() {
+//   window.location.href = ("/admin");
+// }
 
 </script>

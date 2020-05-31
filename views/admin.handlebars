@@ -1,4 +1,4 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <style>
 
@@ -107,7 +107,7 @@
     border-radius: 50%;
   }
 
-</style>
+</style> -->
 
 <section id="admin_container">
 
@@ -250,10 +250,17 @@
 
 </section> <!-- admin_container -->
 
+
+<script src="/js/admin.js"></script>
 <script>
+
+// let ing_container = $('.ingredients_list').first();
+// let add_ing_button = $('#add_ing_to_form_button');
+// let ing_count = 1;
+
 // to add dynamic ingredients to recipes form
 // example: [{"id": 1, "name": "green onions"}, {"id": 2, "name": "pizza"}, {"id": 3, "name": "pepper"}];
-let ingredients = [];
+// let ingredients = [];
 let one_ingredient = {};
 {{#each ingredients}}
   one_ingredient = {};
@@ -262,206 +269,202 @@ let one_ingredient = {};
   ingredients.push(one_ingredient);
 {{/each}}
 
-let ing_container = $('.ingredients_list').first();
-let add_ing_button = $('#add_ing_to_form_button');
-let ing_count = 1;
+// add_ing_button.click(add_ing_to_form);
 
-add_ing_button.click(add_ing_to_form);
+// function add_ing_to_form(e) {
+//   // increment ingredient count
+//   ing_count++;
+//
+//   // create container div
+//   let ing_div = $('<div/>', {class: 'ing_div_' + ing_count});
+//
+//   // create select ingredient //
+//   // create label
+//   let ing_label = $('<label/>', {for: 'ing_' + ing_count});
+//   ing_label.append(document.createTextNode('Ingredient #' + ing_count));  // label text
+//   // create select
+//   let ing_select = $('<select/>', {name: 'ing_' + ing_count, id: 'ing_' + ing_count});
+//   // create options
+//   ingredients.map((ingredient) => {
+//     ing_select.append($('<option/>', {value: ingredient.id}).append(document.createTextNode(ingredient.name)));
+//   })
+//   // add select inside label
+//   ing_label.append(ing_select);
+//
+//   // create quantity input //
+//   // create label
+//   let qty_label = $('<label/>', {for: 'ing_qty_' + ing_count});
+//   qty_label.append(document.createTextNode('Quantity: '));  // label text
+//   // create input
+//   qty_label.append($('<input/>',
+//     {type: 'number',
+//     name: 'ing_qty_' + ing_count,
+//     id: 'ing_qty_' + ing_count,
+//     step: '0.01',
+//     value: '0.00',
+//     placeholder: '0.00'}));
+//
+//   // create units input//
+//   // create label
+//   let unit_label = $('<label/>', {for: 'ing_metric_' + ing_count});
+//   unit_label.append(document.createTextNode('Units: '));
+//   // create input
+//   unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
+//
+//   // create remove button //
+//   let remove_button = $('<button/>', {class: 'remove_ing btn btn-sm btn-outline-danger'});
+//   remove_button.append(document.createTextNode('X'));
+//   // bind remove event
+//   remove_button.click(remove_ing_from_from);
+//
+//   // add ingredient select, quantity, units, and remove button to ingredient div
+//   ing_div.append(ing_label);
+//   ing_div.append(qty_label);
+//   ing_div.append(unit_label);
+//   ing_div.append(remove_button);
+//
+//   // add new ingredient div to ingredients container
+//   ing_container.append(ing_div);
+//
+//   e.preventDefault();
+// }
 
-function add_ing_to_form(e) {
-  // increment ingredient count
-  ing_count++;
-
-  // create container div
-  let ing_div = $('<div/>', {class: 'ing_div_' + ing_count});
-
-  // create select ingredient //
-  // create label
-  let ing_label = $('<label/>', {for: 'ing_' + ing_count});
-  ing_label.append(document.createTextNode('Ingredient #' + ing_count));  // label text
-  // create select
-  let ing_select = $('<select/>', {name: 'ing_' + ing_count, id: 'ing_' + ing_count});
-  // create options
-  ingredients.map((ingredient) => {
-    ing_select.append($('<option/>', {value: ingredient.id}).append(document.createTextNode(ingredient.name)));
-  })
-  // add select inside label
-  ing_label.append(ing_select);
-
-  // create quantity input //
-  // create label
-  let qty_label = $('<label/>', {for: 'ing_qty_' + ing_count});
-  qty_label.append(document.createTextNode('Quantity: '));  // label text
-  // create input
-  qty_label.append($('<input/>',
-    {type: 'number',
-    name: 'ing_qty_' + ing_count,
-    id: 'ing_qty_' + ing_count,
-    step: '0.01',
-    value: '0.00',
-    placeholder: '0.00'}));
-
-  // create units input//
-  // create label
-  let unit_label = $('<label/>', {for: 'ing_metric_' + ing_count});
-  unit_label.append(document.createTextNode('Units: '));
-  // create input
-  unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
-
-  // create remove button //
-  let remove_button = $('<button/>', {class: 'remove_ing btn btn-sm btn-outline-danger'});
-  remove_button.append(document.createTextNode('X'));
-  // bind remove event
-  remove_button.click(remove_ing_from_from);
-
-  // add ingredient select, quantity, units, and remove button to ingredient div
-  ing_div.append(ing_label);
-  ing_div.append(qty_label);
-  ing_div.append(unit_label);
-  ing_div.append(remove_button);
-
-  // add new ingredient div to ingredients container
-  ing_container.append(ing_div);
-
-  e.preventDefault();
-}
-
-function remove_ing_from_from(e) {
-  e.preventDefault();
-
-  // this ingredient div
-  let this_ing_div = $(this).parent();
-
-  // remove this div from ingredient container
-  this_ing_div.remove();
-}
+// function remove_ing_from_from(e) {
+//   e.preventDefault();
+//
+//   // this ingredient div
+//   let this_ing_div = $(this).parent();
+//
+//   // remove this div from ingredient container
+//   this_ing_div.remove();
+// }
 
 // add new ingredient
-$('#submit_new_ingredient').click(create_new_ingredient);
-function create_new_ingredient(e) {
-  e.preventDefault();
-
-  let form = $('#new_ingredient_form');
-  let route = form.attr('action');
-  let ingredient_name = form.find('[name="ingredient_name"]').val();
-
-  // check for empty input
-  if (ingredient_name.length == 0) {
-    alert("Ingredient name cannot be empty");
-    return;
-  }
-
-  // send data
-  sendJSONData(route, "POST", {ingredient_name});
-
-}
+// $('#submit_new_ingredient').click(create_new_ingredient);
+// function create_new_ingredient(e) {
+//   e.preventDefault();
+//
+//   let form = $('#new_ingredient_form');
+//   let route = form.attr('action');
+//   let ingredient_name = form.find('[name="ingredient_name"]').val();
+//
+//   // check for empty input
+//   if (ingredient_name.length == 0) {
+//     alert("Ingredient name cannot be empty");
+//     return;
+//   }
+//
+//   // send data
+//   sendJSONData(route, "POST", {ingredient_name});
+//
+// }
 
 // add new recipe
-$('#submit_new_recipe').click(create_new_recipe);
-function create_new_recipe(e) {
-  e.preventDefault();
+// $('#submit_new_recipe').click(create_new_recipe);
+// function create_new_recipe(e) {
+//   e.preventDefault();
+//
+//   let form = $('#new_recipe_form');
+//   let route = form.attr('action');
+//
+//   let recipe_name = form.find('[name="recipe_name"]').val();
+//   let img_url = form.find('[name="recipe_img"]').val();       // optional
+//   let calories = form.find('[name="recipe_calories"]').val();
+//   let instructions = form.find('[name="recipe_instructions"]').val();
+//
+//   // check for empty recipe inputs
+//   if (!recipe_name || !instructions || !calories || calories <= 0) {
+//     alert("New recipe form missing required fields");
+//     return;
+//   }
+//
+//   // fill out recipes data
+//   let recipes_submission = {
+//     recipe_name,
+//     img_url,
+//     calories,
+//     instructions
+//   };
+//
+//   // get ingredients data
+//   let [ingredients_valid, ingredients_submission] = extract_ingredient_data(form);
+//
+//   // if ingredients are invalid, exit function
+//   if (!ingredients_valid) {
+//     alert("Missing information in ingredients");
+//     return;
+//   }
+//
+//   // attach ingredients to recipes submission
+//   recipes_submission.ingredients = ingredients_submission;
+//
+//   // send data
+//   sendJSONData(route, "POST", recipes_submission);
+// }
 
-  let form = $('#new_recipe_form');
-  let route = form.attr('action');
+// function extract_ingredient_data(form) {
+//   // parse ingredients
+//   let ingredients_list_div = form.find('.ingredients_list').first();
+//   let ingredients_list = ingredients_list_div.children();
+//
+//   // variables for data submission
+//   let ingredients_valid = true;  // flag to denote if ingredient form filled out properly
+//   let ingredients_submission = [];
+//   let ing_row = {};
+//   let ing_item;
+//   let ing_qty;
+//   let ing_metric;
+//
+//   ingredients_list.each((i, ingredient_item) => {
+//     ingredient_item = $(ingredient_item);
+//
+//     // get ingredient choice, quantity, and metric from user input
+//     ing_item = ingredient_item.find('select').val();
+//     ing_qty = ingredient_item.find(':input[type="number"]').val();
+//     ing_metric = ingredient_item.find(':input[type="text"]').val();
+//
+//     // missing ingredient information
+//     if (!ing_item || !ing_qty || !ing_metric || ing_qty <= 0) {
+//       ingredients_valid = false;
+//       return;
+//     }
+//
+//     // otherwise, ingredient forms are properly filled out, create dictionary to submit
+//     ing_row = {};
+//     ing_row.ingredient_id = ing_item;
+//     ing_row.quantity = ing_qty;
+//     ing_row.metric = ing_metric;
+//     ingredients_submission.push(ing_row);
+//   });
+//
+//   return [ingredients_valid, ingredients_submission];
+// }
 
-  let recipe_name = form.find('[name="recipe_name"]').val();
-  let img_url = form.find('[name="recipe_img"]').val();       // optional
-  let calories = form.find('[name="recipe_calories"]').val();
-  let instructions = form.find('[name="recipe_instructions"]').val();
-
-  // check for empty recipe inputs
-  if (!recipe_name || !instructions || !calories || calories <= 0) {
-    alert("New recipe form missing required fields");
-    return;
-  }
-
-  // fill out recipes data
-  let recipes_submission = {
-    recipe_name,
-    img_url,
-    calories,
-    instructions
-  };
-
-  // get ingredients data
-  let [ingredients_valid, ingredients_submission] = extract_ingredient_data(form);
-
-  // if ingredients are invalid, exit function
-  if (!ingredients_valid) {
-    alert("Missing information in ingredients");
-    return;
-  }
-
-  // attach ingredients to recipes submission
-  recipes_submission.ingredients = ingredients_submission;
-
-  // send data
-  sendJSONData(route, "POST", recipes_submission);
-}
-
-function extract_ingredient_data(form) {
-  // parse ingredients
-  let ingredients_list_div = form.find('.ingredients_list').first();
-  let ingredients_list = ingredients_list_div.children();
-
-  // variables for data submission
-  let ingredients_valid = true;  // flag to denote if ingredient form filled out properly
-  let ingredients_submission = [];
-  let ing_row = {};
-  let ing_item;
-  let ing_qty;
-  let ing_metric;
-
-  ingredients_list.each((i, ingredient_item) => {
-    ingredient_item = $(ingredient_item);
-
-    // get ingredient choice, quantity, and metric from user input
-    ing_item = ingredient_item.find('select').val();
-    ing_qty = ingredient_item.find(':input[type="number"]').val();
-    ing_metric = ingredient_item.find(':input[type="text"]').val();
-
-    // missing ingredient information
-    if (!ing_item || !ing_qty || !ing_metric || ing_qty <= 0) {
-      ingredients_valid = false;
-      return;
-    }
-
-    // otherwise, ingredient forms are properly filled out, create dictionary to submit
-    ing_row = {};
-    ing_row.ingredient_id = ing_item;
-    ing_row.quantity = ing_qty;
-    ing_row.metric = ing_metric;
-    ingredients_submission.push(ing_row);
-  });
-
-  return [ingredients_valid, ingredients_submission];
-}
-
-function sendJSONData(route, method, data) {
-  $.ajax({
-    method: method,
-    url: route,
-    contentType: "application/json",
-    dataType: "json",
-    data: JSON.stringify(data)
-  })
-  .done((msg) => {
-    // inform user of success
-    alert(msg);
-
-    // reload page
-    window.location.reload(true);
-  })
-  .fail((msg) => {
-    // inform user of failed attempt
-    if (msg.status >= 500) {
-      // 500 error
-      alert('Error 500: Oops! Something went wrong.');
-    } else {
-      // 400 error
-      alert(msg.responseJSON);
-    }
-  })
-}
+// function sendJSONData(route, method, data) {
+//   $.ajax({
+//     method: method,
+//     url: route,
+//     contentType: "application/json",
+//     dataType: "json",
+//     data: JSON.stringify(data)
+//   })
+//   .done((msg) => {
+//     // inform user of success
+//     alert(msg);
+//
+//     // reload page
+//     window.location.reload(true);
+//   })
+//   .fail((msg) => {
+//     // inform user of failed attempt
+//     if (msg.status >= 500) {
+//       // 500 error
+//       alert('Error 500: Oops! Something went wrong.');
+//     } else {
+//       // 400 error
+//       alert(msg.responseJSON);
+//     }
+//   })
+// }
 
 </script>
