@@ -65,12 +65,15 @@
           </div> 
         </nav>
         <div class="landing">
-        <!-- To do: recipe headers will be different -->
-          <img src="/images/spanner.jpg" class="landImg">
+        {{#if recipePage}}
+         <img src="{{img}}" class="landImg">
+         {{else}}
+         <img src="/images/spanner.jpg" class="landImg">
+         {{/if}}
         </div>
       </section>
     </header>
-   <!-- To do: homepage (possibly individual recipe) header will be different -->
+    
   {{{ body }}}
 
   <footer>
@@ -87,10 +90,22 @@
               </li>
             </ul>
           </small>
+          {{#if recipePage}}
+           <small id="credit"> Recipe credit: Rocco Dispirito 'Healthy + Delicious' 
+             and Maya Krampf at wholesomeyum.com 
+            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
+             Guilherme Furtado via the Noun Project 
+            <br> Image Attributions: Markus Spiske, Anthony Leong, Retha Ferguson, 
+             Phuc ( Xù ) Pham, Jill Wellington, Votsis Panagiotis, Pixabay, alleksana, 
+             Caio, cottonbro via Pexels and Jonathan Borba, Brooke Lark, Bernard Tuck, 
+             Reka Biro-Horvath, Micheile Henderson via Unsplash
+          </small>
+         {{else}}
           <small id="credit"> Image credit: Brooke Lark via Unsplash 
             <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
              Guilherme Furtado via the Noun Project 
           </small>
+         {{/if}}
         </span>
       </div>
     </footer>
