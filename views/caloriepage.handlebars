@@ -8,7 +8,7 @@
 
   <h2>Today's Progress</h2>
   <div class="calorie-progress">
-    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="min-width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
+    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="{{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}" aria-valuemin="0" aria-valuemax="100" style="width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
       Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
     </div>
   </div>
@@ -85,15 +85,21 @@
               <td>Consumed</td>
               <td>Deficit</td>
               <td>Surplus</td>
+              <td colspan="2">Modify</td>
             </tr>
 
               {{#each results}}
               <tr>
+              
               <td>{{this.calorie_date}}</td>
               <td>2000</td>
               <td>{{this.calorie_in}}</td>
               <td>{{this.calorie_left}}</td>
               <td>{{this.calorie_surplus}}</td>
+              <td>                <div class="card-footer text-muted">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateComment{{this.calorie_id}}">Update</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmComment{{this.calorie_id}}Delete">Delete</button>
+                </div></td>
               </tr>
               {{/each}}
 
@@ -129,6 +135,11 @@
 
 
 <script>
+//  $(document).ready(function(){
+//    $('[name="deleteMe"]').click(function(){
+//       $(this).closest("tr").remove(); 
+//    });
+//});
   $(document).ready(function(){
       // Activate carousel
       $("#recipeCarousel").carousel();
@@ -183,3 +194,70 @@
     console.log(counter);
   }
 </script>
+
+<!--Modals to Update Comments-->
+<!--Modals to Confirm Comment Delete-->
+{{#each results}}
+<div id="updateComment{{this.calorie_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Your Calorie entry
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form action="/calories/update/{{this.calorie_id}}" method="post">
+                    <!--Current Data-->
+                    <div class="form-group">
+                        <p><strong>Current Calories:</strong></p>
+                        <p>{{this.calorie_in}}</p>
+                    </div>
+                    <!--Data to be updated-->
+                    
+                    <div class="form-group">
+                        <p>Edit your calories:</p>
+                        <textarea class="form-control" name="calorieUpdate" rows="10">{{this.calorie_in}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="reset" class="btn">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmComment{{this.calorie_id}}Delete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete your calorie entry?</h4>
+                <button type="button" class="btn btn-info" data-dismiss="modal">No, don't delete</button>
+                <button onclick="deleteCalorie({{this.calorie_id}})" class="btn btn-danger">Yes, delete my calorie</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<br />
+<br />
+
+<script>
+
+
+
+    function deleteCalorie(id) {
+        $.ajax({
+            url: '/calories/delete/' + id,
+            type: 'GET',
+            success: function (result) {
+                window.location.reload();
+            }
+        })
+    };
+</script>
+

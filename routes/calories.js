@@ -32,6 +32,44 @@ module.exports = (function() {
 
   });
 
+  router.get('/delete/:calorie_id', require_signin, function(req, res, next){
+    var calorie_id = req.params.calorie_id;
+    var user_id = req.session.user_id;
+    console.log(calorie_id);
+    var calories = req.body.calories;
+    var mysql = req.app.get('mysql');
+
+    mysql.pool.query("DELETE FROM calories WHERE calorie_id = ?", calorie_id, function(err, result){
+    if(err) return next(err);
+
+    console.log("1 record deleted");
+      // return;
+      // return res.send('Success');
+    res.redirect('/calories/' + user_id)
+      // res.end();
+    });
+
+  });
+
+  router.post('/update/:calorie_id', require_signin, function (req, res) {
+    var user_id = req.session.user_id;
+    var mysql = req.app.get('mysql');
+    console.log(req.body);
+    console.log("Updating calorie entry:" + req.params.calorie_id);
+    var sql = "UPDATE calories SET calorie_in=? WHERE calorie_id=?";
+    var inserts = [req.body.calorieUpdate, req.params.calorie_id];
+    sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+            res.write(JSON.stringify(error));
+            res.end();
+            return;
+        } else {
+            res.redirect('/calories/' + user_id);
+        }
+    });
+  });
+
   function genContext(){
     var stuffToDisplay = {};
     stuffToDisplay.time = (new Date(Date.now())).toLocaleTimeString('en-US');
@@ -41,6 +79,8 @@ module.exports = (function() {
   router.get('/time', require_signin, function(req,res){
     res.render('caloriepage', genContext());
   });
+
+  
 
   router.get("/:user_id", require_signin, (req, res, next) => {
     var context = {};
@@ -83,11 +123,7 @@ module.exports = (function() {
         }
 
         var calorie_status;
-        if (calorie_left > 0) {
-          calorie_status = "deficit";
-        } else if (calorie_left <= 0) {
-          calorie_status = "surplus";
-        }
+
 
         console.log("calorie tracker" + calorie_left_tracker);
         
@@ -99,7 +135,12 @@ module.exports = (function() {
         }
         console.log("calorie_left " + calorie_left);
         console.log("calorie tracker " + calorie_left_tracker);
-
+        
+        if (calorie_left > 0) {
+          calorie_status = "deficit";
+        } else if (calorie_left <= 0) {
+          calorie_status = "surplus";
+        }
 
 
         storage.push({"calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
