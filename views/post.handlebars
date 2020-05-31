@@ -28,7 +28,7 @@
                     <form action="/comments/create_comment" method="post">
                         <input type="hidden" name="post_id" value="{{post.post_id}}" />
                         <div class="form-group">
-                            <textarea class="form-control" name="content" rows="3"></textarea>
+                            <textarea class="form-control" name="content" rows="3" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -72,7 +72,7 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form id="update-post" action="/posts/{{post.post_id}}" method="post">
+                <form id="update-post" action="/posts/update_post/{{post.post_id}}" method="post">
                     <!--Current Data-->
                     <div class="form-group">
                         <p><strong>Current Content:</strong></p>
@@ -81,9 +81,9 @@
                     <!--Data to be updated-->
                     <div class="form-group">
                         <p>Edit your post:</p>
-                        <textarea class="form-control" name="content" rows="10">{{post.content}}</textarea>
+                        <textarea class="form-control" name="content" rows="10" required>{{post.content}}</textarea>
                     </div>
-                    <button onclick="updatePost({{post.post_id}})" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn">Reset</button>
                 </form>
             </div>
@@ -130,7 +130,7 @@
                     <input type="hidden" name="post_id" value="{{../post.post_id}}" />
                     <div class="form-group">
                         <p>Edit your post:</p>
-                        <textarea class="form-control" name="content" rows="10">{{this.content}}</textarea>
+                        <textarea class="form-control" name="content" rows="10" required>{{this.content}}</textarea>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn">Reset</button>
@@ -166,18 +166,6 @@
             type: 'DELETE',
             success: function (result) {
                 window.location.replace("./");
-            }
-        })
-    };
-
-    function updatePost(id) {
-        $.ajax({
-            url: '/posts/' + id,
-            type: 'PUT',
-            data: $('#update-post').serialize(),
-            success: function (result) {
-                window.location.replace("./posts/" + id);
-                window.location.reload();
             }
         })
     };
