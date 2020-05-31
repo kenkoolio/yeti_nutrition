@@ -6,6 +6,7 @@
     background-color: rgba(206, 204, 205, 0.4);
     padding-top: 20px;
     padding-bottom: 20px;
+    font-family: 'Tahoma', regular;
   }
 
   #admin_header {
@@ -37,7 +38,7 @@
   .ingredients_list {
     font-size: 9px;
     padding: 10px;
-    background-color: rgba(0, 255, 191, 0.8);
+    background-color: rgba(192,255,238, 0.8);
     border-radius: 5px;
   }
 
@@ -63,21 +64,26 @@
     max-height: 300px;
     overflow-y: auto;
     margin-bottom: 20px;
+
+    background-color: rgba(202, 228, 191, 0.8);
   }
 
     #ingredients_section section {
       max-height: 250px;
       overflow-y: auto;
+      background-color: rgba(250, 231, 188, 0.8);
     }
 
   #recipes_section {
-    max-height: 750px;
+    max-height: 800px;
     overflow-y: auto;
+    background-color: rgba(202, 228, 191, 0.8);
   }
 
     #recipes_section section {
-      max-height: 700px;
+      max-height: 750px;
       overflow-y: auto;
+      background-color: rgba(250, 231, 188, 0.8);
     }
 
   .recipe_table_image {
@@ -90,6 +96,15 @@
     font-style: italic;
     color: orange;
     border-bottom: 2px dashed #7d3c8d;
+  }
+
+  [class*="ing_div_"] {
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 20px;
+  }
+
+  .remove_ing {
+    border-radius: 50%;
   }
 
 </style>
@@ -121,6 +136,7 @@
 
       <!-- All ingredients -->
       <section class="col-sm-12 col-md-6 offset-md-1">
+        <h4>All Ingredients</h4>
         <table class="table table-hover table-striped table-scroll">
           <thead>
             <tr>
@@ -200,6 +216,7 @@
 
       <!-- All recipes -->
       <section class="col-sm-12 col-md-6 offset-md-1">
+        <h4>All Recipes</h4>
         <table class="table table-hover table-striped table-scroll">
           <thead>
             <tr>
@@ -213,7 +230,7 @@
           <tbody>
             {{#each recipes}}
             <tr>
-              <td><img src="{{this.recipe_img}}" alt="{{this.recipe_name}}" class="recipe_table_image"></td>
+              <td><img src="/images/{{this.recipe_img}}" alt="{{this.recipe_name}}" class="recipe_table_image"></td>
               <td>{{this.recipe_name}}</td>
               <td>{{this.total_calories}}</td>
               <td>
@@ -292,7 +309,7 @@ function add_ing_to_form(e) {
   unit_label.append($('<input/>', {type: 'text', name: 'ing_metric_' + ing_count, id: 'ing_metric_' + ing_count}));
 
   // create remove button //
-  let remove_button = $('<button/>', {class: 'remove_ing'});
+  let remove_button = $('<button/>', {class: 'remove_ing btn btn-sm btn-outline-danger'});
   remove_button.append(document.createTextNode('X'));
   // bind remove event
   remove_button.click(remove_ing_from_from);
