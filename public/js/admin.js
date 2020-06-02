@@ -1,5 +1,7 @@
 $(()=>{
 
+  // TODO: This is not working yet since specific .handlebars views need to use handlebars loops, and that doesn't work in .js
+
   // dynamic ingredient lists general setup
   var ingredients = [];
   var one_ingredient;
