@@ -27,38 +27,17 @@
     <p>
       <div style="width: 20%; float: left; margin: 0 0 0 0">
         <h3>Recipe Recommendations: </h3>
+        <a id = "recipe_link" href=""><h5 id = "recipe_title">Recommendations</h5></a>
       </div>
-      <div class="bs-example" style=" margin: 0 -100px 0 0; width: 80%; float: right; ">
+      <div class="bs-example" style=" margin: 0 -51px 0 0; width: 80%; float: right; ">
         <div id="recipeCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
             <!-- Carousel indicators -->
-            <ol class="carousel-indicators">
-                <li class="slide-one active"></li>
-                <li class="slide-two"></li>
-                <li class="slide-three"></li>
-            </ol>
             <!-- Wrapper for carousel items -->
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div>
-                    </div>
+                <div class="carousel-item active">                    
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
                     </div>
-                    <div><!-- {{recipe2_img}} --><img src="/images/recipe1.jpeg" width="700px" height="500px"></div>
-
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                    </div>
-                    <div><!-- {{recipe_img}} --><img src="/images/recipe2.jpeg" width="700px" height="500px"></div>
-
-                </div>
-                <div class="carousel-item">
-                  <div><!-- {{recipe3_img}} --><img src="/images/recipe3.jpeg" width="700px" height="500px"></div>
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                    </div>
+                    <div><img id='carousel_pic' alt="-1" src="/images/yeti.jpg" width="700px" height="500px"></div>
                 </div>
             </div>
             <!-- Carousel controls -->
@@ -134,23 +113,67 @@
       $("#recipeCarousel").carousel();
 
       // Enable carousel control
-      $(".carousel-control-prev").click(function(){
-          $("#recipeCarousel").carousel('prev');
-      });
-      $(".carousel-control-next").click(function(){
-          $("#recipeCarousel").carousel('next');
+
+      //****************************************************//
+      window.location.recipe_rec = [];
+      $.ajax({ type: "GET",
+      url: "/calorierec",
+      async: true,
+      success : function(res)
+      {
+      for (i = 0; i < res.results.length; i++){
+      window.location.recipe_rec.push({
+                                  "recipe_id": res.results[i].recipe_id,
+                                  "recipe_name": res.results[i].recipe_name,
+                                  "recipe_img": res.results[i].recipe_img,
+                                  "total_calories": res.results[i].total_calories});
+      }
+      }
       });
 
-      // Enable carousel indicators
-      $(".slide-one").click(function(){
-          $("#recipeCarousel").carousel(0);
-      });
-      $(".slide-two").click(function(){
-          $("#recipeCarousel").carousel(1);
-      });
-      $(".slide-three").click(function(){
-          $("#recipeCarousel").carousel(2);
-      });
+      function carousel_inc(index){
+                
+                $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[++index].recipe_img);
+                $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                $("#carousel_pic").attr("alt", index);
+                $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+      function carousel_dec(index){
+                $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[--index].recipe_img);
+                $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                $("#carousel_pic").attr("alt", index);
+                $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+      function carousel_fix(index){
+                    $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[index].recipe_img);
+                    $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                    $("#carousel_pic").attr("alt", index);
+                    $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+
+      $(".carousel-control-next").click(function(){
+              var image_index = $("#carousel_pic").attr("alt");
+              console.log(image_index);
+              if (image_index < window.location.recipe_rec.length - 1){
+                      carousel_inc(image_index);
+              }else{
+                      carousel_fix(0);
+              }
+              
+      });    
+
+      $(".carousel-control-prev").click(function(){
+              var image_index = $("#carousel_pic").attr("alt");
+              if (image_index > 0){
+                      carousel_dec(image_index)
+              }else{
+                    carousel_fix(window.location.recipe_rec.length - 1);
+              }
+      });    
+      //****************************************************//  
   });
 </script>
 
