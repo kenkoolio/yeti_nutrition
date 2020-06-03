@@ -6,13 +6,13 @@
   <title>{{title}}</title>
 
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
-  
+
   <!-- Homepage -->
   <link rel="stylesheet" href="/css/homeStyle.css">
-  
+
   <!-- Dashboard -->
   <link rel="stylesheet" href="/css/dashboardStyle.css">
-  
+
   <!-- Recipes -->
   <link rel="stylesheet" type="text/css" href="/css/recipeStyle.css">
   <!-- <link>{{cssStyle}}</link> -->
@@ -24,6 +24,9 @@
 
   <!-- Calorie Tracker -->
   <link rel="stylesheet" type="text/css" href="/css/calorie.css">
+
+  <!-- Admin -->
+  <link rel="stylesheet" type="text/css" href="/css/admin.css">
 
   <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Tahoma" rel="stylesheet">
@@ -58,11 +61,11 @@
               </li>
               <li><a href="/recipes"> Recipes </a>
               </li>
-            </ul> 
+            </ul>
           </div>
           <div class="navBarRight">
             <a href="/signout"> SIGN OUT </a>
-          </div> 
+          </div>
         </nav>
         <div class="landing">
         {{#if recipePage}}
@@ -73,7 +76,7 @@
         </div>
       </section>
     </header>
-    
+
   {{{ body }}}
 
   <footer>
@@ -91,19 +94,19 @@
             </ul>
           </small>
           {{#if recipePage}}
-           <small id="credit"> Recipe credit: Rocco Dispirito 'Healthy + Delicious' 
-             and Maya Krampf at wholesomeyum.com 
-            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
-             Guilherme Furtado via the Noun Project 
-            <br> Image Attributions: Markus Spiske, Anthony Leong, Retha Ferguson, 
-             Phuc ( Xù ) Pham, Jill Wellington, Votsis Panagiotis, Pixabay, alleksana, 
-             Caio, cottonbro via Pexels and Jonathan Borba, Brooke Lark, Bernard Tuck, 
+           <small id="credit"> Recipe credit: Rocco Dispirito 'Healthy + Delicious'
+             and Maya Krampf at wholesomeyum.com
+            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and
+             Guilherme Furtado via the Noun Project
+            <br> Image Attributions: Markus Spiske, Anthony Leong, Retha Ferguson,
+             Phuc ( Xù ) Pham, Jill Wellington, Votsis Panagiotis, Pixabay, alleksana,
+             Caio, cottonbro via Pexels and Jonathan Borba, Brooke Lark, Bernard Tuck,
              Reka Biro-Horvath, Micheile Henderson via Unsplash
           </small>
          {{else}}
-          <small id="credit"> Image credit: Brooke Lark via Unsplash 
-            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and 
-             Guilherme Furtado via the Noun Project 
+          <small id="credit"> Image credit: Brooke Lark via Unsplash
+            <br> Logo credit: Sariah Bunnell with the help of Icons Producer and
+             Guilherme Furtado via the Noun Project
           </small>
          {{/if}}
         </span>

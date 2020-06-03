@@ -1,0 +1,119 @@
+
+#admin_container {
+  background-color: rgba(206, 204, 205, 0.4);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: 'Tahoma', regular;
+  max-width: 100%
+}
+
+  #admin_container a {
+    text-decoration: none;
+  }
+  #admin_container a:visited {
+    color: inherit;
+  }
+
+#admin_header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#recipes_and_ingredients {
+  /* display: flex; */
+  /* justify-content: space-around; */
+  max-width: 1400px;
+}
+
+  #recipes_and_ingredients section {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 1px 5px rgba(0, 0, 0, 0.4);
+    /* align-self: flex-start; */
+  }
+
+    #recipes_and_ingredients section h2 {
+      margin-bottom: 30px;
+    }
+
+.admin_form div {
+  margin-bottom: 20px;
+}
+
+.recipe_edit_preview img {
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+}
+
+.ingredients_list {
+  font-size: 9px;
+  padding: 10px;
+  background-color: rgba(192,255,238, 0.8);
+  border-radius: 5px;
+}
+
+  .ingredients_list select, .ingredients_list input {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+#recipe_instructions_div {
+  margin-top: 30px;
+}
+
+  #recipe_instructions_div textarea {
+    display: block;
+    width: 100%;
+  }
+
+.table-scroll {
+  overflow: scroll;
+}
+
+#ingredients_section {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+
+  background-color: rgba(202, 228, 191, 0.8);
+}
+
+  #ingredients_section section {
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: rgba(250, 231, 188, 0.8);
+  }
+
+#recipes_section {
+  max-height: 800px;
+  overflow-y: auto;
+  background-color: rgba(202, 228, 191, 0.8);
+}
+
+  #recipes_section section {
+    max-height: 750px;
+    overflow-y: auto;
+    background-color: rgba(250, 231, 188, 0.8);
+  }
+
+.recipe_table_image {
+  width: 100px;
+  height: 100px;
+}
+
+.admin-header-emphasis {
+  font-size: 1.3em;
+  font-style: italic;
+  color: orange;
+  border-bottom: 2px dashed #7d3c8d;
+}
+
+[class*="ing_div_"] {
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 20px;
+}
+
+.remove_ing {
+  border-radius: 50% !important;
+}
