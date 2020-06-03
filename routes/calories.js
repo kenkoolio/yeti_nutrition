@@ -85,7 +85,7 @@ module.exports = (function() {
   router.get("/", require_signin, (req, res, next) => {
     var context = {};
     context.title = 'Calorie page';
-    let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC `;
+    let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC`;
     let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE()`;
     var mysql = req.app.get('mysql');
     var user_id = req.session.user_id;
@@ -171,7 +171,12 @@ module.exports = (function() {
             calorie_in_percent = 100;
           storage[numEntries - 1].calorie_in_percent = calorie_in_percent;
         }
-        context.results = storage;
+
+        var storageReverse = storage.slice().reverse();
+        console.log(storage);
+        console.log(storageReverse);
+
+        context.results = storageReverse;
         res.render('caloriepage', context);
         });
     });
