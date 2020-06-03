@@ -26,7 +26,7 @@ module.exports = (function() {
       console.log("1 record inserted");
       // return;
       // return res.send('Success');
-      res.redirect('/calories/' + user_id)
+      res.redirect('/calories/')
       // res.end();
     });
 
@@ -45,7 +45,7 @@ module.exports = (function() {
     console.log("1 record deleted");
       // return;
       // return res.send('Success');
-    res.redirect('/calories/' + user_id)
+    res.redirect('/calories/')
       // res.end();
     });
 
@@ -65,7 +65,7 @@ module.exports = (function() {
             res.end();
             return;
         } else {
-            res.redirect('/calories/' + user_id);
+            res.redirect('/calories/');
         }
     });
   });
@@ -82,14 +82,16 @@ module.exports = (function() {
 
   
 
-  router.get("/:user_id", require_signin, (req, res, next) => {
+  router.get("/", require_signin, (req, res, next) => {
     var context = {};
     context.title = 'Calorie page';
     let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC `;
     let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE()`;
     var mysql = req.app.get('mysql');
+    var user_id = req.session.user_id;
+    var username = req.session.username;
 
-    mysql.pool.query(query, req.params.user_id, (err, rows, results)=> {
+    mysql.pool.query(query, user_id, (err, rows, results)=> {
       if(err) return next(err);
 
       var storage = [];
@@ -103,9 +105,10 @@ module.exports = (function() {
 
         if((i != 0)){
           for(var k = i - 1; k>=0; k--){
-            var date_deficit = calorie_left_tracker;
+            
             if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
-                 day_storage.push(storage[k].calorie_left_tracker);
+              var date_deficit = storage[k].calorie_left_tracker;   
+              day_storage.push(storage[k].calorie_left_tracker);
                  
             }
             console.log(day_storage);
@@ -123,7 +126,6 @@ module.exports = (function() {
         }
 
         var calorie_status;
-
 
         console.log("calorie tracker" + calorie_left_tracker);
         
@@ -143,7 +145,7 @@ module.exports = (function() {
         }
 
 
-        storage.push({"calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
+        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
                       "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
         console.log(storage.calorie_left);              
@@ -152,7 +154,7 @@ module.exports = (function() {
 
         console.log(storage[numEntries - 1]);
 
-        mysql.pool.query(query2, req.params.user_id, (err, rows, results)=> {
+        mysql.pool.query(query2, user_id, (err, rows, results)=> {
           if (err) return next(err);
 
           for(var j = 0; j < rows.length; j++)
@@ -167,10 +169,7 @@ module.exports = (function() {
           var calorie_in_percent = (daily_calories / 2000) * 100;
           if(calorie_in_percent > 100)
             calorie_in_percent = 100;
-          console.log(calorie_in_percent);
           storage[numEntries - 1].calorie_in_percent = calorie_in_percent;
-
-
         }
         context.results = storage;
         res.render('caloriepage', context);

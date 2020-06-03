@@ -2,14 +2,22 @@
 <div class="calorie-body">
   <div class="calorie-username">
     <p>
-      <h1>{{#each results}}{{#if @last}}{{this.user_id}}'s Calorie Tracker{{/if}}{{/each}}</h1>
+      <h1>{{#each results}}{{#if @last}}{{this.username}}'s Calorie Tracker{{/if}}{{/each}}</h1>
     </p>
   </div>
 
   <h2>Today's Progress</h2>
   <div class="calorie-progress">
+    {{#if results}}
     <div class="calorie-progress-bar" role="progressbar" aria-valuenow="{{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}" aria-valuemin="0" aria-valuemax="100" style="width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
-      Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
+      
+    {{else}}
+    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="calorie-bar">
+    {{/if}}
+
+
+
+Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
     </div>
   </div>
 
@@ -135,6 +143,17 @@
 
 
 <script>
+var date = new Date();
+
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+
+var today = year + "-" + month + "-" + day;       
+document.getElementById("date").value = today;
 //  $(document).ready(function(){
 //    $('[name="deleteMe"]').click(function(){
 //       $(this).closest("tr").remove(); 
@@ -217,7 +236,7 @@
                     
                     <div class="form-group">
                         <p>Edit your calories:</p>
-                        <textarea class="form-control" name="calorieUpdate" rows="10">{{this.calorie_in}}</textarea>
+                        <textarea class="form-control" name="calorieUpdate" rows="10" required>{{this.calorie_in}}</textarea>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                     <button type="reset" class="btn">Reset</button>
