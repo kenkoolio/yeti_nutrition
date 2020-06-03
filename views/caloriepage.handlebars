@@ -23,11 +23,11 @@ Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/eac
 
   <div>
     <div class="calorie-status">
-      <p>Status: {{#each results}}{{#if @last}}{{this.calorie_status}}{{/if}}{{/each}}</p>
+      <p>Status: {{#each results}}{{#if @first}}{{this.calorie_status}}{{/if}}{{/each}}</p>
     </div>
 
     <div class="calorie-status">
-      <p>Calories left: {{#each results}}{{#if @last}}{{this.calorie_left}}{{/if}}{{/each}}</p>
+      <p>Calories left: {{#each results}}{{#if @first}}{{this.calorie_left}}{{/if}}{{/each}}</p>
     </div>
   </div>
 
