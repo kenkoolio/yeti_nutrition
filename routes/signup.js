@@ -20,7 +20,7 @@ module.exports = (function() {
     new Promise((resolve, reject) => {
       // check if user already exists in database
       mysql.pool.query(check_query, check_param, (err, results, fields) => {
-	if (err) return next(err);  
+	if (err) return next(err);
         if(results.length) {
           reject("User Already Exists!");
         }else{
@@ -32,7 +32,7 @@ module.exports = (function() {
       // create new user
       return new Promise((resolve, reject) => {
         mysql.pool.query(create_query, create_param, (err, results, fields) => {
-          if (err) return next(err);          
+          if (err) return next(err);
           resolve();
         })
       })
@@ -45,14 +45,14 @@ module.exports = (function() {
           req.session.signedin = true;
           req.session.active = true;
   		    req.session.username= req.body.username;
-          req.session.user_id = results[0].user_id;          
+          req.session.user_id = results[0].user_id;
           resolve();
         })
       })
     })
     .then(() => {
       // return success
-      res.redirect('/posts'); //need to change to dashboard
+      res.redirect('/dashboard');
     })
     .catch((reason) => {
       // return error message

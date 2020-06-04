@@ -136,11 +136,11 @@ module.exports = function () {
     });
 
     // Update a post
-    router.put('/:id', require_signin, function (req, res) {
+    router.post('/update_post/:id', require_signin, function (req, res) {
         var mysql = req.app.get('mysql');
         console.log(req.body);
         console.log(req.params.id);
-        console.log("Updating post:" + req.params.id);
+        console.log("Updating post: " + req.params.id);
         var sql = "UPDATE posts SET content=? WHERE post_id=?";
         var inserts = [req.body.content, req.params.id];
         sql = mysql.pool.query(sql, inserts, function (error, results, fields) {
@@ -150,9 +150,7 @@ module.exports = function () {
                 res.end();
                 return;
             } else {
-                res.status(200);
-                res.end();
-                return;
+                res.redirect(303, '/posts/' + req.params.id);
             }
         });
     });

@@ -25,7 +25,7 @@ module.exports = (function() {
       rows.forEach(element => {
         storage.push({
           recipeLink: '/recipes/' + element.recipe_id,
-          img: "images/" + element.recipe_img,
+          img: "/images/" + element.recipe_img,
           recipeName: element.recipe_name
         });
       });
@@ -48,10 +48,11 @@ module.exports = (function() {
           return;
         }
         res.render('oneRecipe', {
+          recipePage: true,
           title: "Delicious Recipe",
           username: req.session.username,
           recipeName: rows[0].recipe_name,
-          img: "images/recipeHeaders/" + rows[0].recipe_img,
+          img: "/images/recipeHeaders/" + rows[0].recipe_img,
           recipeInstructions: rows[0].instructions,
           ingredient: rows,
           calories: rows[0].total_calories
