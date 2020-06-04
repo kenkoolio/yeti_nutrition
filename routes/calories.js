@@ -166,12 +166,13 @@ module.exports = (function() {
 
 
         var storageReverse = storage.slice().reverse();
-        for(var j = 0; j < rows.length; j++)
-        {
-          daily_calories = daily_calories + rows[j].calorie_in;
-          storageReverse[numEntries - 1].daily_calories = daily_calories;
-        }
+
          if(rows.length > 0){
+          for(var j = 0; j < rows.length; j++)
+          {
+            daily_calories = daily_calories + rows[j].calorie_in;
+            storageReverse[numEntries - 1].daily_calories = daily_calories;
+          }
           var calorie_in_percent = (daily_calories / 2000) * 100;
           if(calorie_in_percent > 100)
             calorie_in_percent = 100;
