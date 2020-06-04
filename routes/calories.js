@@ -80,7 +80,7 @@ module.exports = (function() {
     res.render('caloriepage', genContext());
   });
 
-  
+
 
   router.get("/", require_signin, (req, res, next) => {
     var context = {};
@@ -96,7 +96,7 @@ module.exports = (function() {
 
       var storage = [];
       var daily_calories = 0;
-      var numEntries = rows.length;
+      var numEntries = rows ? rows.length : 0;
       var day_storage = [];
 
       for (var i = 0; i < numEntries; i++) {
@@ -105,11 +105,11 @@ module.exports = (function() {
 
         if((i != 0)){
           for(var k = i - 1; k>=0; k--){
-            
+
             if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
-              var date_deficit = storage[k].calorie_left_tracker;   
+              var date_deficit = storage[k].calorie_left_tracker;
               day_storage.push(storage[k].calorie_left_tracker);
-                 
+
             }
             console.log(day_storage);
           }
@@ -120,7 +120,7 @@ module.exports = (function() {
               date_deficit = smallest_date_deficit;
             }
               calorie_left_tracker = date_deficit - rows[i].calorie_in;
-              
+
           }
           day_storage = [];
         }
@@ -128,7 +128,7 @@ module.exports = (function() {
         var calorie_status;
 
         console.log("calorie tracker" + calorie_left_tracker);
-        
+
         var calorie_left = 0;
         calorie_left = calorie_left_tracker;
         if(calorie_left_tracker < 0){
@@ -137,7 +137,7 @@ module.exports = (function() {
         }
         console.log("calorie_left " + calorie_left);
         console.log("calorie tracker " + calorie_left_tracker);
-        
+
         if (calorie_left_tracker > 0) {
           calorie_status = "Deficit";
         } else if (calorie_left_tracker < 0) {
@@ -150,7 +150,7 @@ module.exports = (function() {
         storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
                       "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
-        console.log(storage.calorie_left);              
+        console.log(storage.calorie_left);
 
         }
 
@@ -167,7 +167,7 @@ module.exports = (function() {
 
         var storageReverse = storage.slice().reverse();
 
-         if(rows.length > 0){
+         if(rows && rows.length > 0){
           for(var j = 0; j < rows.length; j++)
           {
             daily_calories = daily_calories + rows[j].calorie_in;
