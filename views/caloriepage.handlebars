@@ -2,63 +2,50 @@
 <div class="calorie-body">
   <div class="calorie-username">
     <p>
-      <h1>{{#each results}}{{#if @last}}{{this.user_id}}'s Calorie Tracker{{/if}}{{/each}}</h1>
+      <h1>{{#each results}}{{#if @last}}{{this.username}}'s Calorie Tracker{{/if}}{{/each}}</h1>
     </p>
   </div>
 
   <h2>Today's Progress</h2>
   <div class="calorie-progress">
-    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="min-width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
-      Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
+    {{#if results}}
+    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="{{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}" aria-valuemin="0" aria-valuemax="100" style="width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
+
+    {{else}}
+    <div class="calorie-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="calorie-bar">
+    {{/if}}
+
+
+
+Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
     </div>
   </div>
 
   <div>
     <div class="calorie-status">
-      <p>Status: {{#each results}}{{#if @last}}{{this.calorie_status}}{{/if}}{{/each}}</p>
+      <h3>Status: {{#each results}}{{#if @first}}{{this.calorie_status}}{{/if}}{{/each}}</h3>
     </div>
 
     <div class="calorie-status">
-      <p>Calories left: {{#each results}}{{#if @last}}{{this.calorie_left}}{{/if}}{{/each}}</p>
+      <h3>Calories left: {{#each results}}{{#if @first}}{{this.calorie_left}}{{/if}}{{/each}}</h3>
     </div>
   </div>
 
   <div class="calorie-rec">
     <p>
       <div style="width: 20%; float: left; margin: 0 0 0 0">
-        <h3>Recipe Recommendations: </h3>
+        <h5>Recipe Recommendations: </h5>
+        <a id = "recipe_link" href=""><h6 id = "recipe_title">Recommendations</h6></a>
       </div>
-      <div class="bs-example" style=" margin: 0 -100px 0 0; width: 80%; float: right; ">
+      <div class="bs-example" style=" margin: 0 -51px 0 0; width: 80%; float: right; ">
         <div id="recipeCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
             <!-- Carousel indicators -->
-            <ol class="carousel-indicators">
-                <li class="slide-one active"></li>
-                <li class="slide-two"></li>
-                <li class="slide-three"></li>
-            </ol>
             <!-- Wrapper for carousel items -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <div>
-                    </div>
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
                     </div>
-                    <div><!-- {{recipe2_img}} --><img src="/images/recipe1.jpeg" width="700px" height="500px"></div>
-
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                    </div>
-                    <div><!-- {{recipe_img}} --><img src="/images/recipe2.jpeg" width="700px" height="500px"></div>
-
-                </div>
-                <div class="carousel-item">
-                  <div><!-- {{recipe3_img}} --><img src="/images/recipe3.jpeg" width="700px" height="500px"></div>
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>First slide label</h5>
-                    </div>
+                    <div><img id='carousel_pic' alt="-1" src="/images/yeti.jpg" class="carousel-recipe-img"></div>
                 </div>
             </div>
             <!-- Carousel controls -->
@@ -74,8 +61,8 @@
 
     <p>
       <div class="calories-info" >
-        <div  style="width: 50%; float: left; margin: 0 0 0 0">
-          <table class="calories-table" id="calorie-table" border="1" width="90%" padding="10px" text>
+        <div  class="calories-history" style="width: 50%; float: left; margin: 0 0 0 0">
+          <table class="table table-striped table-hover" id="calorie-table" border="1" width="90%" padding="10px" text>
             <tr>
               <th style="text-align:center" colspan="6">Your calories</th>
             </tr>
@@ -85,22 +72,28 @@
               <td>Consumed</td>
               <td>Deficit</td>
               <td>Surplus</td>
+              <td colspan="2">Modify</td>
             </tr>
 
               {{#each results}}
               <tr>
+
               <td>{{this.calorie_date}}</td>
               <td>2000</td>
               <td>{{this.calorie_in}}</td>
               <td>{{this.calorie_left}}</td>
               <td>{{this.calorie_surplus}}</td>
+              <td>                <div class="card-footer text-muted">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#updateComment{{this.calorie_id}}">Update</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmComment{{this.calorie_id}}Delete">Delete</button>
+                </div></td>
               </tr>
               {{/each}}
 
           </table>
         </div>
 
-        <div class="calories-add" style="width: 50%; float: right; margin: 0 0 0 0">
+        <div class="calories-add" style="width: 40%; float: right; margin: 0 0 0 0">
           <table border="1" width="90%">
             <tr>
               <th style="text-align:center">Add calories</th>
@@ -129,28 +122,88 @@
 
 
 <script>
+var date = new Date();
+
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+
+var today = year + "-" + month + "-" + day;
+document.getElementById("date").value = today;
+//  $(document).ready(function(){
+//    $('[name="deleteMe"]').click(function(){
+//       $(this).closest("tr").remove();
+//    });
+//});
   $(document).ready(function(){
       // Activate carousel
       $("#recipeCarousel").carousel();
 
       // Enable carousel control
-      $(".carousel-control-prev").click(function(){
-          $("#recipeCarousel").carousel('prev');
-      });
-      $(".carousel-control-next").click(function(){
-          $("#recipeCarousel").carousel('next');
+
+      //****************************************************//
+      window.location.recipe_rec = [];
+      $.ajax({ type: "GET",
+      url: "/calorierec",
+      async: true,
+      success : function(res)
+      {
+      for (i = 0; i < res.results.length; i++){
+      window.location.recipe_rec.push({
+                                  "recipe_id": res.results[i].recipe_id,
+                                  "recipe_name": res.results[i].recipe_name,
+                                  "recipe_img": res.results[i].recipe_img,
+                                  "total_calories": res.results[i].total_calories});
+      }
+      }
       });
 
-      // Enable carousel indicators
-      $(".slide-one").click(function(){
-          $("#recipeCarousel").carousel(0);
+      function carousel_inc(index){
+
+                $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[++index].recipe_img);
+                $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                $("#carousel_pic").attr("alt", index);
+                $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+      function carousel_dec(index){
+                $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[--index].recipe_img);
+                $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                $("#carousel_pic").attr("alt", index);
+                $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+      function carousel_fix(index){
+                    $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[index].recipe_img);
+                    $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
+                    $("#carousel_pic").attr("alt", index);
+                    $("#recipe_link").attr("href", "/" + window.location.recipe_rec[index].recipe_id);
+      }
+
+
+      $(".carousel-control-next").click(function(){
+              var image_index = $("#carousel_pic").attr("alt");
+              console.log(image_index);
+              if (image_index < window.location.recipe_rec.length - 1){
+                      carousel_inc(image_index);
+              }else{
+                      carousel_fix(0);
+              }
+
       });
-      $(".slide-two").click(function(){
-          $("#recipeCarousel").carousel(1);
+
+      $(".carousel-control-prev").click(function(){
+              var image_index = $("#carousel_pic").attr("alt");
+              if (image_index > 0){
+                      carousel_dec(image_index)
+              }else{
+                    carousel_fix(window.location.recipe_rec.length - 1);
+              }
       });
-      $(".slide-three").click(function(){
-          $("#recipeCarousel").carousel(2);
-      });
+      //****************************************************//
   });
 </script>
 
@@ -182,4 +235,70 @@
     counter++;
     console.log(counter);
   }
+</script>
+
+<!--Modals to Update Comments-->
+<!--Modals to Confirm Comment Delete-->
+{{#each results}}
+<div id="updateComment{{this.calorie_id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update Your Calorie entry
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form action="/calories/update/{{this.calorie_id}}" method="post">
+                    <!--Current Data-->
+                    <div class="form-group">
+                        <p><strong>Current Calories:</strong></p>
+                        <p>{{this.calorie_in}}</p>
+                    </div>
+                    <!--Data to be updated-->
+
+                    <div class="form-group">
+                        <p>Edit your calories:</p>
+                        <textarea class="form-control" name="calorieUpdate" rows="10" required>{{this.calorie_in}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="reset" class="btn">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmComment{{this.calorie_id}}Delete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to delete your calorie entry?</h4>
+                <button type="button" class="btn btn-info" data-dismiss="modal">No, don't delete</button>
+                <button onclick="deleteCalorie({{this.calorie_id}})" class="btn btn-danger">Yes, delete my calorie</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<br />
+<br />
+
+<script>
+
+
+
+    function deleteCalorie(id) {
+        $.ajax({
+            url: '/calories/delete/' + id,
+            type: 'GET',
+            success: function (result) {
+                window.location.reload();
+            }
+        })
+    };
 </script>
