@@ -10,7 +10,7 @@
   <div class="calorie-progress">
     {{#if results}}
     <div class="calorie-progress-bar" role="progressbar" aria-valuenow="{{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}" aria-valuemin="0" aria-valuemax="100" style="width: {{#each results}}{{#if @last}}{{this.calorie_in_percent}}{{/if}}{{/each}}%" id="calorie-bar">
-      
+
     {{else}}
     <div class="calorie-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="calorie-bar">
     {{/if}}
@@ -23,29 +23,29 @@ Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/eac
 
   <div>
     <div class="calorie-status">
-      <p>Status: {{#each results}}{{#if @first}}{{this.calorie_status}}{{/if}}{{/each}}</p>
+      <h3>Status: {{#each results}}{{#if @first}}{{this.calorie_status}}{{/if}}{{/each}}</h3>
     </div>
 
     <div class="calorie-status">
-      <p>Calories left: {{#each results}}{{#if @first}}{{this.calorie_left}}{{/if}}{{/each}}</p>
+      <h3>Calories left: {{#each results}}{{#if @first}}{{this.calorie_left}}{{/if}}{{/each}}</h3>
     </div>
   </div>
 
   <div class="calorie-rec">
     <p>
       <div style="width: 20%; float: left; margin: 0 0 0 0">
-        <h3>Recipe Recommendations: </h3>
-        <a id = "recipe_link" href=""><h5 id = "recipe_title">Recommendations</h5></a>
+        <h5>Recipe Recommendations: </h5>
+        <a id = "recipe_link" href=""><h6 id = "recipe_title">Recommendations</h6></a>
       </div>
       <div class="bs-example" style=" margin: 0 -51px 0 0; width: 80%; float: right; ">
         <div id="recipeCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
             <!-- Carousel indicators -->
             <!-- Wrapper for carousel items -->
             <div class="carousel-inner">
-                <div class="carousel-item active">                    
+                <div class="carousel-item active">
                     <div class="carousel-caption d-none d-md-block">
                     </div>
-                    <div><img id='carousel_pic' alt="-1" src="/images/yeti.jpg" width="700px" height="500px"></div>
+                    <div><img id='carousel_pic' alt="-1" src="/images/yeti.jpg" class="carousel-recipe-img"></div>
                 </div>
             </div>
             <!-- Carousel controls -->
@@ -61,8 +61,8 @@ Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/eac
 
     <p>
       <div class="calories-info" >
-        <div  style="width: 50%; float: left; margin: 0 0 0 0">
-          <table class="calories-table" id="calorie-table" border="1" width="90%" padding="10px" text>
+        <div  class="calories-history" style="width: 50%; float: left; margin: 0 0 0 0">
+          <table class="table table-striped table-hover" id="calorie-table" border="1" width="90%" padding="10px" text>
             <tr>
               <th style="text-align:center" colspan="6">Your calories</th>
             </tr>
@@ -77,7 +77,7 @@ Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/eac
 
               {{#each results}}
               <tr>
-              
+
               <td>{{this.calorie_date}}</td>
               <td>2000</td>
               <td>{{this.calorie_in}}</td>
@@ -93,7 +93,7 @@ Calorie's In: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/eac
           </table>
         </div>
 
-        <div class="calories-add" style="width: 50%; float: right; margin: 0 0 0 0">
+        <div class="calories-add" style="width: 40%; float: right; margin: 0 0 0 0">
           <table border="1" width="90%">
             <tr>
               <th style="text-align:center">Add calories</th>
@@ -131,11 +131,11 @@ var year = date.getFullYear();
 if (month < 10) month = "0" + month;
 if (day < 10) day = "0" + day;
 
-var today = year + "-" + month + "-" + day;       
+var today = year + "-" + month + "-" + day;
 document.getElementById("date").value = today;
 //  $(document).ready(function(){
 //    $('[name="deleteMe"]').click(function(){
-//       $(this).closest("tr").remove(); 
+//       $(this).closest("tr").remove();
 //    });
 //});
   $(document).ready(function(){
@@ -162,7 +162,7 @@ document.getElementById("date").value = today;
       });
 
       function carousel_inc(index){
-                
+
                 $("#carousel_pic").attr("src","/images/" + window.location.recipe_rec[++index].recipe_img);
                 $("#recipe_title").text(window.location.recipe_rec[index].recipe_name);
                 $("#carousel_pic").attr("alt", index);
@@ -192,8 +192,8 @@ document.getElementById("date").value = today;
               }else{
                       carousel_fix(0);
               }
-              
-      });    
+
+      });
 
       $(".carousel-control-prev").click(function(){
               var image_index = $("#carousel_pic").attr("alt");
@@ -202,8 +202,8 @@ document.getElementById("date").value = today;
               }else{
                     carousel_fix(window.location.recipe_rec.length - 1);
               }
-      });    
-      //****************************************************//  
+      });
+      //****************************************************//
   });
 </script>
 
@@ -256,7 +256,7 @@ document.getElementById("date").value = today;
                         <p>{{this.calorie_in}}</p>
                     </div>
                     <!--Data to be updated-->
-                    
+
                     <div class="form-group">
                         <p>Edit your calories:</p>
                         <textarea class="form-control" name="calorieUpdate" rows="10" required>{{this.calorie_in}}</textarea>
@@ -302,4 +302,3 @@ document.getElementById("date").value = today;
         })
     };
 </script>
-
