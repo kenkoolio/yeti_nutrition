@@ -55,11 +55,11 @@ body {font-family: 'Tahoma', regular;
 .landImg {
   width: 100%;
   height: auto;
-  /**the following are to be used in place of 'height:auto'
-   and only if you want the image to not shrink with the page**/
+  /****the following are to be used in place of 'height:auto'
+   and only if you want the image to not shrink with the page
   //height: 400px;
   //object-fit: cover;
-  //overflow: hidden;
+  //overflow: hidden;****/
   margin: 0;
   z-index: 2;
   margin: 0;
