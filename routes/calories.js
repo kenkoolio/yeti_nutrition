@@ -163,22 +163,7 @@ module.exports = (function() {
 
 
          // TODO: kevin fix this
-<<<<<<< Updated upstream
 
-
-
-        var storageReverse = storage.slice().reverse();
-
-         if(rows.length > 0){
-          for(var j = 0; j < rows.length; j++)
-          {
-            daily_calories = daily_calories + rows[j].calorie_in;
-            storageReverse[numEntries - 1].daily_calories = daily_calories;
-=======
-        console.log(storage !== 'undefined');
-        console.log(storage == 'undefined');
-        
-        console.log(storage);
         if(storage.length > 0){
           var storageReverse = storage.slice().reverse();
           if(rows && rows.length > 0){
@@ -191,7 +176,6 @@ module.exports = (function() {
             if(calorie_in_percent > 100)
               calorie_in_percent = 100;
             storageReverse[numEntries - 1].calorie_in_percent = calorie_in_percent;
->>>>>>> Stashed changes
           }
         }else{
           var storageReverse = [];
