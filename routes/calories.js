@@ -86,9 +86,10 @@ module.exports = (function() {
     var context = {};
     context.title = 'Calorie page';
     let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC`;
-    let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE()`;
+    let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE() AND calories.user_id = ?`;
     var mysql = req.app.get('mysql');
     var user_id = req.session.user_id;
+    console.log(user_id);
     var username = req.session.username;
 
     mysql.pool.query(query, user_id, (err, rows, results)=> {
@@ -147,7 +148,7 @@ module.exports = (function() {
         }
 
 
-        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
+        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": user_id, "calorie_date": rows[i].calorie_date,
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
                       "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
         console.log(storage.calorie_left);              
@@ -162,6 +163,7 @@ module.exports = (function() {
 
 
          // TODO: kevin fix this
+<<<<<<< Updated upstream
 
 
 
@@ -172,16 +174,32 @@ module.exports = (function() {
           {
             daily_calories = daily_calories + rows[j].calorie_in;
             storageReverse[numEntries - 1].daily_calories = daily_calories;
-          }
-          var calorie_in_percent = (daily_calories / 2000) * 100;
-          if(calorie_in_percent > 100)
-            calorie_in_percent = 100;
-          storageReverse[numEntries - 1].calorie_in_percent = calorie_in_percent;
-        }
+=======
+        console.log(storage !== 'undefined');
+        console.log(storage == 'undefined');
+        
         console.log(storage);
-        console.log(storageReverse);
+        if(storage.length > 0){
+          var storageReverse = storage.slice().reverse();
+          if(rows && rows.length > 0){
+            for(var j = 0; j < rows.length; j++)
+            {
+              daily_calories = daily_calories + rows[j].calorie_in;
+              storageReverse[numEntries - 1].daily_calories = daily_calories;
+            }
+            var calorie_in_percent = (daily_calories / 2000) * 100;
+            if(calorie_in_percent > 100)
+              calorie_in_percent = 100;
+            storageReverse[numEntries - 1].calorie_in_percent = calorie_in_percent;
+>>>>>>> Stashed changes
+          }
+        }else{
+          var storageReverse = [];
+        }
+        
 
         context.results = storageReverse;
+        storageReverse = [];
         res.render('caloriepage', context);
         });
     });
