@@ -178,6 +178,7 @@ module.exports = (function() {
                storageReverse[0].daily_calories = 0;
                storageReverse[0].calorie_in_percent = 0;
                storageReverse[0].calorie_left_display = 0;
+               storageReverse[0].calorie_status = "Deficit";
                 console.log("ROWS.LENGTH == 0");
           }
         }else{
