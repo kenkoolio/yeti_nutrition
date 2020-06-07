@@ -89,7 +89,6 @@ module.exports = (function() {
     let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE() AND calories.user_id = ?`;
     var mysql = req.app.get('mysql');
     var user_id = req.session.user_id;
-    console.log(user_id);
     var username = req.session.username;
 
     mysql.pool.query(query, user_id, (err, rows, results)=> {
@@ -112,7 +111,7 @@ module.exports = (function() {
               day_storage.push(storage[k].calorie_left_tracker);
                  
             }
-            console.log(day_storage);
+
           }
 
           for(var l = 0; l < day_storage.length; l++){
@@ -126,9 +125,11 @@ module.exports = (function() {
           day_storage = [];
         }
 
+
+
         var calorie_status;
 
-        console.log("calorie tracker" + calorie_left_tracker);
+
         
         var calorie_left = 0;
         calorie_left = calorie_left_tracker;
@@ -136,9 +137,7 @@ module.exports = (function() {
           calorie_left = 0;
           calorie_surplus = calorie_left_tracker * -1;
         }
-        console.log("calorie_left " + calorie_left);
-        console.log("calorie tracker " + calorie_left_tracker);
-        
+
         if (calorie_left_tracker > 0) {
           calorie_status = "Deficit";
         } else if (calorie_left_tracker < 0) {
@@ -150,40 +149,49 @@ module.exports = (function() {
 
         storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": user_id, "calorie_date": rows[i].calorie_date,
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
-                      "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
-        console.log(storage.calorie_left);              
-
+                      "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});          
         }
+        calorie_left_tracker = 0;
 
-        console.log(storage[numEntries - 1]);
+
 
         mysql.pool.query(query2, user_id, (err, rows, results)=> {
           if (err) return next(err);
 
-
-
-         // TODO: kevin fix this
-
         if(storage.length > 0){
+          console.log("STORAGE > 0");
           var storageReverse = storage.slice().reverse();
-          if(rows && rows.length > 0){
-            for(var j = 0; j < rows.length; j++)
-            {
-              daily_calories = daily_calories + rows[j].calorie_in;
-              storageReverse[numEntries - 1].daily_calories = daily_calories;
+          console.log(rows.length);
+          console.log("Num entries: " + numEntries)
+          if(rows.length > 0){  
+            for(var j = 0; j < rows.length; j++){
+                  daily_calories = daily_calories + rows[j].calorie_in;
+                  storageReverse[numEntries - 1].daily_calories = daily_calories;
+                  var calorie_in_percent = (daily_calories / 2000) * 100;
+                  if(calorie_in_percent > 100)
+                    calorie_in_percent = 100;
+               storageReverse[0].calorie_in_percent = calorie_in_percent;
+               storageReverse[0].calorie_left_display = calorie_left;
+                console.log("ROWS.LENGTH > 0");
             }
-            var calorie_in_percent = (daily_calories / 2000) * 100;
-            if(calorie_in_percent > 100)
-              calorie_in_percent = 100;
-            storageReverse[numEntries - 1].calorie_in_percent = calorie_in_percent;
+          } else if(rows.length === 0){
+               storageReverse[0].daily_calories = 0;
+               storageReverse[0].calorie_in_percent = 0;
+               storageReverse[0].calorie_left_display = 0;
+                console.log("ROWS.LENGTH == 0");
           }
         }else{
+          console.log("STORAGE < 0");
           var storageReverse = [];
         }
-        
+
+        console.log(rows.length === 0);
+        console.log(storageReverse);
+        console.log(storageReverse[numEntries - 1]);
 
         context.results = storageReverse;
         storageReverse = [];
+        storage = [];
         res.render('caloriepage', context);
         });
     });
