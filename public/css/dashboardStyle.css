@@ -33,22 +33,33 @@ main {
 .button a {
   text-decoration: none;
   font-family: 'Roboto Condensed', regular;
-  font-size: 1.6em;
+  font-size: 30px;
   color: #40a7cd;
+}
+.dashImg {
+  position: relative;
+}
+.dashImg img {
+  width: 500px;
+  height: auto;
+}
+.colorChange {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.dashName {
+  padding: 10px;
+  position: absolute;
+  float: top-left;
 }
 .button a:hover {
   color: #7d3c8d; 
   text-decoration:none; 
   cursor:pointer;
 }
-
-.dashImg {
-  width: 500px;
-  height: auto;
-  position: relative;
-}
-.dashName {
-  padding: 10px;
-  position: absolute;
-  float: top-left;
+.button a:hover .colorChange {
+  display: inline;
 }
