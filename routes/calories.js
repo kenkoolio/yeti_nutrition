@@ -5,7 +5,7 @@
 module.exports = (function() {
   var express = require('express');
   var router = express.Router();
-
+  const moment= require('moment');
   function require_signin (req, res, next) {
     if (!req.session.signedin) {
       res.redirect('/signin');
@@ -98,11 +98,14 @@ module.exports = (function() {
       var daily_calories = 0;
       var numEntries = rows.length;
       var day_storage = [];
+      var sql_date = [];
+      var date = [];
 
       for (var i = 0; i < numEntries; i++) {
         var calorie_left_tracker = 2000 - rows[i].calorie_in;
         var calorie_surplus = 0;
-
+        sql_date[i] = rows[i].calorie_date;
+        date[i] = moment(sql_date, 'ddd MMM DD YYYY hh:mm:ss [GMT]ZZ').format('MM-DD-YYYY');;
         if((i != 0)){
           for(var k = i - 1; k>=0; k--){
             
@@ -147,7 +150,7 @@ module.exports = (function() {
         }
 
 
-        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": user_id, "calorie_date": rows[i].calorie_date,
+        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": user_id, "calorie_date": date[i],
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
                       "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});          
         }
