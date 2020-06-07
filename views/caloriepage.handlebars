@@ -23,11 +23,19 @@ Calories: {{#each results}}{{#if @last}}{{this.daily_calories}}{{/if}}{{/each}}
 
   <div>
     <div class="calorie-status">
+      {{#if results}}
       <h3>Status: {{#each results}}{{#if @first}}{{this.calorie_status}}{{/if}}{{/each}}</h3>
+      {{else}}
+      <h3>Status: Deficit</h3>
+      {{/if}}
     </div>
 
     <div class="calorie-status">
+      {{#if results}}
       <h3>Calories left: {{#each results}}{{#if @first}}{{this.calorie_left_display}}{{/if}}{{/each}}</h3>
+      {{else}}
+      <h3>Calories left: 2000</h3>
+      {{/if}}
     </div>
   </div>
 
