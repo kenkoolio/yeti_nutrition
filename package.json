@@ -23,8 +23,10 @@
     "express-handlebars": "^4.0.3",
     "express-session": "^1.11.3",
     "forever": "^2.0.0",
+    "moment": "^2.26.0",
     "mysql": "^2.18.1",
-    "save": "^2.4.0"
+    "save": "^2.4.0",
+    "sql": "^0.78.0"
   },
   "devDependencies": {}
 }

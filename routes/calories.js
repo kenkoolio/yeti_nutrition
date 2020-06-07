@@ -5,7 +5,7 @@
 module.exports = (function() {
   var express = require('express');
   var router = express.Router();
-
+  const moment= require('moment');
   function require_signin (req, res, next) {
     if (!req.session.signedin) {
       res.redirect('/signin');
@@ -80,13 +80,13 @@ module.exports = (function() {
     res.render('caloriepage', genContext());
   });
 
-
+  
 
   router.get("/", require_signin, (req, res, next) => {
     var context = {};
     context.title = 'Calorie page';
     let query = `SELECT * FROM calories WHERE calories.user_id = ? ORDER BY calorie_date ASC`;
-    let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE()`;
+    let query2 = `SELECT * FROM calories WHERE DATE(calorie_date) = CURDATE() AND calories.user_id = ?`;
     var mysql = req.app.get('mysql');
     var user_id = req.session.user_id;
     var username = req.session.username;
@@ -96,22 +96,25 @@ module.exports = (function() {
 
       var storage = [];
       var daily_calories = 0;
-      var numEntries = rows ? rows.length : 0;
+      var numEntries = rows.length;
       var day_storage = [];
+      var sql_date = [];
+      var date = [];
 
       for (var i = 0; i < numEntries; i++) {
         var calorie_left_tracker = 2000 - rows[i].calorie_in;
         var calorie_surplus = 0;
-
+        sql_date[i] = rows[i].calorie_date;
+        date[i] = moment(sql_date, 'ddd MMM DD YYYY hh:mm:ss [GMT]ZZ').format('MM-DD-YYYY');;
         if((i != 0)){
           for(var k = i - 1; k>=0; k--){
-
+            
             if(rows[i].calorie_date.valueOf() == rows[k].calorie_date.valueOf()){
-              var date_deficit = storage[k].calorie_left_tracker;
+              var date_deficit = storage[k].calorie_left_tracker;   
               day_storage.push(storage[k].calorie_left_tracker);
-
+                 
             }
-            console.log(day_storage);
+
           }
 
           for(var l = 0; l < day_storage.length; l++){
@@ -120,23 +123,23 @@ module.exports = (function() {
               date_deficit = smallest_date_deficit;
             }
               calorie_left_tracker = date_deficit - rows[i].calorie_in;
-
+              
           }
           day_storage = [];
         }
 
+
+
         var calorie_status;
 
-        console.log("calorie tracker" + calorie_left_tracker);
 
+        
         var calorie_left = 0;
         calorie_left = calorie_left_tracker;
         if(calorie_left_tracker < 0){
           calorie_left = 0;
           calorie_surplus = calorie_left_tracker * -1;
         }
-        console.log("calorie_left " + calorie_left);
-        console.log("calorie tracker " + calorie_left_tracker);
 
         if (calorie_left_tracker > 0) {
           calorie_status = "Deficit";
@@ -147,41 +150,52 @@ module.exports = (function() {
         }
 
 
-        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": rows[i].user_id, "calorie_date": rows[i].calorie_date,
+        storage.push({"username": username, "calorie_id": rows[i].calorie_id, "user_id": user_id, "calorie_date": date[i],
                       "calorie_in": rows[i].calorie_in, "calorie_status": calorie_status, "calorie_surplus": calorie_surplus,
-                      "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});
-        console.log(storage.calorie_left);
-
+                      "calorie_left": calorie_left, "calorie_left_tracker": calorie_left_tracker});          
         }
+        calorie_left_tracker = 0;
 
-        console.log(storage[numEntries - 1]);
+
 
         mysql.pool.query(query2, user_id, (err, rows, results)=> {
           if (err) return next(err);
 
-
-
-         // TODO: kevin fix this
-
-
-
-        var storageReverse = storage.slice().reverse();
-
-         if(rows && rows.length > 0){
-          for(var j = 0; j < rows.length; j++)
-          {
-            daily_calories = daily_calories + rows[j].calorie_in;
-            storageReverse[numEntries - 1].daily_calories = daily_calories;
+        if(storage.length > 0){
+          console.log("STORAGE > 0");
+          var storageReverse = storage.slice().reverse();
+          console.log(rows.length);
+          console.log("Num entries: " + numEntries)
+          if(rows.length > 0){  
+            for(var j = 0; j < rows.length; j++){
+                  daily_calories = daily_calories + rows[j].calorie_in;
+                  storageReverse[numEntries - 1].daily_calories = daily_calories;
+                  var calorie_in_percent = (daily_calories / 2000) * 100;
+                  if(calorie_in_percent > 100)
+                    calorie_in_percent = 100;
+               storageReverse[0].calorie_in_percent = calorie_in_percent;
+               storageReverse[0].calorie_left_display = calorie_left;
+                console.log("ROWS.LENGTH > 0");
+            }
+          } else if(rows.length === 0){
+               storageReverse[0].daily_calories = 0;
+               storageReverse[0].calorie_in_percent = 0;
+               storageReverse[0].calorie_left_display = 2000;
+               storageReverse[0].calorie_status = "Deficit";
+                console.log("ROWS.LENGTH == 0");
           }
-          var calorie_in_percent = (daily_calories / 2000) * 100;
-          if(calorie_in_percent > 100)
-            calorie_in_percent = 100;
-          storageReverse[numEntries - 1].calorie_in_percent = calorie_in_percent;
+        }else{
+          console.log("STORAGE < 0");
+          var storageReverse = [];
         }
-        console.log(storage);
+
+        console.log(rows.length === 0);
         console.log(storageReverse);
+        console.log(storageReverse[numEntries - 1]);
 
         context.results = storageReverse;
+        storageReverse = [];
+        storage = [];
         res.render('caloriepage', context);
         });
     });
