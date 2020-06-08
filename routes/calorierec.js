@@ -49,7 +49,7 @@ router.get('/', function(req, res, next) {
                     // res.json(context);
                 }else{
                     storage.push({
-                        "recipe_id": "https://www.allrecipes.com/recipes/1232/healthy-recipes/low-calorie/",
+                        "recipe_id": "external",
                         "recipe_name": "No Recipes Meeting Requirement",
                         "recipe_img": "yeti.jpg",
                         "total_calories": 0
